@@ -1,0 +1,68 @@
+## List of repositories in /srv/project.
+
+section=archlinux
+
+  repo.url=myrepo
+  repo.path=/srv/project/myrepo/.git
+  repo.desc=Add, remove, check and update packages(from AUR) for my personal repo
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/myrepo.git
+
+  repo.url=scripts
+  repo.path=/srv/project/scripts/.git
+  repo.desc=Some scripts (shell, python, perl, etc.)
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/scripts.git
+
+  repo.url=ALL
+  repo.path=/srv/project/ALL/.git
+  repo.desc=Arch Linux Lodge
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/ALL.git
+
+section=IFTS
+
+  repo.url=gtc
+  repo.path=/home/project/gtc/.git
+  repo.desc=Gyrokinetic Toroidal Code
+  repo.owner=shmilee.zju@gmail.com
+
+  repo.url=gtc-tools
+  repo.path=/home/project/gtc-tools/.git
+  repo.desc=plot tools for gtc
+  repo.owner=shmilee.zju@gmail.com
+
+section=web
+
+  repo.url=blog
+  repo.path=/srv/project/blog/.git
+  repo.desc=manage my pages hosted at shmilee.github.io
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/blog.git
+
+  repo.url=website
+  repo.path=/srv/project/website/.git
+  repo.desc=web site toy
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/website.git
+
+section=tool
+
+  repo.url=oh-my-zsh-custom
+  repo.path=/srv/project/oh-my-zsh-custom/.git
+  repo.desc=Custom behaviors of oh-my-zsh
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/oh-my-zsh-custom.git
+
+  repo.url=rst2arb
+  repo.path=/srv/project/rst2arb/.git
+  repo.desc=ReST to article report beamer
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/rst2arb.git
+
+  repo.url=vpn4zju
+  repo.path=/srv/project/vpn4zju/.git
+  repo.desc=A utility for ZJU school L2TP VPN
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/vpn4zju.git
+

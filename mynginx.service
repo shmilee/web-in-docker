@@ -1,0 +1,21 @@
+# docker tag <A nginx docker image> nginx:using
+# Copy this file to /etc/systemd/system/
+# sudo systemctl daemon-reload
+# systemctl start mynginx
+# https://docs.docker.com/articles/systemd/
+
+[Unit]
+Description=mynginx+php+cgit+nbviewer+jupyter-notebook
+After=network.target
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+SyslogIdentifier=mynginx
+ExecStart=/usr/bin/docker run --rm -p 80:80 -p 808:808 -v /home/web/etc:/srv/etc:ro -v /home/web/log:/srv/log:rw -v /home/web/root_files:/srv/http:rw -v /home/project:/srv/project:ro -v /home/repo-shmilee:/srv/repo-shmilee:ro -v /home/notebook:/srv/notebook:rw  --name mynginx_server nginx:using
+ExecStop=/usr/bin/docker stop -t 2 mynginx_server
+User=shmilee
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,70 @@
+# nginx + php + (fcgi+cgit) + (jupyter-notebook+nbviewer)
+# Use supervisor to manage multiple processes
+# As supervisor doesn't work under any version of Python 3, so nbviewer and jupyter will be the py2 version.
+#
+# docker build --force-rm --no-cache --rm -f Dockerfile-nginx-arc -t nginx:$(date +%y%m%d) .
+# docker tag nginx:$(date +%y%m%d) nginx:using
+#
+# etc(supervisord.conf nginx.conf cgitrc cgitrepos ipynb_config.py): /srv/etc ro
+# root_files: /srv/http rw
+# project: /srv/project ro
+# aur_repo: /srv/repo-shmilee ro
+# ipynb_dir: /srv/notebook rw
+# log: /srv/log rw
+# docker run --rm -p 80:80 -p 808:808 -v $PWD/etc:/srv/etc:ro -v $PWD/root_files:/srv/http:rw \
+# -v /home/project:/srv/project:ro -v /home/repo-shmilee:/srv/repo-shmilee:ro \
+# -v /home/notebook:/srv/notebook:rw -v $PWD/log:/srv/log:rw nginx:$(date +%y%m%d)
+
+FROM arch:1509
+MAINTAINER shmilee <shmilee.zju@gmail.com>
+
+ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 CGIT_CONFIG=/srv/etc/cgitrc NBVIEWER_THREADS=2
+
+RUN echo "=====> nginx php cgit ..." && \
+    pacman -Syu --noconfirm mynginx php-fpm cgit spawn-fcgi fcgiwrap highlight supervisor iproute2 && \
+    sed -i -e 's/^display_errors = Off/display_errors = On/' \
+        -e 's/^post_max_size =.*/post_max_size = 40M/' \
+        -e 's/upload_max_filesize =.*/upload_max_filesize = 40M/' \
+        -e 's|^;date.timezone =.*|date.timezone = Asia/Shanghai|' /etc/php/php.ini && \
+    sed -i 's|^;error_log = log.*$|error_log = /srv/log/php-fpm.log|' /etc/php/php-fpm.conf && \
+    sed -i -e 's/^.*\(exec highlight.*-X -S.*$\)/#\1/' \
+        -e 's/^.*\(exec highlight.*-O xhtml -S.*$\)/\1/' /usr/lib/cgit/filters/syntax-highlighting.sh && \
+    echo "=====> jupyter notebook + nbviewer requirements ..." && \
+    useradd -m -g users -G wheel -s /bin/bash -d /srv/notebook -u 1000 shmilee && \
+    packages=(python2-pip \
+        python2-setuptools \
+        python2-tornado \
+        python2-pycurl \
+        python2-markdown \
+        python2-pyzmq \
+        python2-urllib3 \
+        python2-jinja \
+        python2-pygments \
+        python2-terminado \
+        python2-jsonschema \
+        python2-mistune \
+        python2-urllib3 \
+        python2-futures \
+        python2-decorator \
+        python2-pexpect \
+        mathjax \
+        sqlite) && \
+    pacman -Syu --noconfirm ${packages[@]} && \
+    commit='e38fc2a7dd0db9442aed9e655076ae481458e641' && \
+    PP_index='https://pypi.tuna.tsinghua.edu.cn/simple' && \
+    PP_index='https://pypi.python.org/simple' && \
+    curl -O https://raw.githubusercontent.com/jupyter/nbviewer/${commit}/requirements.txt && \
+    sed -i -e '/pylibmc/d' requirements.txt && \
+    pip2 install -i "$PP_index" -r requirements.txt && \
+    mv requirements.txt /srv/nbviewer-${commit:0:7}-requirements.txt && \
+    find /usr/lib/python2* \
+		    \( -type d -a -name test -o -name tests \) \
+		    -exec rm -rf '{}' + ; \
+    rm -rf /usr/share/{man/*,doc/*,gtk-doc/,info/} /{root/,tmp/} && \
+    install -dm777 /{root,tmp} && \
+    rm -r /var/cache/pacman/pkg/* && \
+    rm -r /var/lib/pacman/sync/* && \
+    echo -e '#!/bin/bash\nsleep ${1:-10}\n/usr/bin/supervisord -n -c /srv/etc/supervisord.conf' >/init.sh && \
+    chmod +x /init.sh
+
+CMD ['/init.sh', '8']

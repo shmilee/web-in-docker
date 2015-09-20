@@ -1,0 +1,88 @@
+#
+# cgit config
+
+virtual-root=/cgit
+css=/cgit-web/cgit.css
+logo=/images/cgit.jpg
+#/cgit-css/cgit.png
+
+# Set the title and heading of the repository index page
+root-title=shmilee's git repositories
+
+# Set a subheading for the repository index page
+root-desc=shmilee's git repositories hosted at https://github.com/shmilee
+
+# Show owner on index page
+enable-index-owner=1
+
+# Show extra links for each repository on the index page
+enable-index-links=1
+
+# Enable ASCII art commit history graph on the log pages
+enable-commit-graph=1
+
+# Enable statistics per week, month and quarter
+max-stats=month
+
+# Show number of affected files per commit on the log pages
+enable-log-filecount=1
+
+# Show number of added/removed lines per commit on the log pages
+enable-log-linecount=1
+
+# Sort branches by date
+branch-sort=age
+
+# Highlight source code
+source-filter=/usr/lib/cgit/filters/syntax-highlighting.py
+
+# Allow download of tar.gz and zip-files
+snapshots=tar.gz zip
+
+# if you don't want that webcrawler (like google) index your site
+robots=noindex, nofollow
+
+## List of common mimetypes
+mimetype.gif=image/gif
+mimetype.html=text/html
+mimetype.jpg=image/jpeg
+mimetype.jpeg=image/jpeg
+mimetype.pdf=application/pdf
+mimetype.png=image/png
+mimetype.svg=image/svg+xml
+
+## Format markdown, restructuredtext, manpages, text files, and html files through the right converters
+about-filter=/usr/lib/cgit/filters/about-formatting.sh
+## Search for these files in the root of the default branch of repositories for coming up with the about page
+readme=:README.md
+readme=:README.markdown
+readme=:readme.md
+readme=:README.mkd
+readme=:readme.mkd
+readme=:README.rst
+readme=:readme.rst
+readme=:README.html
+readme=:readme.html
+readme=:README.htm
+readme=:readme.htm
+readme=:README.txt
+readme=:readme.txt
+readme=:README
+readme=:readme
+readme=:INSTALL.md
+readme=:install.md
+readme=:INSTALL.mkd
+readme=:install.mkd
+readme=:INSTALL.rst
+readme=:install.rst
+readme=:INSTALL.html
+readme=:install.html
+readme=:INSTALL.htm
+readme=:install.htm
+readme=:INSTALL.txt
+readme=:install.txt
+readme=:INSTALL
+readme=:install
+
+## List of repositories.
+include=/srv/etc/cgitrepos

@@ -1,0 +1,105 @@
+body {
+  background: no-repeat center 0px #000;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  padding: 0px;
+  overflow-x: hidden;
+  background-size: cover; /* css3 */
+}
+#main {
+  width: 800px;
+  float: left;
+  padding: 0px;
+  margin: 1px 0 0 16%;
+}
+#clock {
+  position: relative;
+  float: left;
+  margin: 20px auto 0 0;
+}
+#dial {
+  width: 200px;
+  height: 200px;
+  background: url(images/clockface.png ) no-repeat;
+  list-style: none;
+}
+#sec, #min, #hour {
+  position: absolute;
+  width: 10px;
+  height: 200px;
+  top: 16px;
+  left: 95px;
+}
+#sec {
+  background: url(images/sechand.png);
+  z-index: 3;
+}
+#min {
+  background: url(images/minhand.png);
+  z-index: 2;
+}
+#hour {
+  background: url(images/hourhand.png);
+  z-index: 1;
+}
+#date {
+  position: relative;
+  width: 320px;
+  height: 100px;
+  margin: 100px auto 0 400px;
+}
+#date p {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16pt;
+  line-height: 12px;
+}
+#avatar {
+  position: relative;
+  float: left;
+  margin: 90px auto 0 -220px;
+}
+.polaroid {
+  width: 256px;
+  padding: 1px 1px 1px 1px;
+  border: 1px solid #BFBFBF;
+  background-color: #CCE8CF;
+  -o-transform: rotate(-9deg);
+  -webkit-transform: rotate(-9deg);
+  -moz-transform: rotate(-9deg);
+  transform: rotate(-9deg);
+  -o-box-shadow: 2px 2px 3px rgba(135, 139, 144, 0.4);
+  -webkit-box-shadow: 2px 2px 3px rgba(135, 139, 144, 0.4);
+  -moz-box-shadow: 2px 2px 3px rgba(135, 139, 144, 0.4);
+  box-shadow: 2px 2px 3px rgba(135, 139, 144, 0.4);
+}
+#menu {
+  margin: 45px 0px 0 120px;
+  width: 120px;
+  height: 240px;
+  float: left;
+}
+ul.navigation {
+  padding: 0px;
+  float: left;
+  margin: 0px 0px 0px 24px;
+}
+ul.navigation li {
+  list-style-type: none;
+  float: left;
+  clear: both;
+  border-bottom: solid 1px #ccc;
+}
+ul.navigation li a {
+  width: 100px;
+  display: block;
+  float: left;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  color: #000000;
+  text-decoration: none;
+  padding: 5px 0px;
+}
+ul.navigation li a:hover {
+  background: url(images/arrow.png) no-repeat right center;
+}
