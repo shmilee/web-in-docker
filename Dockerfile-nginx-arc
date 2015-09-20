@@ -52,7 +52,7 @@ RUN echo "=====> nginx php cgit ..." && \
     pacman -Syu --noconfirm ${packages[@]} && \
     commit='e38fc2a7dd0db9442aed9e655076ae481458e641' && \
     PP_index='https://pypi.tuna.tsinghua.edu.cn/simple' && \
-    PP_index='https://pypi.python.org/simple' && \
+    echo PP_index='https://pypi.python.org/simple' && \
     curl -O https://raw.githubusercontent.com/jupyter/nbviewer/${commit}/requirements.txt && \
     sed -i -e '/pylibmc/d' requirements.txt && \
     pip2 install -i "$PP_index" -r requirements.txt && \
@@ -64,7 +64,7 @@ RUN echo "=====> nginx php cgit ..." && \
     install -dm777 /{root,tmp} && \
     rm -r /var/cache/pacman/pkg/* && \
     rm -r /var/lib/pacman/sync/* && \
-    echo -e '#!/bin/bash\nsleep ${1:-10}\n/usr/bin/supervisord -n -c /srv/etc/supervisord.conf' >/init.sh && \
-    chmod +x /init.sh
+    echo -e '#!/bin/bash\nsleep ${1:-10}\n/usr/bin/supervisord -n -c /srv/etc/supervisord.conf' >/usr/bin/init.sh && \
+    chmod +x /usr/bin/init.sh
 
-CMD ['/init.sh', '8']
+CMD ["init.sh", "8"]
