@@ -11,6 +11,29 @@ fi
 
 [ -d build_nbviewer ] || mkdir build_nbviewer
 cd build_nbviewer
+
+echo "==> check commit_id ..."
+if curl https://raw.githubusercontent.com/jupyter/nbviewer/${commit}/requirements.txt \
+    -o ${commit}-requirements.txt; then
+    echo "==> OK."
+    echo "==> check requirements ..."
+    if curl https://raw.githubusercontent.com/jupyter/nbviewer/master/requirements.txt \
+        -o master-requirements.txt;then
+        if diff -Nur ${commit}-requirements.txt master-requirements.txt; then
+            echo "==> Changing to latest commit ..."
+            old_commit=${commit}
+            commit='master'
+        else
+            echo "==> New docker image needed, if you want to use latest nbviewer."
+        fi
+    else
+        echo "==> Failed to get latest requirements.txt"
+    fi
+else
+    echo "==> Invalid id."
+    exit 1
+fi
+
 if [ -f nbviewer-${commit:0:7}.tar.gz ]; then
     echo "have built one."
     exit 0
@@ -40,3 +63,6 @@ find nbviewer/static/components \( -type d -a -name src -o -name source \) -exec
 find nbviewer \( -type d -a -name test -o -name tests \) -exec rm -rf '{}' +
 
 tar zcf ../nbviewer-${commit:0:7}.tar.gz nbviewer/
+if [ $commit == 'master' ]; then
+    ln -s nbviewer-${commit:0:7}.tar.gz ../nbviewer-${old_commit:0:7}.tar.gz
+fi
