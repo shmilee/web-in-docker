@@ -1,4 +1,4 @@
-# nginx + php + (fcgi+cgit) + (jupyter-notebook+nbviewer)
+# nginx + php + (fcgi+cgit) + ssh + (jupyter-notebook+nbviewer)
 # Use supervisor to manage multiple processes
 # As supervisor doesn't work under any version of Python 3, so nbviewer and jupyter will be the py2 version.
 #
@@ -20,8 +20,8 @@ MAINTAINER shmilee <shmilee.zju@gmail.com>
 
 ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 CGIT_CONFIG=/srv/etc/cgitrc NBVIEWER_THREADS=2
 
-RUN echo "=====> nginx php cgit ..." && \
-    pacman -Syu --noconfirm mynginx php-fpm cgit spawn-fcgi fcgiwrap highlight supervisor iproute2 && \
+RUN echo "=====> nginx php cgit ssh ..." && \
+    pacman -Syu --noconfirm mynginx php-fpm cgit spawn-fcgi fcgiwrap highlight openssh supervisor iproute2 && \
     sed -i -e 's/^display_errors = Off/display_errors = On/' \
         -e 's/^post_max_size =.*/post_max_size = 40M/' \
         -e 's/upload_max_filesize =.*/upload_max_filesize = 40M/' \
