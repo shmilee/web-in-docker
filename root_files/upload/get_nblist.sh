@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-ipynb_dir=IFTS_shmilee/notebook
+ipynb_url=upload/IFTS_shmilee/notebook
+ipynb_dir=/home/IFTS_shmilee/notebook
 network_interface=eth0
 
 # 1
@@ -53,9 +54,8 @@ EOF
 
 # 2
 myip=$(ip addr show $network_interface | grep 'inet '|sed 's/.*inet //;s/\/.*//')
-srv_pwd="/url/$myip/upload/$ipynb_dir"
 find $ipynb_dir -type f -name '*.ipynb' -exec echo {} \; | grep -v .ipynb_checkpoints | sort | \
-    sed "s|$ipynb_dir/\(.*\)|        <li> <a href=\"$srv_pwd/\1\" target="_blank">\1</a></li>|" >> ./nblist.html
+    sed "s|$ipynb_dir/\(.*\)\.ipynb|        <li> <a href=\"/url/$myip/$ipynb_url/\1\.ipynb\" target="_blank">\1</a></li>|" >> ./nblist.html
 
 # 3
 cat >> ./nblist.html <<EOF
