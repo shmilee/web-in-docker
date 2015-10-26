@@ -21,7 +21,7 @@ MAINTAINER shmilee <shmilee.zju@gmail.com>
 ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 CGIT_CONFIG=/srv/etc/cgitrc NBVIEWER_THREADS=2
 
 RUN echo "=====> nginx php cgit ssh ..." && \
-    pacman -Syu --noconfirm mynginx php-fpm cgit spawn-fcgi fcgiwrap highlight openssh supervisor iproute2 && \
+    pacman -Syu --noconfirm mynginx php-fpm cgit spawn-fcgi fcgiwrap python2-docutils highlight openssh supervisor iproute2 && \
     sed -i -e 's/^display_errors = Off/display_errors = On/' \
         -e 's/^post_max_size =.*/post_max_size = 40M/' \
         -e 's/upload_max_filesize =.*/upload_max_filesize = 40M/' \
@@ -29,6 +29,7 @@ RUN echo "=====> nginx php cgit ssh ..." && \
     sed -i 's|^;error_log = log.*$|error_log = /srv/log/php-fpm.log|' /etc/php/php-fpm.conf && \
     sed -i -e 's/^.*\(exec highlight.*-X -S.*$\)/#\1/' \
         -e 's/^.*\(exec highlight.*-O xhtml -S.*$\)/\1/' /usr/lib/cgit/filters/syntax-highlighting.sh && \
+    sed -i 's|rst2html.py|rst2html2.py|' /usr/lib/cgit/filters/html-converters/rst2html && \
     echo "=====> jupyter notebook + nbviewer requirements ..." && \
     useradd -m -g users -G wheel -s /bin/bash -d /srv/notebook -u 1000 shmilee && \
     packages=(python2-pip \
