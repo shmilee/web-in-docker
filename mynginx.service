@@ -13,7 +13,8 @@ After=docker.service
 [Service]
 Restart=always
 SyslogIdentifier=mynginx
-ExecStart=/usr/bin/docker run --rm -p 80:80 -p 808:808 -v /home/web/etc:/srv/etc:ro -v /home/web/log:/srv/log:rw -v /home/web/root_files:/srv/http:rw -v /home/project:/srv/project:ro -v /home/repo-shmilee:/srv/repo-shmilee:ro -v /home/notebook:/srv/notebook:rw  --name mynginx_server nginx:using
+Environment='WebData=/home/WebData'
+ExecStart=/usr/bin/docker run --rm -p 80:80 -p 808:808 -v ${WebData}/etc:/srv/etc:ro -v ${WebData}/log:/srv/log:rw -v ${WebData}/root_files:/srv/http:rw -v ${WebData}/project:/srv/project:ro -v ${WebData}/repo-shmilee:/srv/repo-shmilee:ro -v /home/IFTS_shmilee/notebook:/srv/notebook:rw -v /home/IFTS_shmilee:/srv/http/upload/IFTS_shmilee:ro  --name mynginx_server nginx:using
 ExecStop=/usr/bin/docker stop -t 2 mynginx_server
 User=shmilee
 
