@@ -15,7 +15,7 @@
 # -v /home/project:/srv/project:ro -v /home/repo-shmilee:/srv/repo-shmilee:ro \
 # -v /home/notebook:/srv/notebook:rw -v $PWD/log:/srv/log:rw nginx:$(date +%y%m%d)
 
-FROM arch:1510
+FROM arch:1512
 MAINTAINER shmilee <shmilee.zju@gmail.com>
 
 ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 CGIT_CONFIG=/srv/etc/cgitrc NBVIEWER_THREADS=2
