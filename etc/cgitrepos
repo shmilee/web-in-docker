@@ -14,6 +14,12 @@ section=archlinux
   repo.owner=shmilee.zju@gmail.com
   repo.clone-url=https://github.com/shmilee/scripts.git
 
+  repo.url=config-awesome
+  repo.path=/srv/project/config-awesome/.git
+  repo.desc=Awesome Window Manager Config Files
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/config-awesome.git
+
   repo.url=ALL
   repo.path=/srv/project/ALL/.git
   repo.desc=Arch Linux Lodge
@@ -23,12 +29,12 @@ section=archlinux
 section=IFTS
 
   repo.url=gtc
-  repo.path=/home/project/gtc/.git
+  repo.path=/srv/project/gtc/.git
   repo.desc=Gyrokinetic Toroidal Code
   repo.owner=shmilee.zju@gmail.com
 
   repo.url=gtc-tools
-  repo.path=/home/project/gtc-tools/.git
+  repo.path=/srv/project/gtc-tools/.git
   repo.desc=plot tools for gtc
   repo.owner=shmilee.zju@gmail.com
 
@@ -45,6 +51,12 @@ section=web
   repo.desc=web site toy
   repo.owner=shmilee.zju@gmail.com
   repo.clone-url=https://github.com/shmilee/website.git
+
+  repo.url=web-in-docker
+  repo.path=/srv/project/web-in-docker/.git
+  repo.desc=nginx+php+cgit+nbviewer
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/web-in-docker.git
 
 section=tool
 
