@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bixian
+n/bash
 
 [ -d deploy ] && rm -r deploy/
 
@@ -8,15 +9,25 @@ echo "==> copy files ..."
 cp -r etc root_files deploy/
 chmod 777 -R deploy/root_files/upload/
 
-echo "==> build nbviewer ..."
-nbviewer_commit=$(sed -n "/commit=/ s/.*commit='\(.*\)' &&.*/\1/ p"  Dockerfile-nginx-arc)
-bash ./build_nbviewer.sh ${nbviewer_commit}
-tar zxf ./build_nbviewer/nbviewer-${nbviewer_commit:0:7}.tar.gz -C deploy/root_files/
+read -p "==> initialize the MariaDB data directory? [y/n]" ANSW
+if [[ x$ANSW == xy ]]; then
+    mkdir deploy/mysql
+    sudo chown mysql:mysql deploy/mysql
+    docker run --rm -v $PWD/deploy/mysql:/var/lib/mysql:rw nginx:using \
+        bash -c 'mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql'
+    container_id=$(docker run -u mysql -d -v $PWD/deploy/mysql:/var/lib/mysql:rw \
+        nginx:using bash -c 'mysqld --pid-file=/run/mysqld/mysqld.pid;')
+    docker exec -u root -i -t $container_id mysql_secure_installation
+    docker stop $container_id
+    docker rm $container_id
+fi
 
-echo "==> prepare a hashed password for jupyter notebook ..."
-sha1_passwd=$(ipython -c 'from IPython.lib import passwd;passwd()')
-sha1_passwd=${sha1_passwd/#*\'sha1/\'sha1}
-sed -i "s|'sha1:yourpasswd'|$sha1_passwd|" deploy/etc/ipynb_config.py
+echo "==> build nbviewer ..."
+nbviewer_commit=$(sed -n "/^nbviewer_commit=/ s/.*_commit='\(.*\)'/\1/ p" readme.md)
+if [ ! -f ./build_nbviewer/nbviewer-${nbviewer_commit:0:7}.tar.gz ]; then
+    sh ./build_nbviewer.sh ${nbviewer_commit}
+fi
+tar zxf ./build_nbviewer/nbviewer-${nbviewer_commit:0:7}.tar.gz -C deploy/root_files/
 
 echo "==> log dir ..."
 mkdir deploy/log

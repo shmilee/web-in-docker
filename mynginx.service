@@ -5,7 +5,7 @@
 # https://docs.docker.com/articles/systemd/
 
 [Unit]
-Description=mynginx+php+cgit+nbviewer+jupyter-notebook
+Description=mynginx+mysql+php+cgit+nbviewer
 After=network.target
 Requires=docker.service
 After=docker.service
@@ -14,8 +14,17 @@ After=docker.service
 Restart=always
 SyslogIdentifier=mynginx
 Environment='WebData=/home/WebData'
-ExecStart=/usr/bin/docker run --rm -p 80:80 -p 808:808 -v ${WebData}/etc:/srv/etc:ro -v ${WebData}/log:/srv/log:rw -v ${WebData}/root_files:/srv/http:rw -v ${WebData}/project:/srv/project:ro -v ${WebData}/repo-shmilee:/srv/repo-shmilee:ro -v /home/IFTS_shmilee/notebook:/srv/notebook:rw -v /home/IFTS_shmilee:/srv/http/upload/IFTS_shmilee:ro  --name mynginx_server nginx:using
+ExecStart=/usr/bin/docker run --rm -p 80:80 -p 808:808 \
+    -v ${WebData}/etc:/srv/etc:ro \
+    -v ${WebData}/log:/srv/log:rw \
+    -v ${WebData}/mysql:/var/lib/mysql:rw \
+    -v ${WebData}/root_files:/srv/http:rw \
+    -v ${WebData}/project:/srv/project:ro \
+    -v ${WebData}/repo-shmilee:/srv/repo-shmilee:ro \
+    -v /home/IFTS_shmilee:/srv/http/upload/IFTS_shmilee:ro \
+    --name mynginx_server nginx:using
 ExecStop=/usr/bin/docker stop -t 2 mynginx_server
+ExecStop=/usr/bin/docker rm mynginx_server
 User=shmilee
 
 [Install]
