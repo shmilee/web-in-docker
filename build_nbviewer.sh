@@ -62,6 +62,15 @@ find nbviewer/static \( -name "*.json" -o -name "*.map" -o -name "*ignore" -o -n
 find nbviewer/static/components \( -type d -a -name src -o -name source \) -exec rm -rf '{}' +
 find nbviewer \( -type d -a -name test -o -name tests \) -exec rm -rf '{}' +
 
+# svg -> png
+if width=$(sed -n '/nav_logo.svg/ s/.*width="\(.*\)"\/.*/\1/ p' nbviewer/templates/layout.html); then
+    rs_arg="-resize ${width}x"
+    echo nav_logo $rs_arg
+fi
+eval convert nbviewer/static/img/nav_logo.svg -transparent white $rs_arg nbviewer/static/img/nav_logo.png && \
+rm nbviewer/static/img/nav_logo.svg && \
+sed -i 's/nav_logo.svg/nav_logo.png/' nbviewer/templates/layout.html
+
 tar zcf ../nbviewer-${commit:0:7}.tar.gz nbviewer/
 if [ $commit == 'master' ]; then
     ln -s nbviewer-${commit:0:7}.tar.gz ../nbviewer-${old_commit:0:7}.tar.gz
