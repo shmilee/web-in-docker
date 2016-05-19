@@ -5,6 +5,8 @@ https://github.com/shmilee/dockerfile-for-arch.git
 
 Build mynginx(lnmp+cgit), initialize the MariaDB data directory and set mysql root passwd.
 
+Build matplot(jupyter-notebook).
+
 nbviewer
 ========
 
@@ -19,6 +21,7 @@ Other configurations
 * etc/
     - supervisord.conf
     - nginx.conf
+    - nginx- .conf
     - cgitrc     
     - cgitrepos
     - php.ini
@@ -35,9 +38,12 @@ Deploy
 
 deploy.sh
 
-configure systemd service
-==========================
+systemd service
+================
 
+mynginx:
+
+```
 Environment='WebData=/my/WebData'
 ExecStart=/usr/bin/docker run --rm -p 80:80 -p 808:808 \
     -v ${WebData}/etc:/srv/etc:ro \
@@ -48,3 +54,30 @@ ExecStart=/usr/bin/docker run --rm -p 80:80 -p 808:808 \
     -v ${WebData}/repo-shmilee:/srv/repo-shmilee:ro \
     -v /home/IFTS_shmilee:/srv/http/upload/IFTS_shmilee:ro \
     --name mynginx_server nginx:using
+```
+
+matplot:
+
+```
+Environment='WebData=/home/WebData'
+ExecStart=/usr/bin/docker run -d -p 8888:8888 \
+    -v ${WebData}/etc/jupyter:/workdir/config \
+    -v /home/IFTS_shmilee/notebook:/workdir/notebook \
+    --name matplot_server matplot:using
+```
+
+kiwix-serve: `pacman -S kiwix-bin`
+
+```
+ExecStart=/usr/lib/kiwix/bin/kiwix-serve --library --port=8080 /home/WebData/kiwix-data/library.xml
+User=nobody
+```
+
+owncloud
+========
+
+* `oc-perms.sh <owncloud-path>`
+
+* etc/nginx-owncloud.conf
+
+* create database in MariaDB

@@ -1,0 +1,27 @@
+# docker tag <A matplot docker image> matplot:using
+# Copy this file to /etc/systemd/system/
+# sudo systemctl daemon-reload
+# systemctl start matplot
+# https://docs.docker.com/articles/systemd/
+
+[Unit]
+Description=jupyter-notebook+matplotlib
+After=network.target
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+SyslogIdentifier=matplot
+Environment='WebData=/home/WebData'
+ExecStart=/usr/bin/docker run --rm -p 8888:8888 \
+    -v ${WebData}/etc/jupyter:/workdir/config \
+    -v /home/IFTS_shmilee/notebook:/workdir/notebook \
+    --name matplot_server matplot:using
+ExecStop=/usr/bin/docker stop -t 2 matplot_server
+ExecStop=/usr/bin/docker rm matplot_server
+User=shmilee
+
+[Install]
+WantedBy=multi-user.target
+
