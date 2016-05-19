@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
-ipynb_url=upload/IFTS_shmilee/notebook
 ipynb_dir=/home/IFTS_shmilee/notebook
+localfile='yes'
+local_dir=upload/IFTS_shmilee/notebook/
 network_interface=eth0
+ipynb_url=upload/IFTS_shmilee/notebook
+
 
 # 1
 cat > ./nblist.html <<'EOF'
@@ -41,7 +44,7 @@ cat > ./nblist.html <<'EOF'
     $(document).ready(function(){
         $.each($("#data ul li a"),function(i,n){
             var $href = $(this).attr("href");
-            $(this).attr("href","http://"+window.location.hostname+":808"+$href);
+            $(this).attr("href","http://nbviewer.shmilee.io"+$href);
         });
     });
 </script>
@@ -53,9 +56,14 @@ cat > ./nblist.html <<'EOF'
 EOF
 
 # 2
-myip=$(ip addr show $network_interface | grep 'inet '|sed 's/.*inet //;s/\/.*//')
-find $ipynb_dir -type f -name '*.ipynb' -exec echo {} \; | grep -v .ipynb_checkpoints | sort | \
+if [[ $localfile == yes ]]; then
+    find $ipynb_dir -type f -name '*.ipynb' -exec echo {} \; | grep -v .ipynb_checkpoints | sort | \
+    sed "s|$ipynb_dir/\(.*\)\.ipynb|        <li> <a href=\"/localfile/\1\.ipynb\" target="_blank">\1</a></li>|" >> ./nblist.html
+else
+    myip=$(ip addr show $network_interface | grep 'inet '|sed 's/.*inet //;s/\/.*//')
+    find $ipynb_dir -type f -name '*.ipynb' -exec echo {} \; | grep -v .ipynb_checkpoints | sort | \
     sed "s|$ipynb_dir/\(.*\)\.ipynb|        <li> <a href=\"/url/$myip/$ipynb_url/\1\.ipynb\" target="_blank">\1</a></li>|" >> ./nblist.html
+fi
 
 # 3
 cat >> ./nblist.html <<EOF
