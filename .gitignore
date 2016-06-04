@@ -1,3 +1,5 @@
 ~
 build_nbviewer/*
 deploy/*
+CA/*
+!CA/openssl.cnf
