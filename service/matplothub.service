@@ -1,0 +1,26 @@
+# docker tag <A matplothub docker image> matplothub:using
+# Copy this file to /etc/systemd/system/
+# sudo systemctl daemon-reload
+# systemctl start matplothub
+# https://docs.docker.com/articles/systemd/
+
+[Unit]
+Description=jupyterhub+notebook+matplotlib
+After=network.target
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+SyslogIdentifier=matplothub
+Environment='WebData=/home/WebData'
+ExecStart=/usr/bin/docker run --rm -p 8888:8000 \
+    -v ${WebData}/jupyterhub:/srv/jupyterhub \
+    --name matplothub_server matplothub:using
+ExecStop=/usr/bin/docker stop -t 5 matplothub_server
+ExecStop=/usr/bin/docker rm matplothub_server
+User=shmilee
+
+[Install]
+WantedBy=multi-user.target
+
