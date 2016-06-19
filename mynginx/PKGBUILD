@@ -1,4 +1,5 @@
 # $Id: PKGBUILD 266697 2016-05-01 00:55:57Z seblu $
+# Maintainer: shmilee
 # Maintainer: Bartłomiej Piotrowski <bpiotrowski@archlinux.org>
 # Maintainer: Sébastien Luttringer
 # Contributor: Sergej Pupykin <pupykin.s+arch@gmail.com>
@@ -8,17 +9,29 @@
 _pkgname=nginx
 
 ### 3d party modules:
-_fancyindex_ver="0.3.6"
-_fancyindex_dirname="ngx-fancyindex"
+_fancyindex_name="ngx-fancyindex"
+_fancyindex_ver="0.4.0"
+_echo_name="echo-nginx-module"
+_echo_ver="0.59"
+_rtmp_name="nginx-rtmp-module"
+_rtmp_ver="c3237ae747ff0b06494326731e215c23ae884966"
+_heads_more_name="headers-more-nginx-module"
+_heads_more_ver="0.30"
+
+_sub_filter_name="ngx_http_substitutions_filter_module"
+_sub_filter_ver="bc58cb11844bc42735bbaef7085ea86ace46d05b"
+_google_filter_name="ngx_http_google_filter_module"
+_google_filter_ver="0.2.0"
 
 pkgname=mynginx
-pkgver=1.10.0
-pkgrel=2
-pkgdesc='Lightweight HTTP server and IMAP/POP3 proxy server - with fancyindex'
+pkgver=1.10.1
+pkgrel=1
+pkgdesc='Lightweight HTTP server and IMAP/POP3 proxy server - with fancyindex, echo, rtmp, headers-more, sub_filter, google_filter support'
 arch=('i686' 'x86_64')
 url='http://nginx.org'
 license=('custom')
 depends=('pcre' 'zlib' 'openssl' 'geoip')
+makedepends=('hardening-wrapper')
 conflicts=('nginx')
 provides=('nginx')
 backup=('etc/nginx/fastcgi.conf'
@@ -35,11 +48,21 @@ install=nginx.install
 source=($url/download/nginx-$pkgver.tar.gz
         service
         logrotate
-        https://github.com/aperezdc/${_fancyindex_dirname}/archive/v${_fancyindex_ver}.tar.gz)
-md5sums=('c184c873d2798c5ba92be95ed1209c02'
+        ${_fancyindex_name}.tar.gz::https://github.com/aperezdc/${_fancyindex_name}/archive/v${_fancyindex_ver}.tar.gz
+        ${_echo_name}.tar.gz::https://github.com/openresty/${_echo_name}/archive/v${_echo_ver}.tar.gz
+        ${_rtmp_name}.tar.gz::https://github.com/sergey-dryabzhinsky/${_rtmp_name}/archive/${_rtmp_ver}.tar.gz
+        ${_heads_more_name}.tar.gz::https://github.com/openresty/${_heads_more_name}/archive/v${_heads_more_ver}.tar.gz
+        ${_sub_filter_name}.tar.gz::https://github.com/yaoweibin/${_sub_filter_name}/archive/${_sub_filter_ver}.tar.gz
+        ${_google_filter_name}.tar.gz::https://github.com/cuber/${_google_filter_name}/archive/${_google_filter_ver}.tar.gz)
+md5sums=('088292d9caf6059ef328aa7dda332e44'
          '5dd4d09914a4403b9df778ec1d66167c'
          '19a26a61c8afe78defb8b4544f79a9a0'
-         '76ac525432d459a4615a3a8638195ba9')
+         'd0cda555a062e1bc78c5cf646d754be9'
+         '107b7a312927242cdf812389f3f0787d'
+         '155e6143afa2553024bcaca3c8515ea6'
+         'a223ba5180ec796a23686962e5732ff8'
+         '9f13942e3244a3b17dba0ffff454d604'
+         'f8d104c44136fbd5f404018268f56419')
 
 _common_flags=(
   --with-ipv6
@@ -68,17 +91,26 @@ _common_flags=(
 )
 
 _stable_flags=(
-  --add-module=../${_fancyindex_dirname}
 )
 
-build() {
-  [ -d ${_fancyindex_dirname} ] && rm -r ${_fancyindex_dirname}
-  mv ngx-fancyindex-${_fancyindex_ver} ${_fancyindex_dirname}
-  cd ${_fancyindex_dirname}
+_3d_party_modules_flags=(
+  --modules-path=/usr/lib/nginx
+  --add-dynamic-module=../${_fancyindex_name}-${_fancyindex_ver}
+  --add-dynamic-module=../${_echo_name}-${_echo_ver}
+  --add-dynamic-module=../${_rtmp_name}-${_rtmp_ver}
+  --add-dynamic-module=../${_heads_more_name}-${_heads_more_ver}
+  --add-module=../${_sub_filter_name}-${_sub_filter_ver}
+  --add-module=../${_google_filter_name}-${_google_filter_ver}
+)
+
+prepare() {
+  cd ${_fancyindex_name}-${_fancyindex_ver}
   sed -i 's/Parent directory/\.\./' ngx_http_fancyindex_module.c template.h
   sed -i 's/File Name/文件名/;s/File Size/文件大小/;s/Date/日期/' template.h # zh ..
+}
 
-  cd ../${_pkgname}-$pkgver
+build() {
+  cd ${_pkgname}-$pkgver
 
   ./configure \
     --prefix=/etc/nginx \
@@ -96,7 +128,8 @@ build() {
     --http-scgi-temp-path=/var/lib/nginx/scgi \
     --http-uwsgi-temp-path=/var/lib/nginx/uwsgi \
     ${_common_flags[@]} \
-    ${_stable_flags[@]}
+    ${_stable_flags[@]} \
+    ${_3d_party_modules_flags[@]}
 
   make
 }
