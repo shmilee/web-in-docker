@@ -29,9 +29,12 @@ _concat_ver="b8d3e7ec511724a6900ba3915df6b504337891a9"
 
 _naxsi_name="naxsi"
 _naxsi_ver="0.55rc2"
+
 _nchan_name="nchan"
 _nchan_ver="0.99.16"
+
 _rtmp_name="nginx-rtmp-module"
+_rtmp_commit_ver='1135'
 _rtmp_ver="c3237ae747ff0b06494326731e215c23ae884966"
 
 _pagespeed_name="ngx_pagespeed"
@@ -40,10 +43,10 @@ _pagespeed_ver="${_NPS_VERSION}-beta"
 ### END
 
 pkgbase=mynginx
-pkgname=(mynginx mynginx-pagespeed)
+pkgname=(mynginx mynginx-naxsi mynginx-nchan mynginx-rtmp mynginx-pagespeed)
 pkgver=${_pkgver}
 pkgrel=1
-pkgdesc='Lightweight HTTP server and IMAP/POP3 proxy server - with fancyindex, echo, headers-more, upstream-fair, sub_filter, google_filter, http_auth_pam, http-concat, naxsi, nchan, rtmp support'
+pkgdesc='Lightweight HTTP server and IMAP/POP3 proxy server - with fancyindex, echo, headers-more, upstream-fair, sub_filter, google_filter, http_auth_pam, http-concat support'
 arch=('i686' 'x86_64')
 url='http://nginx.org'
 license=('custom')
@@ -269,11 +272,44 @@ package_mynginx() {
       "${pkgdir}/usr/share/vim/vimfiles/${i}/nginx.vim"
   done
 
+  rm "${pkgdir}/usr/lib/nginx"/ngx_http_naxsi_module.so
+  rm "${pkgdir}/usr/lib/nginx"/ngx_nchan_module.so
+  rm "${pkgdir}/usr/lib/nginx"/ngx_rtmp_module.so
   rm "${pkgdir}/usr/lib/nginx"/ngx_pagespeed.so
 }
 
+package_mynginx-naxsi() {
+  pkgver='0.55rc2'
+  pkgdesc='NAXSI is an open-source, high performance, low rules maintenance WAF for Nginx'
+  url='https://github.com/nbs-system/naxsi'
+  depends=("mynginx=${_pkgver}")
+
+  cd ${_pkgname}-${_pkgver}
+  install -Dm755 objs/ngx_http_naxsi_module.so "${pkgdir}/usr/lib/nginx"/ngx_http_naxsi_module.so
+}
+
+package_mynginx-nchan() {
+  pkgver='0.99.16'
+  pkgdesc='Nchan is a scalable, flexible pub/sub server module for Nginx'
+  url='https://github.com/slact/nchan'
+  depends=("mynginx=${_pkgver}")
+
+  cd ${_pkgname}-${_pkgver}
+  install -Dm755 objs/ngx_nchan_module.so "${pkgdir}/usr/lib/nginx"/ngx_nchan_module.so
+}
+
+package_mynginx-rtmp() {
+  pkgver=1.1.7.$_rtmp_commit_ver
+  pkgdesc='Nginx-based Media Streaming Server module'
+  url='https://github.com/sergey-dryabzhinsky/nginx-rtmp-module'
+  depends=("mynginx=${_pkgver}")
+
+  cd ${_pkgname}-${_pkgver}
+  install -Dm755 objs/ngx_rtmp_module.so "${pkgdir}/usr/lib/nginx"/ngx_rtmp_module.so
+}
+
 package_mynginx-pagespeed() {
-  pkgver=${_NPS_VERSION}
+  pkgver=1.11.33.2
   pkgdesc='Automatic PageSpeed optimization module for Nginx'
   url='https://github.com/pagespeed/ngx_pagespeed'
   depends=("mynginx=${_pkgver}")
