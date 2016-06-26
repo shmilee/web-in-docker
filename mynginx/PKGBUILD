@@ -42,7 +42,7 @@ _pagespeed_ver="${_NPS_VERSION}-beta"
 pkgbase=mynginx
 pkgname=(mynginx mynginx-pagespeed)
 pkgver=${_pkgver}
-pkgrel=1
+pkgrel=2
 pkgdesc='Lightweight HTTP server and IMAP/POP3 proxy server - with fancyindex, echo, headers-more, upstream-fair, sub_filter, google_filter, http_auth_pam, http-concat, naxsi, nchan, rtmp support'
 arch=('i686' 'x86_64')
 url='http://nginx.org'
@@ -168,7 +168,6 @@ if test -n "$ngx_module_link"; then
     ngx_module_type=HTTP_AUX_FILTER
     ngx_module_name=ngx_http_google_filter_module
     ngx_module_srcs="$ngx_addon_dir/src/*.c"
-
     . auto/module
 else
     HTTP_AUX_FILTER_MODULES="$HTTP_AUX_FILTER_MODULES ngx_http_google_filter_module"
@@ -176,6 +175,14 @@ else
     NGX_ADDON_DEPS="$NGX_ADDON_DEPS $ngx_addon_dir/src/*.h"
 fi
 EOF
+sed -i '/apis.*google.*com/a \
+                                         "$google_host/!$1",\
+                                         "igr"))\
+      break;\
+    \
+    if (ngx_http_google_inject_subs_args(cf,\
+                                         "subs_filter", 3, \
+                                         "((id)\\.google\\.com)",' src/ngx_http_google_inject.c
 
   cd ../${_concat_name}-${_concat_ver}
   cat >./config <<'EOF'
