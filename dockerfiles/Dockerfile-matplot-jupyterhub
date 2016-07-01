@@ -1,0 +1,45 @@
+# use matplotlib in jupyterhub
+# python 3
+# select pypi-index-url $PP_index
+# docker build --force-rm --no-cache --rm -f Dockerfile-matplot-jupyterhub -t matplothub:$(date +%y%m%d) .
+# docker run --rm -v $PWD/jupyterhub:/srv/jupyterhub -p 8000:8000 matplothub:$(date +%y%m%d)
+# configfile: $PWD/jupyterhub/jupyterhub_config.py
+#
+
+FROM arch:1607
+MAINTAINER shmilee <shmilee.zju@gmail.com>
+
+ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
+
+ADD ./jupyterhub_init.sh /usr/bin/jupyterhub_init.sh
+RUN PP_index='https://pypi.tuna.tsinghua.edu.cn/simple' && \
+    packages=(tini \
+        python-pip \
+        ipython \
+        jupyter-notebook \
+        jupyter-nbconvert \
+        python-numpy \
+        python-scipy \
+        python-pandas \
+        python-sympy \
+        mathjax \
+        pandoc \
+        python-pillow python-pyparsing  python-cycler \
+        openssh \
+        pkg-config freetype2 gcc \
+        nodejs python-requests python-sqlalchemy npm) && \
+    pacman -Sy --noconfirm ${packages[@]} && \
+    npm install -g configurable-http-proxy && \
+    pip3 install -i "$PP_index" matplotlib jupyterhub && \
+    pacman -Rsn --noconfirm gcc npm && \
+    find /usr/lib/python3* \
+		\( -type d -a -name test -o -name tests \) \
+		-exec rm -rf '{}' + ; \
+    rm -rf /usr/share/{man/*,doc/*,gtk-doc/,info/} /{root,tmp} && \
+    rm -r /var/cache/pacman/pkg/* && \
+    rm -r /var/lib/pacman/sync/* && \
+    chmod +x /usr/bin/jupyterhub_init.sh
+
+WORKDIR /srv/jupyterhub
+ENTRYPOINT ["/usr/bin/tini", "--"]
+CMD ["jupyterhub_init.sh", "3", "/srv/jupyterhub/jupyterhub_config.py", "--no-ssl"]

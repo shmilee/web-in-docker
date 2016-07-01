@@ -1,0 +1,47 @@
+# nkl_Ver=??
+# select pypi-index-url $PP_index
+# docker build --force-rm --no-cache --rm -f Dockerfile-nikola -t nikola:$nkl_Ver .
+# docker run -u 1000 --rm -p 8000:8000 -v $(pwd):/blog -w /blog -t -i nikola:$nkl_Ver /usr/bin/bash
+FROM arch:1607
+MAINTAINER shmilee <shmilee.zju@gmail.com>
+
+ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
+RUN nkl_Ver=7.7.9 && \
+    packages=(python-pip \
+        python-pygments \
+        python-pillow \
+        python-dateutil \
+        python-docutils \
+        python-mako \
+        python-unidecode \
+        python-lxml \
+        python-logbook \
+        python-blinker \
+        python-setuptools \
+        python-requests \
+        python-markdown \
+        python-jinja \
+        python-pygal \
+        python-typogrify \
+        jupyter-notebook \
+        jupyter-nbconvert \
+        python-watchdog \
+        pandoc) && \
+    pacman -Syu --noconfirm ${packages[@]} && \
+    PP_index='https://pypi.tuna.tsinghua.edu.cn/simple' && \
+    PP_index='https://pypi.python.org/simple' && \
+    nkl_Url='https://raw.githubusercontent.com/getnikola/nikola' && \
+    curl -O "$nkl_Url/v$nkl_Ver"/requirements.txt && \
+    curl -O "$nkl_Url/v$nkl_Ver"/requirements-extras.txt && \
+    sed -i -e '/pyphen/d' -e '/ghp-import/d' requirements-extras.txt && \
+    pip3 install -i "$PP_index" -r requirements-extras.txt nikola=="$nkl_Ver" && \
+    useradd -m -g users -G wheel -s /bin/bash -d /blog -u 1000 shmilee && \
+    find /usr/lib/python3* \
+	    \( -type d -a -name test -o -name tests \) \
+	    -exec rm -rf '{}' + ; \
+    rm -rf /usr/share/{man/*,doc/*,gtk-doc/,info/} /{root,tmp} && \
+    rm -r /var/cache/pacman/pkg/* && \
+    rm -r /var/lib/pacman/sync/*
+
+#ENTRYPOINT ["nikola"]
+#CMD ["help"]
