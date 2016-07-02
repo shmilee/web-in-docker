@@ -1,5 +1,4 @@
-#!/bixian
-n/bash
+#!/bin/bash
 
 [ -d deploy ] && rm -r deploy/
 
@@ -7,11 +6,9 @@ mkdir deploy
 
 echo "==> copy files ..."
 cp -r etc root_files deploy/
+chmod 600 deploy/etc/monitrc
+sudo chown 0:0 deploy/etc/monitrc
 chmod 777 -R deploy/root_files/upload/
-
-echo "==> Generate server key crt ..."
-openssl req -new -x509 -nodes -newkey rsa:4096 -days 1095 \
-    -keyout deploy/etc/server.key -out deploy/etc/server.crt
 
 read -p "==> initialize the MariaDB data directory? [y/n]" ANSW
 if [[ x$ANSW == xy ]]; then
