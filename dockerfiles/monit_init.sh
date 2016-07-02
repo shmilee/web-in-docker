@@ -1,9 +1,9 @@
 #!/bin/bash
 sleep ${1:-10}
-config=${2:-/srv/etc/supervisord.conf}
+config=${2:-/srv/etc/monitrc}
 hook_script="$3"
 if [ ! -f $config ]; then
-    echo "!!! lost supervisord.conf"
+    echo "!!! lost etc/monitrc"
     exit 1
 fi
 
@@ -12,4 +12,4 @@ if [ -x "$hook_script" ]; then
     "$hook_script"
 fi
 # run
-exec /usr/bin/supervisord -c $config
+exec /usr/bin/monit -c $config

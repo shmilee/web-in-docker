@@ -1,6 +1,6 @@
 # nginx + mariadb(mysql) + php + (fcgi+cgit) + ssh + (jupyter+nbviewer)
 #
-# Use supervisor(python2) to manage multiple processes
+# Use community/monit to manage multiple processes
 #
 # py3 version jupyter/nbviewer
 # py3 docutils, pygments, markdown for cgit
@@ -8,65 +8,58 @@
 # docker build --force-rm --no-cache --rm -f Dockerfile-mynginx -t mynginx:$(date +%y%m%d) .
 # docker tag mynginx:$(date +%y%m%d) nginx:using
 #
-# etc/{supervisord.conf,nginx.conf,cgitrc,php.ini,php-fpm.conf}: /srv/etc ro
+# etc/{monitrc,nginx.conf,cgitrc,php.ini,php-fpm.conf}: /srv/etc ro
 # http_files: /srv/http rw
 # log: /srv/log rw
 # docker run --rm -p 80:80 -p 808:808 -v $PWD/etc:/srv/etc:ro -v $PWD/http_files:/srv/http:rw \
 #   -v $PWD/log:/srv/log:rw mynginx:$(date +%y%m%d)
 #
-# You need to initialize the MariaDB data directory prior to starting the service.
-# This can be done with mysql_install_db command, e.g.:
-# docker run --rm -v $PWD/mysql:/var/lib/mysql:rw mynginx:$(date +%y%m%d) bash -c \
-#   'mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql'
-#
 
-FROM arch:1606
+FROM arch:1607
 MAINTAINER shmilee <shmilee.zju@gmail.com>
 
 ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 CGIT_CONFIG=/srv/etc/cgitrc NBVIEWER_THREADS=2
 
-ADD ./supervisor_init.sh /usr/bin/supervisor_init.sh
-RUN echo "==> tini supervisor nginx php cgit fcgi ssh mariadb ..." && \
-    packages=(tini supervisor iproute2 \
-        mynginx \
+ADD ./monit_init.sh /usr/bin/monit_init.sh
+RUN echo "==> tini monit nginx mariadb php cgit fcgi ssh ..." \
+    && packages=(tini monit iproute2 \
+        mynginx mariadb \
         php-fpm php-intl php-mcrypt php-gd php-sqlite php-imap php-apcu php-memcached \
-        cgit spawn-fcgi fcgiwrap python-docutils python-pygments python-markdown\
-        openssh \
-        mariadb) && \
-    pacman -Syu --noconfirm ${packages[@]} && \
-    echo "==> php default configure" && \
-    sed -i -e 's/^display_errors = Off/display_errors = On/' \
+        cgit spawn-fcgi fcgiwrap python-docutils python-pygments python-markdown \
+        openssh) \
+    && pacman -Syu --noconfirm ${packages[@]} \
+    && echo "==> php default configure" \
+    && sed -i -e 's/^display_errors = Off/display_errors = On/' \
         -e 's/^post_max_size =.*/post_max_size = 30M/' \
         -e 's/upload_max_filesize =.*/upload_max_filesize = 30M/' \
-        -e 's|^;date.timezone =.*|date.timezone = Asia/Shanghai|' /etc/php/php.ini && \
-    sed -i 's|^;error_log = log.*$|error_log = /srv/log/php-fpm.log|' /etc/php/php-fpm.conf && \
-    echo "==> jupyter/nbviewer requirements ..." && \
-    useradd -m -g users -G wheel -s /bin/bash -u 1000 shmilee && \
-    packages=(python-pip \
+        -e 's|^;date.timezone =.*|date.timezone = Asia/Shanghai|' /etc/php/php.ini \
+    && echo "==> jupyter/nbviewer requirements ..." \
+    && useradd -m -g users -G wheel -s /bin/bash -u 1000 nbviewer \
+    && packages=(python-pip \
         jupyter \
         jupyter-nbconvert \
         python-future \
         python-markdown \
         python-pycurl \
         python-tornado \
-        mathjax) && \
-    pacman -S --noconfirm --needed ${packages[@]} && \
-    PP_index='https://pypi.tuna.tsinghua.edu.cn/simple' && \
-    echo PP_index='https://pypi.python.org/simple' && \
-    commit='0bf9258c078c4b09eec914172d10524e644cdb4e' && \
-    curl -O https://raw.githubusercontent.com/jupyter/nbviewer/${commit}/requirements.txt && \
-    sed -i -e '/pylibmc/d' requirements.txt && \
-    pip install -i "$PP_index" -r requirements.txt && \
-    mv requirements.txt /srv/nbviewer-${commit:0:7}-requirements.txt && \
-    echo "==> clean ..." && \
-    find /usr/lib/python2* \
+        python-urllib3 \
+        mathjax) \
+    && pacman -S --noconfirm --needed ${packages[@]} \
+    && PP_index='https://pypi.tuna.tsinghua.edu.cn/simple' \
+    && commit='0bf9258c078c4b09eec914172d10524e644cdb4e' \
+    && curl -O https://raw.githubusercontent.com/jupyter/nbviewer/${commit}/requirements.txt \
+    && sed -i -e '/pylibmc/d' requirements.txt \
+    && pip install -i "$PP_index" -r requirements.txt \
+    && mv requirements.txt /srv/nbviewer-${commit:0:7}-requirements.txt \
+    && echo "==> clean ..." \
+    && find /usr/lib/python2* \
 		    \( -type d -a -name test -o -name tests \) \
 		    -exec rm -rf '{}' + ; \
-    rm -rf /usr/share/{man/*,doc/*,gtk-doc/,info/} /{root/,tmp/} && \
-    install -dm777 /{root,tmp} && \
-    rm -r /var/cache/pacman/pkg/* && \
-    rm -r /var/lib/pacman/sync/* && \
-    chmod +x /usr/bin/supervisor_init.sh
+    rm -rf /usr/share/{man/*,doc/*,gtk-doc/,info/} /{root/,tmp/} \
+    && install -dm777 /{root,tmp} \
+    && rm -r /var/cache/pacman/pkg/* \
+    && rm -r /var/lib/pacman/sync/* \
+    && chmod +x /usr/bin/monit_init.sh
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["supervisor_init.sh", "5"]
+CMD ["monit_init.sh", "5"]
