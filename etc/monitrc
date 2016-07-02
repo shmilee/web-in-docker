@@ -18,6 +18,22 @@ set httpd port 2812
     allow 127.0.0.1
     allow admin:'password' read-only
 
+set mailserver smtp.server.domain port 465
+    username "sendID@send.server.domain" password "password"
+    using tlsv1
+    with timeout 30 seconds
+
+set mail-format {
+      from: monit <sendID@send.server.domain>
+   subject: $SERVICE $EVENT at $DATE
+   message: Monit $ACTION $SERVICE at $DATE on $HOST:
+            $DESCRIPTION.
+            Yours sincerely,
+            monit
+}
+
+set alert receiveID@receive.server.domain
+
 
 ###############################################################################
 ## Services
