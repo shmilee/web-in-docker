@@ -16,7 +16,7 @@ if (!empty($_FILES) && $_POST['token'] == $verifyToken) {
 	$targetFile = rtrim($targetPath,'/') . '/' . date("mdHi-") . $_FILES['Filedata']['name'];
 	
 	// Validate the file type
-	$fileTypes = array('jpg','jpeg','gif','png','rar','zip','gzip','7z','mp3','txt','pdf','doc','docx','ppt','pptx','xls','xlsx'); // File extensions
+	$fileTypes = array('jpg','gif','png','rar','zip','gzip','gz','7z','mp3','txt','pdf','doc','docx','ppt','pptx'); // File extensions
 	$fileParts = pathinfo($_FILES['Filedata']['name']);
 	
 	if (in_array($fileParts['extension'],$fileTypes)) {
