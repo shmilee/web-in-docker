@@ -15,8 +15,10 @@ set eventqueue
     basedir /run/monit  # base directory where events will be stored
 
 set httpd port 2812
+    use address 127.0.0.1
     allow 127.0.0.1
-    allow admin:'password' read-only
+    allow admin:'adminpassword'
+    allow user:'userpassword' read-only
 
 set mailserver smtp.server.domain port 465
     username "sendID@send.server.domain" password "password"
