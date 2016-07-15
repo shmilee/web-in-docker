@@ -34,7 +34,7 @@ set mail-format {
             monit
 }
 
-set alert receiveID@receive.server.domain
+set alert receiveID@receive.server.domain but not on { instance, nonexist }
 
 
 ###############################################################################
@@ -59,7 +59,7 @@ check process nginx with pidfile /run/nginx.pid
     stop program  = "/bin/killall nginx"
     if failed host 192.168.5.126 port 80 protocol http
         with timeout 10 seconds then restart
-    if 3 restarts within 5 cycles then timeout
+    if 3 restarts within 3 cycles then alert
     group webserver
 
 check process php-fpm with pidfile /run/php-fpm/php-fpm.pid
@@ -68,14 +68,14 @@ check process php-fpm with pidfile /run/php-fpm/php-fpm.pid
     stop program  = "/bin/killall php-fpm"
     if cpu usage > 80% for 5 cycles then restart
     if loadavg(5min) > 4 then restart
-    if 3 restarts within 5 cycles then timeout
+    if 3 restarts within 3 cycles then alert
     group webserver
 
 check process fcgiwrap with pidfile /run/fcgiwrap.pid
     start program = "/bin/spawn-fcgi -u http -s /run/fcgiwrap.sock -P /run/fcgiwrap.pid /bin/fcgiwrap"
         with timeout 10 seconds
     stop program = "/bin/killall fcgiwrap"
-    if 3 restarts within 5 cycles then timeout
+    if 3 restarts within 3 cycles then alert
     group webserver
 
 check process nbviewer with matching "python -m nbviewer"
@@ -84,7 +84,7 @@ check process nbviewer with matching "python -m nbviewer"
         as uid nbviewer and gid users
         with timeout 10 seconds
     stop program = "/bin/killall python"
-    if 3 restarts within 5 cycles then timeout
+    if 3 restarts within 3 cycles then alert
     group webserver
 
 #check process mysql with pidfile /run/mysqld/mysqld.pid
@@ -94,7 +94,7 @@ check process nbviewer with matching "python -m nbviewer"
 #    stop program  = "/bin/mysqladmin shutdown -uroot -hlocalhost -ppassword"
 #    if failed port 3306 protocol mysql
 #        with timeout 10 seconds then restart
-#    if 3 restarts within 5 cycles then timeout
+#    if 3 restarts within 3 cycles then alert
 #    group database
 
 check file server_key with path /srv/etc/server-shmilee.key
