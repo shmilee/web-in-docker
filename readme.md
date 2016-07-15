@@ -3,7 +3,7 @@ Status preview
 
 Monit's web interface:
 
-![monit](https://raw.githubusercontent.com/shmilee/web-in-docker/master/monit-works.png)
+![monit](monit-works.png)
 
 ```
 $ docker exec -t mynginx_server ps aux
