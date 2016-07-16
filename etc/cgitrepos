@@ -46,15 +46,9 @@ section=web
   repo.owner=shmilee.zju@gmail.com
   repo.clone-url=https://github.com/shmilee/blog.git
 
-  repo.url=website
-  repo.path=/srv/project/website/.git
-  repo.desc=web site toy
-  repo.owner=shmilee.zju@gmail.com
-  repo.clone-url=https://github.com/shmilee/website.git
-
   repo.url=web-in-docker
   repo.path=/srv/project/web-in-docker/.git
-  repo.desc=nginx+php+cgit+nbviewer
+  repo.desc=monit+nginx+mysql+php+cgit+nbviewer+jupyterhub
   repo.owner=shmilee.zju@gmail.com
   repo.clone-url=https://github.com/shmilee/web-in-docker.git
 
@@ -78,3 +72,24 @@ section=tool
   repo.owner=shmilee.zju@gmail.com
   repo.clone-url=https://github.com/shmilee/vpn4zju.git
 
+  repo.url=BMUDv2
+  repo.path=/srv/project/BMUDv2/.git
+  repo.desc=Bootable Maintenance USB Drive 
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/BMUDv2.git
+
+section=android
+
+  repo.url=android-cli-openssh
+  repo.path=/srv/project/android-cli-openssh/.git
+  repo.desc=android command line openssh, upstream:CyanogenMod
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/android-cli-openssh.git
+
+section=Hackintosh
+
+  repo.url=T450-Hackintosh
+  repo.path=/srv/project/T450-Hackintosh/.git
+  repo.desc=Install Hackintosh on Thinkpad T450
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/T450-Hackintosh.git
