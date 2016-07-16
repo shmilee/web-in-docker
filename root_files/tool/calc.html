@@ -1,63 +1,53 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="author" content="shmilee">
 <title>Tools</title>
-<script src="../js/jquery-1.8.3.min.js" type="text/javascript"></script>
-<!--uploadify /*{{{*/ -->
-<link rel="stylesheet" type="text/css" href="uploadify/uploadify.css">
-<script src="uploadify/jquery.uploadify.min.js" type="text/javascript"></script>
-<script type="text/javascript">
-    <?php $timestamp = time();?>
-    $(function() {
-        $('#file_upload').uploadify({
-            auto       : false,
-            buttonText : '添加文件 ...',
-            formData   : {
-                'timestamp' : '<?php echo $timestamp;?>',
-                'token'     : '<?php echo md5('unique_salt' . $timestamp);?>'
-            },
-			swf           : 'uploadify/uploadify.swf',
-            uploader      : 'uploadify/uploadify.php',
-            height        : 30,
-            width         : 100,
-            checkExisting : 'uploadify/check-exists.php',
-            fileSizeLimit : '25MB',
-            fileTypeExts  : '*.jpg; *.jpeg; *.gif; *.png; *.rar; *.zip; *.gzip; *.7z; *.mp3; *.txt; *.pdf; *.doc; *.docx; *.ppt; *.pptx; *.xls; *.xlsx',
-            onUploadError : function(file, errorCode, errorMsg, errorString) {
-                alert(file.name + '无法上传:' + errorString);
-            },
-            onQueueComplete : function(queueData) {
-                alert(queueData.uploadsSuccessful + '个文件上传成功.');
-            }
+<link rel="stylesheet" href="/css/bootstrap-3.3.6.min.css">
+<link rel="stylesheet" href="/css/bootstrap-theme.css">
+<script type="text/javascript" src="/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap-3.3.6.min.js"></script>
+<script>
+    $(function(){
+        $("#navbarwrap").load("navbarwrap.html");
+        $("#footerwrap").load("footerwrap.html");
+        $("#toolnav").load("toolnav.html", null, function(){
+            $("#calc").addClass("active");
+        });
+        $("#toolselect").load("toolselect.html", null, function(){
+            $("#tool-select").val("calc.html");
         });
     });
 </script>
-<!-- end /*}}}*/ -->
-<script src="calc.js" type="text/javascript"></script>
+<script type="text/javascript" src="calc.js"></script>
 <style type="text/css">
-body {
+#calc-content {
     font: 13px Arial, Helvetica, Sans-serif;
     background-color: #d4d4d4;
     color: #0001fC;
-    background-attachment: #000000;
 }
 td {
     font-size: 12px;
-    font-color:#000000;
 }
 </style>
 </head>
 <body>
-<div id="uploadify">
-    <h2>上传到<a href="/upload">upload  </a><a class="uploadify-button" href="javascript:$('#file_upload').uploadify('upload','*')">开始</a></h2>
-    <div id="queue"></div>
-    <input id="file_upload" name="file_upload" type="file" multiple="true">
-</div>
+
+<div id="navbarwrap" class="navbar navbar-default" role="navigation"></div>
+
+<div id="tool-page">
+    <div class="container">
+        <div class="row">
+            <div id="toolnav" class="col-sm-2 hidden-xs"></div>
+            <div id="toolselect" class="col-sm-10 visible-xs"></div>
+            <div class="col-sm-10">
+
 <!--科学计算器 /*{{{*/ -->
 <div align="center">
 <form name=calc>
-<table border="1" width="500" height="250">
+<table id="calc-content" border="1" width="500" height="250">
 <tr>
 <td height=50>
 <table width=500>
@@ -371,5 +361,14 @@ onClick="inputkey('f')" style="color=blue" disabled=true>
 </form>
 </div>
 <!-- end /*}}}*/ -->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="footerwrap"></div>
+
 </body>
 </html>
+

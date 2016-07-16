@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="author" content="shmilee">
+<title>Tools</title>
+<link rel="stylesheet" href="/css/bootstrap-3.3.6.min.css">
+<link rel="stylesheet" href="/css/bootstrap-theme.css">
+<script type="text/javascript" src="/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap-3.3.6.min.js"></script>
+<script>
+    $(function(){
+        $("#navbarwrap").load("navbarwrap.html");
+        $("#footerwrap").load("footerwrap.html");
+        $("#toolnav").load("toolnav.html", null, function(){
+            $("#archrepo").addClass("active");
+        });
+        $("#toolselect").load("toolselect.html", null, function(){
+            $("#tool-select").val("archrepo.html");
+        });
+    });
+    $(document).ready(function() {
+        $("#myip").replaceWith(window.location.hostname);
+    });
+</script>
+</head>
+<body>
+
+<div id="navbarwrap" class="navbar navbar-default" role="navigation"></div>
+
+<div id="tool-page">
+    <div class="container">
+        <div class="row">
+            <div id="toolnav" class="col-sm-2 hidden-xs"></div>
+            <div id="toolselect" class="col-sm-10 visible-xs"></div>
+            <div class="col-sm-10">
+
+<h3>Archlinux 个人软件源使用帮助</h3>
+<hr />
+<div id="mirror-data">
+    <h4>简介</h4>
+    <p>支持架构: i686 x86_64</p>
+    <p>收录软件: <a href="/repo-shmilee/pool/packages/">点击查看</a></p>
+    <p>更新历史: 请查看<a href="/repo-shmilee/shmilee.log">shmilee.log</a>文件</p>
+</div>
+<div id="mirror-usage">
+    <h4>使用说明</h4>
+    <p>1. 以 x86_64 为例, 编辑 /etc/pacman.conf, 在文件最后添加以下条目(操作前请做好相应备份)。</p>
+    <pre>[shmilee]
+Server = http://<span id="myip">#MyIP#</span>/repo-shmilee/os/x86_64</pre>
+    <p>2. 添加密钥。</p>
+    <p>密钥 id = E2054497 </p>
+    <p>密钥指纹 = 4B51 EF5E C19C 52C4 6100  8E3A 0109 BD10 E205 4497 </p>
+    <pre># pacman-key -r E2054497
+# pacman-key -f E2054497 # verify the fingerprint
+# pacman-key --lsign-key E2054497</pre>
+</div>
+<div id="mirror-links">
+    <h4>相关链接</h4>
+    <ul>
+        <li>AUR主页: <a href="http://aur.archlinux.org/" target="_blank">http://aur.archlinux.org/</a></li>
+        <li>论坛: <a href="http://bbs.archlinux.org/" target="_blank">http://bbs.archlinux.org/</a></li>
+        <li>Wiki: <a href="http://wiki.archlinux.org/" target="_blank">http://wiki.archlinux.org/</a></li>
+    </ul>
+</div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="footerwrap"></div>
+
+</body>
+</html>
+
