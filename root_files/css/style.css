@@ -21,7 +21,7 @@ body {
 #dial {
   width: 200px;
   height: 200px;
-  background: url(images/clockface.png ) no-repeat;
+  background: url(../images/clockface.png ) no-repeat;
   list-style: none;
 }
 #sec, #min, #hour {
@@ -32,15 +32,15 @@ body {
   left: 95px;
 }
 #sec {
-  background: url(images/sechand.png);
+  background: url(../images/sechand.png);
   z-index: 3;
 }
 #min {
-  background: url(images/minhand.png);
+  background: url(../images/minhand.png);
   z-index: 2;
 }
 #hour {
-  background: url(images/hourhand.png);
+  background: url(../images/hourhand.png);
   z-index: 1;
 }
 #date {
