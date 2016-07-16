@@ -39,7 +39,7 @@ cat > ./nblist.html <<'EOF'
     padding-bottom: 3px;
     }
 </style>
-<script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         $.each($("#data ul li a"),function(i,n){

@@ -1,7 +1,7 @@
 
 <!--uploadify -->
 <link rel="stylesheet" type="text/css" href="/upload/uploadify/uploadify.css">
-<script src="/js/jquery-1.8.3.min.js" type="text/javascript"></script>
+<script src="/js/jquery-1.12.4.min.js" type="text/javascript"></script>
 <script src="/upload/uploadify/jquery.uploadify.min.js" type="text/javascript"></script>
 <hr />
 <div id="uploadify">
