@@ -1,9 +1,16 @@
 #!/bin/bash
+count=$(echo "$@" | grep '|' -o | wc -l)
+((count++))
+i=1
 for ip in `echo "$@" | sed 's/|/ /g'`; do
-    ping -c 5 $ip && echo $ip >> ip.list
+    echo "##### $((i++)) / $count #####"
+    ping -c 2 $ip && echo $ip >> ip.list
 done
 
-for ip in `cat ip.list`; do
+count=$(sort ip.list | uniq | wc -l)
+i=1
+for ip in `sort ip.list | uniq`; do
+    echo "##### $((i++)) / $count #####"
     (echo -n $ip": "
     ping -c 5 $ip | awk '/rtt/{print $4}
 /transmitted/ {printf $6 }' | sed 's/%/% /;s/\// /g') >> ip.test
