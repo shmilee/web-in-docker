@@ -21,6 +21,7 @@ ExecStart=/usr/bin/docker run --rm -p 80:80 -p 443:443 \
     -v ${WebData}/project:/srv/project:ro \
     -v ${WebData}/repo-shmilee:/srv/repo-shmilee:ro \
     -v /home/IFTS_shmilee:/srv/http/upload/IFTS_shmilee:ro \
+    -v /home/VideoData:/srv/http/videos:ro \
     --name mynginx_server nginx:using \
     monit_init.sh 5 /srv/etc/monitrc /srv/etc/hook-fix-cgit.sh
 ExecStop=/usr/bin/docker stop -t 2 mynginx_server
