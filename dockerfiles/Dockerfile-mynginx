@@ -15,7 +15,7 @@
 #   -v $PWD/log:/srv/log:rw mynginx:$(date +%y%m%d)
 #
 
-FROM arch:1607
+FROM arch:1609
 MAINTAINER shmilee <shmilee.zju@gmail.com>
 
 ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 CGIT_CONFIG=/srv/etc/cgitrc NBVIEWER_THREADS=2
@@ -52,7 +52,7 @@ RUN echo "==> tini monit nginx mariadb php cgit fcgi ssh ..." \
     && pip install -i "$PP_index" -r requirements.txt \
     && mv requirements.txt /srv/nbviewer-${commit:0:7}-requirements.txt \
     && echo "==> clean ..." \
-    && find /usr/lib/python2* \
+    && find /usr/lib/python3* \
 		    \( -type d -a -name test -o -name tests \) \
 		    -exec rm -rf '{}' + ; \
     rm -rf /usr/share/{man/*,doc/*,gtk-doc/,info/} /{root/,tmp/} \

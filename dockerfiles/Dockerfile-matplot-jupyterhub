@@ -6,7 +6,7 @@
 # configfile: $PWD/jupyterhub/jupyterhub_config.py
 #
 
-FROM arch:1607
+FROM arch:1609
 MAINTAINER shmilee <shmilee.zju@gmail.com>
 
 ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8

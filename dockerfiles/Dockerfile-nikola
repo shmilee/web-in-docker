@@ -2,11 +2,11 @@
 # select pypi-index-url $PP_index
 # docker build --force-rm --no-cache --rm -f Dockerfile-nikola -t nikola:$nkl_Ver .
 # docker run -u 1000 --rm -p 8000:8000 -v $(pwd):/blog -w /blog -t -i nikola:$nkl_Ver /usr/bin/bash
-FROM arch:1607
+FROM arch:1609
 MAINTAINER shmilee <shmilee.zju@gmail.com>
 
 ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
-RUN nkl_Ver=7.7.9 && \
+RUN nkl_Ver=7.8.0 && \
     packages=(python-pip \
         python-pygments \
         python-pillow \
