@@ -65,10 +65,11 @@ for dir in *; do
 </div>
 EOF
     echo -e "<div>\n    <ul>" >> $index
+    dir2=$(echo $dir|sed -e 's/\[/\\\[/g' -e 's/\]/\\\]/g')
     find "$dir" -type f \
         \( -name '*.mp4' -o -name '*.mkv' -o -name '*.srt' -o -name '*.ass' \) \
         -exec echo "    <li><a href=\""{}"\">"{}"</a></li>" \; \
-        | sort >> $index
+        | sed "s/\">$dir2\//\">/g" | sort -n -t'>' -k3 >> $index
     echo -e "    </ul>\n</div>\n" >> $index
 done
 
