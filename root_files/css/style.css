@@ -98,8 +98,8 @@ ul.navigation li a {
   font-size: 15px;
   color: #000000;
   text-decoration: none;
-  padding: 5px 0px;
+  padding: 5px 0px 5px 15px;
 }
 ul.navigation li a:hover {
-  background: url(images/arrow.png) no-repeat right center;
+  background: url(../images/arrow.png) no-repeat left center;
 }
