@@ -97,7 +97,7 @@ check process nbviewer with matching "python -m nbviewer"
 #    if 3 restarts within 3 cycles then alert
 #    group database
 
-check file server_key with path /srv/etc/server-shmilee.key
+check file server_key with path /srv/etc/ssl-certs/server-shmilee.key
     if failed permission 0400 then alert
 
 check file shadow with path /etc/shadow
