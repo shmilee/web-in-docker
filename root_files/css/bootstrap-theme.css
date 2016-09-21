@@ -135,6 +135,14 @@ BOOTSTRAP MODIFICATIONS & TWEAKS
   margin-top: 40px;
   margin-bottom: 40px; }
 
+/* list-group-item */
+a.list-group-item:focus, a.list-group-item:hover {
+  color: #C90000;
+  text-decoration: none;
+  background-color: #b6b6b6; }
+.panel > .list-group .list-group-item {
+  border-radius: 10px; }
+
 /* Footer */
 #footerwrap {
   color: #bfc9d3;
