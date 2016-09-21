@@ -58,7 +58,7 @@ find "$video_dir" -maxdepth 1 -type f \
     -exec echo "    <a class=\"list-group-item\" href=\""{}"\">"{}"</a>" \; \
     | sed -e "s|\">$video_dir2/|\">|g" \
           -e "s|href=\"$video_dir2|href=\"$url_dir|g" \
-    | sort -n -t'>' -k3 >> $index
+    | sort -n -t'>' -k2 >> $index
 echo -e "    </div>\n</div>\n" >> $index
 
 # 2 - dir
@@ -80,7 +80,7 @@ EOF
         -exec echo "    <a class="list-group-item" href=\""{}"\">"{}"</a>" \; \
         | sed -e "s|\">$dir3/|\">|g" \
               -e "s|href=\"$dir3|href=\"$url_dir/$dir2|g" \
-        | sort -n -t'>' -k3 >> $index
+        | sort -n -t'>' -k2 >> $index
     echo -e "    </div>\n</div>\n" >> $index
 done
 
