@@ -56,7 +56,7 @@ check filesystem srv with path /srv
 check process nginx with pidfile /run/nginx.pid
     start program = "/bin/nginx -c /srv/etc/nginx.conf"
         with timeout 10 seconds
-    stop program  = "/bin/killall nginx"
+    stop program  = "/bin/nginx -c /srv/etc/nginx.conf -s quit"
     if failed host 192.168.5.126 port 80 protocol http
         with timeout 10 seconds then restart
     if 3 restarts within 3 cycles then alert
