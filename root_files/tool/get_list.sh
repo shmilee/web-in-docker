@@ -1,9 +1,10 @@
 #!/usr/bin/bash
 depends=(grep sed findutils coreutils
          jupyter-nbconvert # for notebook
+         pandoc # for sitelist
         )
 
-casetype=${1:-'video'} #'notebook'
+casetype=${1:-'video'} #'notebook' 'site'
 if [[ $casetype == 'video' ]]; then
     source_dir=${2:-/home/VideoData}
     deploy_dir=${3:-/home/WebData/root_files/videos} # mount volume
@@ -16,6 +17,10 @@ elif [[ $casetype == 'notebook' ]]; then
     url_path=${4:-/notebooks}  # root_files/notebooks/
     index=${5:-nblist}    # root_files/tool/nblist.html
     head_name='Jupyter Notebook list'
+elif [[ $casetype == 'site' ]]; then
+    source_file=${2:-./sitelist.md}
+    index=${3:-sitelist} #root_files/tool/sitelist.html
+    head_name='Some Sites'
 fi
 
 # 1 head
@@ -65,7 +70,7 @@ cat >> ./${index}.html <<EOF
 <div id='content'>
 <ul class="list-group">
 EOF
-echo $source_dir
+echo $source_dir $source_file
 if [[ $casetype == 'video' ]]; then
     source_dir2=$(echo $source_dir | sed -e 's/\[/\\\[/g' -e 's/\]/\\\]/g')
     find "$source_dir" -maxdepth 1 -type f \
@@ -96,7 +101,17 @@ elif [[ $casetype == 'notebook' ]]; then
         dir2=$(basename "$dir")
         echo "    <a class=list-group-item href=\"#$dir2\"><span class = \"glyphicon glyphicon-folder-open\"></span> $dir2/</a>" >> ./${index}.html
     done
-
+elif [[ $casetype == 'site' ]]; then
+    cat >> ./${index}.html <<EOF
+<style type="text/css">
+    ul {padding-left: 3em;}
+    h3 {margin-top: 40px;}
+    h4 {margin-top: 30px;}
+</style>
+EOF
+    sed 's/\([1-9]\. .*\[.*\](.*)\)/\1{.list-group-item target="_blank"}/' $source_file \
+        | pandoc -N --base-header-level=1 --number-offset=0 \
+        | sed -e 's/h1/h3/g' -e 's/h2/h4/g' >> ./${index}.html
 fi
 echo -e "</ul>\n</div>\n" >> ./${index}.html
 
