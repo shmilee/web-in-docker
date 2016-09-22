@@ -78,14 +78,14 @@ check process fcgiwrap with pidfile /run/fcgiwrap.pid
     if 3 restarts within 3 cycles then alert
     group webserver
 
-check process nbviewer with matching "python -m nbviewer"
-    start program = "/bin/bash -c 'cd /srv/http;nohup python -m nbviewer --port=8080 \
-        --no-cache --mathjax_url=/static/mathjax/ --localfiles=./upload/IFTS_shmilee/notebook/ &'"
-        as uid nbviewer and gid users
-        with timeout 10 seconds
-    stop program = "/bin/killall python"
-    if 3 restarts within 3 cycles then alert
-    group webserver
+#check process nbviewer with matching "python -m nbviewer"
+#    start program = "/bin/bash -c 'cd /srv/http;nohup python -m nbviewer --port=8080 \
+#        --no-cache --mathjax_url=/static/mathjax/ --localfiles=./upload/IFTS_shmilee/notebook/ &'"
+#        as uid nbviewer and gid users
+#        with timeout 10 seconds
+#    stop program = "/bin/killall python"
+#    if 3 restarts within 3 cycles then alert
+#    group webserver
 
 #check process mysql with pidfile /run/mysqld/mysqld.pid
 #    start program = "/bin/mysqld_safe --pid-file=/run/mysqld/mysqld.pid"
