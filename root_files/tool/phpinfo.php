@@ -38,7 +38,7 @@
 #phpinfo pre {margin: 0; font-family: monospace;}
 #phpinfo a:link {color: #009; text-decoration: none; background-color: #fff;}
 #phpinfo a:hover {text-decoration: underline;}
-#phpinfo table {border-collapse: collapse; border: 0; width: 934px; box-shadow: 1px 2px 3px #ccc;}
+#phpinfo table {border-collapse: collapse; border: 0; width: 900px; box-shadow: 1px 2px 3px #ccc;}
 #phpinfo .center {text-align: center;}
 #phpinfo .center table {margin: 1em auto; text-align: left;}
 #phpinfo .center th {text-align: center !important;}
@@ -70,6 +70,7 @@ echo $pinfo;
 </div>
 
 <div id="footerwrap"></div>
+<script type="text/javascript" src="footerfix.js"></script>
 
 </body>
 </html>

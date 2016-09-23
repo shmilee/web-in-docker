@@ -182,6 +182,7 @@ cat >> ./${index}.html <<EOF
 </div>
 
 <div id="footerwrap"></div>
+<script type="text/javascript" src="footerfix.js"></script>
 
 </body>
 </html>
