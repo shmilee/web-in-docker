@@ -16,6 +16,7 @@ SyslogIdentifier=matplothub
 Environment='WebData=/home/WebData'
 ExecStart=/usr/bin/docker run --rm -p 8888:8000 \
     -v ${WebData}/jupyterhub:/srv/jupyterhub \
+    -v /home/shmilee/.local/matlab2010a:/opt/matlab \
     --name matplothub_server matplothub:using
 ExecStop=/usr/bin/docker stop -t 5 matplothub_server
 ExecStop=/usr/bin/docker rm matplothub_server
