@@ -23,13 +23,6 @@ if [[ x$ANSW == xy ]]; then
     docker rm $container_id
 fi
 
-echo "==> build nbviewer ..."
-nbviewer_commit=$(sed -n "/^nbviewer_commit=/ s/.*_commit='\(.*\)'/\1/ p" readme.md)
-if [ ! -f ./build_nbviewer/nbviewer-${nbviewer_commit:0:7}.tar.gz ]; then
-    sh ./build_nbviewer.sh ${nbviewer_commit}
-fi
-tar zxf ./build_nbviewer/nbviewer-${nbviewer_commit:0:7}.tar.gz -C deploy/root_files/
-
 echo "==> log dir ..."
 mkdir deploy/log
 
