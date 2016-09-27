@@ -65,7 +65,7 @@ check process nginx with pidfile /run/nginx.pid
 check process php-fpm with pidfile /run/php-fpm/php-fpm.pid
     start program = "/bin/php-fpm -c /srv/etc/php.ini -y /srv/etc/php-fpm.conf"
         with timeout 10 seconds
-    stop program  = "/bin/killall php-fpm"
+    stop program  = "/bin/bash -c 'kill -s SIGTERM `cat /run/php-fpm/php-fpm.pid`'"
     if cpu usage > 80% for 5 cycles then restart
     if loadavg(5min) > 4 then restart
     if 3 restarts within 3 cycles then alert
@@ -74,14 +74,14 @@ check process php-fpm with pidfile /run/php-fpm/php-fpm.pid
 check process fcgiwrap with pidfile /run/fcgiwrap.pid
     start program = "/bin/spawn-fcgi -u http -s /run/fcgiwrap.sock -P /run/fcgiwrap.pid /bin/fcgiwrap"
         with timeout 10 seconds
-    stop program = "/bin/killall fcgiwrap"
+    stop program = "/bin/bash -c 'kill -s SIGTERM `cat /run/fcgiwrap.pid`'"
     if 3 restarts within 3 cycles then alert
     group webserver
 
 #check process nbviewer with matching "python -m nbviewer"
 #    start program = "/bin/bash -c 'cd /srv/http;nohup python -m nbviewer --port=8080 \
 #        --no-cache --mathjax_url=/static/mathjax/ --localfiles=./upload/IFTS_shmilee/notebook/ &'"
-#        as uid nbviewer and gid users
+#        as uid "nbviewer" and gid "users"
 #        with timeout 10 seconds
 #    stop program = "/bin/killall python"
 #    if 3 restarts within 3 cycles then alert
@@ -89,9 +89,10 @@ check process fcgiwrap with pidfile /run/fcgiwrap.pid
 
 #check process mysql with pidfile /run/mysqld/mysqld.pid
 #    start program = "/bin/mysqld_safe --pid-file=/run/mysqld/mysqld.pid"
-#        as uid mysql and gid mysql
+#        as uid "mysql" and gid "mysql"
 #        with timeout 10 seconds
-#    stop program  = "/bin/mysqladmin shutdown -uroot -hlocalhost -ppassword"
+#    stop program = "/bin/bash -c 'kill -s SIGTERM `cat /run/mysqld/mysqld.pid`'"
+#    #stop program = "/bin/mysqladmin shutdown -uroot -hlocalhost -ppassword"
 #    if failed port 3306 protocol mysql
 #        with timeout 10 seconds then restart
 #    if 3 restarts within 3 cycles then alert
