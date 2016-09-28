@@ -37,8 +37,9 @@ RUN PP_index='https://pypi.tuna.tsinghua.edu.cn/simple' && \
     gem sources --add https://ruby.taobao.org/ --remove https://rubygems.org/ && \
     gem install --no-user-install rbczmq iruby -- --with-system-libs && \
     echo "==> add matlab kernel ..." && \
-    pacman -Sy --noconfirm jupyter-metakernel jupyter-matlab_kernel-git \
-                ncurses5-compat-libs libxpm libxmu libxp && \
+    pacman -Sy --noconfirm ncurses5-compat-libs libxpm libxmu libxp libxrandr && \
+    pip3 install -i "$PP_index" metakernel pymatbridge matlab_kernel && \
+    python3 -m matlab_kernel install && \
     echo "==> clean ..." && \
     pacman -Rsn --noconfirm gcc npm make && \
     find /usr/lib/python3* \
