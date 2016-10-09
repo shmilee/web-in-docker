@@ -93,7 +93,7 @@ elif [[ $casetype == 'notebook' ]]; then
               -e "s|href=\"${source_dir}\(.*\.\)ipynb\(\" target=\)|href=\"${url_path}\1html\2|g" \
         | sort -n -t'>' -k4 >> ./${index}.html
     find "$source_dir" -maxdepth 1 -type f -name '*.ipynb' \
-        -exec jupyter-nbconvert {} --output-dir $deploy_dir \;
+        -exec jupyter-nbconvert "{}" --output-dir "$deploy_dir" \;
     for dir in $source_dir/*; do
         [ ! -d "$dir" ] && continue
         testdir=$(find "$dir" -type f -name '*.ipynb')
@@ -155,8 +155,14 @@ EOF
             | sed -e "s|\">$dir3/|\"><span class = \"glyphicon glyphicon-file\"></span> |g" \
                   -e "s|href=\"${dir3}\(.*\.\)ipynb\(\" target=\)|href=\"$url_path/$dir2\1html\2|g" \
             | sort -n -t'>' -k4 >> ./${index}.html
-        find "$dir" -not -path "*.ipynb_checkpoints*" -type f -name '*.ipynb' \
-            -exec jupyter-nbconvert {} --output-dir $deploy_dir/$dir2 \;
+        find "$dir" -not -path "*.ipynb_checkpoints*" -type f -name '*.ipynb' -print0 \
+            | while read -d $'\0' file
+              do
+                  dir4=$(dirname "$file" | sed "s|^$dir3||")
+                  #echo "-v $file"
+                  #echo "-vv $deploy_dir/$dir2$dir4"
+                  jupyter-nbconvert "$file" --output-dir "$deploy_dir/$dir2$dir4"
+              done
         echo -e "    </div>\n</div>\n" >> ./${index}.html
     done
 fi
@@ -177,7 +183,7 @@ elif [[ $casetype == 'notebook' ]]; then
         -e 's|\(<script src="\)http..*jquery.min.js\("></script>\)|\1/js/jquery-1.12.4.min.js\2|g' \
         -e 's|\(<script src="\)https.*/latest/\(MathJax.js.*".*$\)|\1/js/mathjax/\2|g' \
         -e 's|../components/bootstrap\(/fonts/glyphicons-halflings\)|\1|g' \
-        -i {} \;
+        -i "{}" \;
     # ignore FontAwesome
     # -e 's|../components/font-awesome\(/fonts/fontawesome-webfont\)|\1|g' \
 fi
