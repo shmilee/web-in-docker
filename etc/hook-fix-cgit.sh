@@ -32,3 +32,24 @@ sys.stdout.flush()
 markdown.markdownFromFile(output_format="html5", extensions=["markdown.extensions.fenced_code", "markdown.extensions.codehilite", "markdown.extensions.tables"], extension_configs={"markdown.extensions.codehilite":{"css_class":"highlight"}})
 sys.stdout.write("</div>")
 EOF
+
+## modify css
+cat >> /usr/share/webapps/cgit/cgit.css <<EOF
+/* add css */
+/* disable table.diff wrap
+div#cgit table.diff td{
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+div#cgit table.ssdiff td.lineno {
+    vertical-align: top;
+}
+*/
+
+div#cgit table.ssdiff td {
+    font-size: 10pt;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    vertical-align: top;
+}
+EOF

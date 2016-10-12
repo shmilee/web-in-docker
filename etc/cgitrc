@@ -36,6 +36,9 @@ branch-sort=age
 # Highlight source code
 source-filter=/usr/lib/cgit/filters/syntax-highlighting.py
 
+# shows side-by-side diffs instead of unidiffs per default
+side-by-side-diffs=1
+
 # Allow download of tar.gz and zip-files
 snapshots=tar.gz zip
 
