@@ -18,8 +18,10 @@ _heads_more_name="headers-more-nginx-module"
 _heads_more_ver="0.30"
 _fair_name="nginx-upstream-fair"
 _fair_ver="a18b4099fbd458111983200e098b6f0c8efed4bc"
-_sub_filter_name="ngx_http_substitutions_filter_module"
-_sub_filter_ver="bc58cb11844bc42735bbaef7085ea86ace46d05b"
+_subs_filter_name="ngx_http_substitutions_filter_module"
+_subs_filter_ver="bc58cb11844bc42735bbaef7085ea86ace46d05b"
+_replace_filter_name="replace-filter-nginx-module"
+_replace_filter_ver="07e7b013df7b7a61da4c10d631602d0f4342d107"
 _google_filter_name="ngx_http_google_filter_module"
 _google_filter_ver="0.2.0"
 _auth_pam_name="ngx_http_auth_pam_module"
@@ -43,12 +45,13 @@ pkgbase=mynginx
 pkgname=(mynginx mynginx-pagespeed)
 pkgver=${_pkgver}
 pkgrel=2
-pkgdesc='Lightweight HTTP server and IMAP/POP3 proxy server - with fancyindex, echo, headers-more, upstream-fair, sub_filter, google_filter, http_auth_pam, http-concat, naxsi, nchan, rtmp support'
+pkgdesc='Lightweight HTTP server and IMAP/POP3 proxy server - with fancyindex, echo, headers-more, upstream-fair, subs_filter, replace_filter, google_filter, http_auth_pam, http-concat, naxsi, nchan, rtmp support'
 arch=('i686' 'x86_64')
 url='http://nginx.org'
 license=('custom')
 depends=('pcre' 'zlib' 'openssl' 'geoip')
-makedepends=('hardening-wrapper')
+optdepends=('sregex: replace_filter support')
+makedepends=('hardening-wrapper' 'sregex')
 
 source=($url/download/nginx-$pkgver.tar.gz
         service
@@ -57,7 +60,8 @@ source=($url/download/nginx-$pkgver.tar.gz
         ${_echo_name}.tar.gz::https://github.com/openresty/${_echo_name}/archive/v${_echo_ver}.tar.gz
         ${_heads_more_name}.tar.gz::https://github.com/openresty/${_heads_more_name}/archive/v${_heads_more_ver}.tar.gz
         ${_fair_name}.tar.gz::https://github.com/gnosek/${_fair_name}/archive/${_fair_ver}.tar.gz
-        ${_sub_filter_name}.tar.gz::https://github.com/yaoweibin/${_sub_filter_name}/archive/${_sub_filter_ver}.tar.gz
+        ${_subs_filter_name}.tar.gz::https://github.com/yaoweibin/${_subs_filter_name}/archive/${_subs_filter_ver}.tar.gz
+        ${_replace_filter_name}.tar.gz::https://github.com/openresty/${_replace_filter_name}/archive/${_replace_filter_ver}.tar.gz
         ${_google_filter_name}.tar.gz::https://github.com/cuber/${_google_filter_name}/archive/${_google_filter_ver}.tar.gz
         ${_auth_pam_name}.tar.gz::https://github.com/stogh/${_auth_pam_name}/archive/v${_auth_pam_ver}.tar.gz
         ${_concat_name}.tar.gz::https://github.com/alibaba/${_concat_name}/archive/${_concat_ver}.tar.gz
@@ -74,6 +78,7 @@ sha256sums=('1fd35846566485e03c0e318989561c135c598323ff349c503a6c14826487a801'
             '2aad309a9313c21c7c06ee4e71a39c99d4d829e31c8b3e7d76f8c964ea8047f5'
             'c051d33a8732b671b33e0b3535e6fbbd82311c6d89532c4067b3d2ba738e1ce1'
             '8eabbcd5950fdcc718bb0ef9165206c2ed60f67cd9da553d7bc3e6fe4e338461'
+            '4bcbdbc3d0f1fe8943f6dc1df60dde405cbad67453236095faa5bd8a766d479e'
             '9cd68c8e092efb1a419e1087bb9ca23aab1ff8650c400c0aa815d461d79385de'
             '77676842919134af88a7b4bfca4470223e3a00d287d17c0dbdc9a114a685b6e7'
             'e34ef51c299bc3d662b6c74031f7ad9775d73e84cfaa4e72810959fe1760413c'
@@ -118,7 +123,8 @@ _3d_party_modules_flags=(
   --add-dynamic-module=../${_echo_name}-${_echo_ver}
   --add-dynamic-module=../${_heads_more_name}-${_heads_more_ver}
   --add-dynamic-module=../${_fair_name}-${_fair_ver}
-  --add-dynamic-module=../${_sub_filter_name}-${_sub_filter_ver}
+  --add-dynamic-module=../${_subs_filter_name}-${_subs_filter_ver}
+  --add-dynamic-module=../${_replace_filter_name}-${_replace_filter_ver}
   --add-dynamic-module=../${_google_filter_name}-${_google_filter_ver}
   --add-dynamic-module=../${_auth_pam_name}-${_auth_pam_ver}
   --add-dynamic-module=../${_concat_name}-${_concat_ver}
@@ -147,7 +153,7 @@ else
 fi
 EOF
 
-  cd ../${_sub_filter_name}-${_sub_filter_ver}
+  cd ../${_subs_filter_name}-${_subs_filter_ver}
   cat >./config <<'EOF'
 ngx_addon_name=ngx_http_subs_filter_module
 if test -n "$ngx_module_link"; then
@@ -158,6 +164,42 @@ if test -n "$ngx_module_link"; then
 else
     HTTP_AUX_FILTER_MODULES="$HTTP_AUX_FILTER_MODULES ngx_http_subs_filter_module"
     NGX_ADDON_SRCS="$NGX_ADDON_SRCS $ngx_addon_dir/ngx_http_subs_filter_module.c"
+fi
+EOF
+
+  cd ../${_replace_filter_name}-${_replace_filter_ver}
+  sed -i '60,100d' ./config
+  cat >> ./config <<'EOF'
+if [ $ngx_found = no ]; then
+ cat << END
+ $0: error: ngx_http_replace_filter_module requires agentzh's sregex library.
+END
+ exit 1
+fi
+
+_REPLACE_SRCS="$ngx_addon_dir/src/ngx_http_replace_filter_module.c \
+               $ngx_addon_dir/src/ngx_http_replace_script.c \
+               $ngx_addon_dir/src/ngx_http_replace_parse.c \
+               $ngx_addon_dir/src/ngx_http_replace_util.c"
+_REPLACE_DEPS="$ngx_addon_dir/src/ngx_http_replace_filter_module.h \
+               $ngx_addon_dir/src/ngx_http_replace_script.h \
+               $ngx_addon_dir/src/ngx_http_replace_parse.h \
+               $ngx_addon_dir/src/ngx_http_replace_util.h"
+
+ngx_addon_name=ngx_http_replace_filter_module
+if test -n "$ngx_module_link"; then
+    ngx_module_type=HTTP_AUX_FILTER
+    ngx_module_name=ngx_http_replace_filter_module
+    ngx_module_srcs="$_REPLACE_SRCS"
+    ngx_module_deps="$_REPLACE_DEPS"
+    ngx_module_libs=$ngx_feature_libs
+    . auto/module
+else
+    HTTP_AUX_FILTER_MODULES="$HTTP_AUX_FILTER_MODULES ngx_http_replace_filter_module"
+    NGX_ADDON_SRCS="$NGX_ADDON_SRCS $_REPLACE_SRCS"
+    NGX_ADDON_DEPS="$NGX_ADDON_DEPS $_REPLACE_DEPS"
+    CORE_INCS="$CORE_INCS $ngx_feature_path"
+    CORE_LIBS="$CORE_LIBS $ngx_feature_libs"
 fi
 EOF
 
