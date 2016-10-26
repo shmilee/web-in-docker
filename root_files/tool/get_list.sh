@@ -17,6 +17,8 @@ elif [[ $casetype == 'notebook' ]]; then
     url_path=${4:-/notebooks}  # root_files/notebooks/
     index=${5:-nblist}    # root_files/tool/nblist.html
     head_name='Jupyter Notebook list'
+    [ -f $deploy_dir/convert-date.txt ] || \
+        touch -t 197001010001 $deploy_dir/convert-date.txt
 elif [[ $casetype == 'site' ]]; then
     source_file=${2:-./sitelist.md}
     index=${3:-sitelist} #root_files/tool/sitelist.html
@@ -92,7 +94,7 @@ elif [[ $casetype == 'notebook' ]]; then
         | sed -e "s|\">$source_dir/|\"><span class = \"glyphicon glyphicon-file\"></span> |g" \
               -e "s|href=\"${source_dir}\(.*\.\)ipynb\(\" target=\)|href=\"${url_path}\1html\2|g" \
         | sort -n -t'>' -k4 >> ./${index}.html
-    find "$source_dir" -maxdepth 1 -type f -name '*.ipynb' \
+    find "$source_dir" -maxdepth 1 -type f -newer "$deploy_dir/convert-date.txt" -name '*.ipynb' \
         -exec jupyter-nbconvert "{}" --output-dir "$deploy_dir" \;
     for dir in $source_dir/*; do
         [ ! -d "$dir" ] && continue
@@ -155,7 +157,8 @@ EOF
             | sed -e "s|\">$dir3/|\"><span class = \"glyphicon glyphicon-file\"></span> |g" \
                   -e "s|href=\"${dir3}\(.*\.\)ipynb\(\" target=\)|href=\"$url_path/$dir2\1html\2|g" \
             | sort -n -t'>' -k4 >> ./${index}.html
-        find "$dir" -not -path "*.ipynb_checkpoints*" -type f -name '*.ipynb' -print0 \
+        find "$dir" -not -path "*.ipynb_checkpoints*" -type f -newer "$deploy_dir/convert-date.txt" \
+            -name '*.ipynb' -print0 \
             | while read -d $'\0' file
               do
                   dir4=$(dirname "$file" | sed "s|^$dir3||")
@@ -186,6 +189,7 @@ elif [[ $casetype == 'notebook' ]]; then
         -i "{}" \;
     # ignore FontAwesome
     # -e 's|../components/font-awesome\(/fonts/fontawesome-webfont\)|\1|g' \
+    date > $deploy_dir/convert-date.txt
 fi
 
 # 3 end
