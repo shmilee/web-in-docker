@@ -111,18 +111,18 @@ check network eth0 with interface eth0
     if saturation > 90% then alert
 
 check host 9201z with address 192.168.5.126
-    if failed ping with timeout 10 seconds then alert
-    if failed port 80 protocol http then alert
+    if failed ping with timeout 10 seconds for 2 cycles then alert
+    if failed port 80 protocol http for 3 cycles then alert
     if failed port 443 protocol https
         #and certificate checksum = "Fingerprint"
-    then alert
+    for 3 cycles then alert
 
 check host openwrt with address 222.205.57.208
-    if failed ping with timeout 10 seconds then alert
-    if failed port 80 protocol http then alert
+    if failed ping with timeout 10 seconds for 2 cycles then alert
+    if failed port 80 protocol http for 3 cycles then alert
     if failed port 443 protocol https
         #and certificate checksum = "Fingerprint"
-    then alert
+    for 3 cycles then alert
 
 check host ap0 with address 192.168.12.1
-    if failed ping with timeout 2 seconds then alert
+    if failed ping with timeout 2 seconds for 2 cycles then alert
