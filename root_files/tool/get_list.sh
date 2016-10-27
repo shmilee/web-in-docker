@@ -181,11 +181,12 @@ if [[ $casetype == 'video' ]]; then
 elif [[ $casetype == 'notebook' ]]; then
     sed -e 's/\(^.*\.html.*target.*glyphicon\)-file\(.*\.ipynb.*$\)/\1-book\2/g' \
         -i ./${index}.html
-    find $deploy_dir -type f -name '*.html' -exec sed \
+    find $deploy_dir -type f -name '*.html' -newer "$deploy_dir/convert-date.txt" -exec sed \
         -e 's|\(<script src="\)http.*require.min.js\("></script>\)|\1/js/require-2.3.2.min.js\2|g' \
         -e 's|\(<script src="\)http..*jquery.min.js\("></script>\)|\1/js/jquery-1.12.4.min.js\2|g' \
         -e 's|\(<script src="\)https.*/latest/\(MathJax.js.*".*$\)|\1/js/mathjax/\2|g' \
         -e 's|../components/bootstrap\(/fonts/glyphicons-halflings\)|\1|g' \
+        -e 's|\(^.*stylesheet.*custom\.css.*$\)|<!-- \1 -->|g' \
         -i "{}" \;
     # ignore FontAwesome
     # -e 's|../components/font-awesome\(/fonts/fontawesome-webfont\)|\1|g' \
