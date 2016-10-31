@@ -7,45 +7,41 @@
 # Contributor: Daniel Micay <danielmicay@gmail.com>
 
 _pkgname=nginx
-_pkgver=1.10.1
+_pkgver=1.10.2
 
 ### 3d party modules:
-_fancyindex_name="ngx-fancyindex"
-_fancyindex_ver="0.4.0"
-_echo_name="echo-nginx-module"
-_echo_ver="0.59"
-_heads_more_name="headers-more-nginx-module"
-_heads_more_ver="0.30"
-_fair_name="nginx-upstream-fair"
-_fair_ver="a18b4099fbd458111983200e098b6f0c8efed4bc"
-_subs_filter_name="ngx_http_substitutions_filter_module"
-_subs_filter_ver="bc58cb11844bc42735bbaef7085ea86ace46d05b"
-_replace_filter_name="replace-filter-nginx-module"
-_replace_filter_ver="07e7b013df7b7a61da4c10d631602d0f4342d107"
-_google_filter_name="ngx_http_google_filter_module"
-_google_filter_ver="0.2.0"
-_auth_pam_name="ngx_http_auth_pam_module"
-_auth_pam_ver="1.5.1"
-_concat_name="nginx-http-concat"
-_concat_ver="b8d3e7ec511724a6900ba3915df6b504337891a9"
-
-_naxsi_name="naxsi"
-_naxsi_ver="0.55rc2"
-_nchan_name="nchan"
-_nchan_ver="0.99.16"
-_rtmp_name="nginx-rtmp-module"
-_rtmp_ver="c3237ae747ff0b06494326731e215c23ae884966"
-
-_pagespeed_name="ngx_pagespeed"
+# psol version: PageSpeed Optimization Library, for ngx_pagespeed
 _NPS_VERSION=1.11.33.2
-_pagespeed_ver="${_NPS_VERSION}-beta"
+# (shortName) (fullName) (version) (downloadUrl)
+# format downloadUrl: printf "https://github.com/downloadUrl" fullName version
+_githubmodules=(
+  'auth_pam       ngx_http_auth_pam_module      1.5.1  stogh/%s/archive/v%s.tar.gz'     #0
+  'concat         nginx-http-concat b8d3e7ec511724a6900ba3915df6b504337891a9 alibaba/%s/archive/%s.tar.gz'
+  'echo           echo-nginx-module             0.59   openresty/%s/archive/v%s.tar.gz'
+  'fancyindex     ngx-fancyindex                0.4.1  aperezdc/%s/archive/v%s.tar.gz'
+  'google_filter  ngx_http_google_filter_module 0.2.0  cuber/%s/archive/%s.tar.gz'
+  'headers-more   headers-more-nginx-module     0.31   openresty/%s/archive/v%s.tar.gz' #5
+  'naxsi          naxsi                         0.55.1 nbs-system/%s/archive/%s.tar.gz'
+  'nchan          nchan                         1.0.4  slact/%s/archive/v%s.tar.gz'
+  "pagespeed      ngx_pagespeed  ${_NPS_VERSION}-beta  pagespeed/%s/archive/v%s.tar.gz"
+  'replace_filter replace-filter-nginx-module 2c7f0656c816e347ba43a7909120d434a168044c openresty/%s/archive/%s.tar.gz'
+  'rtmp           nginx-rtmp-module c3237ae747ff0b06494326731e215c23ae884966 sergey-dryabzhinsky/%s/archive/%s.tar.gz' #10
+  'subs_filter    ngx_http_substitutions_filter_module bc58cb11844bc42735bbaef7085ea86ace46d05b yaoweibin/%s/archive/%s.tar.gz'
+  'upstream-fair  nginx-upstream-fair a18b4099fbd458111983200e098b6f0c8efed4bc gnosek/%s/archive/%s.tar.gz'
+)
 ### END
 
 pkgbase=mynginx
 pkgname=(mynginx mynginx-pagespeed)
 pkgver=${_pkgver}
-pkgrel=2
-pkgdesc='Lightweight HTTP server and IMAP/POP3 proxy server - with fancyindex, echo, headers-more, upstream-fair, subs_filter, replace_filter, google_filter, http_auth_pam, http-concat, naxsi, nchan, rtmp support'
+pkgrel=1
+_shortNames=''
+for _m in "${_githubmodules[@]}";do
+  _mod=($_m)
+  [[ xpagespeed == x${_mod[0]} ]] && continue
+  _shortNames+=" ${_mod[0]}"
+done
+pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server - with $_shortNames support"
 arch=('i686' 'x86_64')
 url='http://nginx.org'
 license=('custom')
@@ -56,37 +52,28 @@ makedepends=('hardening-wrapper' 'sregex')
 source=($url/download/nginx-$pkgver.tar.gz
         service
         logrotate
-        ${_fancyindex_name}.tar.gz::https://github.com/aperezdc/${_fancyindex_name}/archive/v${_fancyindex_ver}.tar.gz
-        ${_echo_name}.tar.gz::https://github.com/openresty/${_echo_name}/archive/v${_echo_ver}.tar.gz
-        ${_heads_more_name}.tar.gz::https://github.com/openresty/${_heads_more_name}/archive/v${_heads_more_ver}.tar.gz
-        ${_fair_name}.tar.gz::https://github.com/gnosek/${_fair_name}/archive/${_fair_ver}.tar.gz
-        ${_subs_filter_name}.tar.gz::https://github.com/yaoweibin/${_subs_filter_name}/archive/${_subs_filter_ver}.tar.gz
-        ${_replace_filter_name}.tar.gz::https://github.com/openresty/${_replace_filter_name}/archive/${_replace_filter_ver}.tar.gz
-        ${_google_filter_name}.tar.gz::https://github.com/cuber/${_google_filter_name}/archive/${_google_filter_ver}.tar.gz
-        ${_auth_pam_name}.tar.gz::https://github.com/stogh/${_auth_pam_name}/archive/v${_auth_pam_ver}.tar.gz
-        ${_concat_name}.tar.gz::https://github.com/alibaba/${_concat_name}/archive/${_concat_ver}.tar.gz
-        ${_naxsi_name}.tar.gz::https://github.com/nbs-system/${_naxsi_name}/archive/${_naxsi_ver}.tar.gz
-        ${_nchan_name}.tar.gz::https://github.com/slact/${_nchan_name}/archive/v${_nchan_ver}.tar.gz
-        ${_rtmp_name}.tar.gz::https://github.com/sergey-dryabzhinsky/${_rtmp_name}/archive/${_rtmp_ver}.tar.gz
-        psol-${_NPS_VERSION}.tar.gz::https://dl.google.com/dl/page-speed/psol/${_NPS_VERSION}.tar.gz
-        ${_pagespeed_name}.tar.gz::https://github.com/pagespeed/${_pagespeed_name}/archive/v${_pagespeed_ver}.tar.gz)
-sha256sums=('1fd35846566485e03c0e318989561c135c598323ff349c503a6c14826487a801'
+        psol-${_NPS_VERSION}.tar.gz::https://dl.google.com/dl/page-speed/psol/${_NPS_VERSION}.tar.gz)
+for _m in "${_githubmodules[@]}";do
+  _mod=($_m)
+  source+=($(printf "${_mod[1]}-${_mod[2]}.tar.gz::https://github.com/${_mod[3]}" ${_mod[1]} ${_mod[2]}))
+done
+sha256sums=('1045ac4987a396e2fa5d0011daf8987b612dd2f05181b67507da68cbe7d765c2'
             '4ecbc33ce4bf2965996f51b0c7edb677904ba5cff9a32e93e1487a428d3a751b'
             '2613986dd5faab09ca962264f16841c8c55c3a0bc7a5bb737eabd83143090878'
-            '152cc2cf082c23cbc7b0fc76f14af4015d3988783016dc9145edebec17c7e230'
-            '9b319ad7836202883128d2b9c24ed818082541df57ef7f2065b7557085c603cd'
-            '2aad309a9313c21c7c06ee4e71a39c99d4d829e31c8b3e7d76f8c964ea8047f5'
-            'c051d33a8732b671b33e0b3535e6fbbd82311c6d89532c4067b3d2ba738e1ce1'
-            '8eabbcd5950fdcc718bb0ef9165206c2ed60f67cd9da553d7bc3e6fe4e338461'
-            '4bcbdbc3d0f1fe8943f6dc1df60dde405cbad67453236095faa5bd8a766d479e'
-            '9cd68c8e092efb1a419e1087bb9ca23aab1ff8650c400c0aa815d461d79385de'
+            '1ccb59e81a4cdfd2d8e664c9ee1b31fa2f495aace640d4d14f58319688aaff8e'
             '77676842919134af88a7b4bfca4470223e3a00d287d17c0dbdc9a114a685b6e7'
             'e34ef51c299bc3d662b6c74031f7ad9775d73e84cfaa4e72810959fe1760413c'
-            'fed822e3f507801ce44964908eb1dca8ec58dc0a9bc47f7e7d00c6c4ef97f78b'
-            '200cc1b02931a067c3edb07243a7faac80265ce6aab37af680cf7373011efc41'
+            '9b319ad7836202883128d2b9c24ed818082541df57ef7f2065b7557085c603cd'
+            '2b00d8e0ad2a67152a9cee7b7ee67990c742d501412df912baaf1eee9bb6dc71'
+            '9cd68c8e092efb1a419e1087bb9ca23aab1ff8650c400c0aa815d461d79385de'
+            'b2e8162cce2d24861b1ed5bbb30fc51d5215e3f4bb9d01f53fc344904d5911e7'
+            '45dd0df7a6b0b6aa9c64eb8c39a8e294d659d87fb18e192cf58f1402f3cdb0a8'
+            '212e973a6fda6ce82344815baf6d2324200d1b5c49ac9c34cfc6f0fb5ebcafbb'
+            'dfb3c62345ea95e4aec50b449d75bcdf1c868b5c3d62d6c7e0e73632ebe20101'
+            'ab1d3bbea62ab9f0b804d286980abe323c735635993c2b82806c7b9abe8186cd'
             '3245b7747fb468cb94e367c4735a29a76bcc42f46ffd8f532e165b6db71d3ca6'
-            '1ccb59e81a4cdfd2d8e664c9ee1b31fa2f495aace640d4d14f58319688aaff8e'
-            'dfb3c62345ea95e4aec50b449d75bcdf1c868b5c3d62d6c7e0e73632ebe20101')
+            '8eabbcd5950fdcc718bb0ef9165206c2ed60f67cd9da553d7bc3e6fe4e338461'
+            'c051d33a8732b671b33e0b3535e6fbbd82311c6d89532c4067b3d2ba738e1ce1')
 
 _common_flags=(
   --with-ipv6
@@ -119,27 +106,35 @@ _stable_flags=(
 
 _3d_party_modules_flags=(
   --modules-path=/usr/lib/nginx
-  --add-dynamic-module=../${_fancyindex_name}-${_fancyindex_ver}
-  --add-dynamic-module=../${_echo_name}-${_echo_ver}
-  --add-dynamic-module=../${_heads_more_name}-${_heads_more_ver}
-  --add-dynamic-module=../${_fair_name}-${_fair_ver}
-  --add-dynamic-module=../${_subs_filter_name}-${_subs_filter_ver}
-  --add-dynamic-module=../${_replace_filter_name}-${_replace_filter_ver}
-  --add-dynamic-module=../${_google_filter_name}-${_google_filter_ver}
-  --add-dynamic-module=../${_auth_pam_name}-${_auth_pam_ver}
-  --add-dynamic-module=../${_concat_name}-${_concat_ver}
-  --add-dynamic-module=../${_naxsi_name}-${_naxsi_ver}/naxsi_src
-  --add-dynamic-module=../${_nchan_name}-${_nchan_ver}
-  --add-dynamic-module=../${_rtmp_name}-${_rtmp_ver}
-  --add-dynamic-module=../${_pagespeed_name}-${_pagespeed_ver}  
 )
+for _m in "${_githubmodules[@]}";do
+  _mod=($_m)
+  if [[ xnaxsi == x${_mod[0]} ]]; then
+    _3d_party_modules_flags+=("--add-dynamic-module=../${_mod[1]}-${_mod[2]}/naxsi_src")
+  else
+    _3d_party_modules_flags+=("--add-dynamic-module=../${_mod[1]}-${_mod[2]}")
+  fi
+done
+
+# usage: _get_module_dir shortName, -> fullName-version
+_get_module_dir() {
+  local _shortname=$1
+  for _m in "${_githubmodules[@]}";do
+    _mod=($_m)
+    if [[ x$_shortname == x${_mod[0]} ]]; then
+      echo ${_mod[1]}-${_mod[2]}
+      return 0
+    fi
+  done
+  error "$_shortname Not Found in '_githubmodules' array."
+}
 
 prepare() {
-  cd ${_fancyindex_name}-${_fancyindex_ver}
+  cd $(_get_module_dir 'fancyindex')
   sed -i 's/Parent directory/\.\./' ngx_http_fancyindex_module.c template.h
   sed -i 's/File Name/文件名/;s/File Size/文件大小/;s/Date/日期/' template.h # zh ..
 
-  cd ../${_fair_name}-${_fair_ver}
+  cd ../$(_get_module_dir 'upstream-fair')
   cat >./config <<'EOF'
 ngx_addon_name=ngx_http_upstream_fair_module
 if test -n "$ngx_module_link"; then
@@ -153,7 +148,7 @@ else
 fi
 EOF
 
-  cd ../${_subs_filter_name}-${_subs_filter_ver}
+  cd ../$(_get_module_dir 'subs_filter')
   cat >./config <<'EOF'
 ngx_addon_name=ngx_http_subs_filter_module
 if test -n "$ngx_module_link"; then
@@ -167,43 +162,7 @@ else
 fi
 EOF
 
-  cd ../${_replace_filter_name}-${_replace_filter_ver}
-  sed -i '60,100d' ./config
-  cat >> ./config <<'EOF'
-if [ $ngx_found = no ]; then
- cat << END
- $0: error: ngx_http_replace_filter_module requires agentzh's sregex library.
-END
- exit 1
-fi
-
-_REPLACE_SRCS="$ngx_addon_dir/src/ngx_http_replace_filter_module.c \
-               $ngx_addon_dir/src/ngx_http_replace_script.c \
-               $ngx_addon_dir/src/ngx_http_replace_parse.c \
-               $ngx_addon_dir/src/ngx_http_replace_util.c"
-_REPLACE_DEPS="$ngx_addon_dir/src/ngx_http_replace_filter_module.h \
-               $ngx_addon_dir/src/ngx_http_replace_script.h \
-               $ngx_addon_dir/src/ngx_http_replace_parse.h \
-               $ngx_addon_dir/src/ngx_http_replace_util.h"
-
-ngx_addon_name=ngx_http_replace_filter_module
-if test -n "$ngx_module_link"; then
-    ngx_module_type=HTTP_AUX_FILTER
-    ngx_module_name=ngx_http_replace_filter_module
-    ngx_module_srcs="$_REPLACE_SRCS"
-    ngx_module_deps="$_REPLACE_DEPS"
-    ngx_module_libs=$ngx_feature_libs
-    . auto/module
-else
-    HTTP_AUX_FILTER_MODULES="$HTTP_AUX_FILTER_MODULES ngx_http_replace_filter_module"
-    NGX_ADDON_SRCS="$NGX_ADDON_SRCS $_REPLACE_SRCS"
-    NGX_ADDON_DEPS="$NGX_ADDON_DEPS $_REPLACE_DEPS"
-    CORE_INCS="$CORE_INCS $ngx_feature_path"
-    CORE_LIBS="$CORE_LIBS $ngx_feature_libs"
-fi
-EOF
-
-  cd ../${_google_filter_name}-${_google_filter_ver}
+  cd ../$(_get_module_dir 'google_filter')
   cat >./config <<'EOF'
 ngx_addon_name=ngx_http_google_filter_module
 if test -n "$ngx_module_link"; then
@@ -226,7 +185,7 @@ sed -i '/apis.*google.*com/a \
                                          "subs_filter", 3, \
                                          "((id)\\.google\\.com)",' src/ngx_http_google_inject.c
 
-  cd ../${_concat_name}-${_concat_ver}
+  cd ../$(_get_module_dir 'concat')
   cat >./config <<'EOF'
 ngx_addon_name=ngx_http_concat_module
 if test -n "$ngx_module_link"; then
@@ -240,7 +199,7 @@ else
 fi
 EOF
 
-  cd ../${_pagespeed_name}-${_pagespeed_ver}/
+  cd ../$(_get_module_dir 'pagespeed')
   [ -d psol ] && rm -r psol/
   mv ../psol ./
 }
@@ -317,15 +276,19 @@ package_mynginx() {
     install -Dm644 contrib/vim/${i}/nginx.vim \
       "${pkgdir}/usr/share/vim/vimfiles/${i}/nginx.vim"
   done
+  # add .vhost to ftdetect
+  echo "au BufRead,BufNewFile *.vhost set ft=nginx" \
+    >> "${pkgdir}/usr/share/vim/vimfiles/ftdetect/nginx.vim"
 
   rm "${pkgdir}/usr/lib/nginx"/ngx_pagespeed.so
 }
 
 package_mynginx-pagespeed() {
-  pkgver=${_NPS_VERSION}
+  pkgver=${_pkgver}_${_NPS_VERSION}
   pkgdesc='Automatic PageSpeed optimization module for Nginx'
   url='https://github.com/pagespeed/ngx_pagespeed'
   depends=("mynginx=${_pkgver}")
+  license=('Apache')
 
   cd ${_pkgname}-${_pkgver}
   install -Dm755 objs/ngx_pagespeed.so "${pkgdir}/usr/lib/nginx"/ngx_pagespeed.so
