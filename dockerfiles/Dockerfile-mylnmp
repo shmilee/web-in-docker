@@ -14,7 +14,7 @@
 #   -v $PWD/log:/srv/log:rw mylnmp:$(date +%y%m%d)
 #
 
-FROM arch:1609
+FROM arch:1611
 MAINTAINER shmilee <shmilee.zju@gmail.com>
 
 ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 CGIT_CONFIG=/srv/etc/cgitrc
@@ -22,7 +22,7 @@ ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 CGIT_CONFIG=/srv/etc/cgitrc
 ADD ./monit_init.sh /usr/bin/monit_init.sh
 RUN echo "==> tini monit nginx mariadb php cgit fcgi ssh ..." \
     && packages=(tini monit iproute2 \
-        mynginx \
+        mynginx gd sregex luajit\
         mariadb \
         php-fpm php-intl php-mcrypt php-gd php-sqlite php-imap php-apcu php-memcached \
         cgit spawn-fcgi fcgiwrap python-docutils python-pygments python-markdown \

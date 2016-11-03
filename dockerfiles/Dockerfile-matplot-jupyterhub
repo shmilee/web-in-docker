@@ -7,13 +7,14 @@
 # configfile: $PWD/jupyterhub/jupyterhub_config.py
 #
 
-FROM arch:1609
+FROM arch:1611
 MAINTAINER shmilee <shmilee.zju@gmail.com>
 
 ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 PATH="/opt/matlab/bin:${PATH}"
 
 ADD ./jupyterhub_init.sh /usr/bin/jupyterhub_init.sh
 RUN PP_index='https://pypi.tuna.tsinghua.edu.cn/simple' && \
+    NPM_Registry='https://registry.npm.taobao.org' && \
     packages=(tini \
         python-pip \
         ipython \
@@ -30,7 +31,7 @@ RUN PP_index='https://pypi.tuna.tsinghua.edu.cn/simple' && \
         pkg-config freetype2 gcc \
         nodejs python-requests python-sqlalchemy npm) && \
     pacman -Sy --noconfirm ${packages[@]} && \
-    npm install -g configurable-http-proxy && \
+    npm install -g configurable-http-proxy --registry="$NPM_Registry" && \
     pip3 install -i "$PP_index" matplotlib jupyterhub && \
     echo "==> add iruby kernel ..." && \
     pacman -Sy --noconfirm ruby make czmq && \

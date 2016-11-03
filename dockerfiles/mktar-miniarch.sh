@@ -45,6 +45,7 @@ PKGIGNORE=(
     reiserfsprogs
     s-nail
     systemd-sysvcompat
+    texinfo
     usbutils
     vi
     xfsprogs
