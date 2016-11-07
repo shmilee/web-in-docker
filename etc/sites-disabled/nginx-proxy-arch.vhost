@@ -1,0 +1,70 @@
+# proxy test: arch,wiki,aur
+server {
+    listen       80;
+    server_name  arch.shmilee.io;
+    access_log  /srv/log/nginx-arch-access.log main buffer=32k;
+    error_log   /srv/log/nginx-arch-error.log notice;
+
+    location  / {
+        proxy_set_header Host www.archlinux.org;
+        proxy_pass https://www.archlinux.org;
+        proxy_cookie_domain www.archlinux.org arch.shmilee.io;
+        proxy_set_header Referer https://www.archlinux.org;
+        proxy_redirect off;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Accept-Encoding "";
+        subs_filter_types text/css;
+        subs_filter '(href=("|\')http)s://www.archlinux.org' '$1://arch.shmilee.io' ir;
+        subs_filter '(href=("|\')http)s://wiki.archlinux.org' '$1://archwiki.shmilee.io' ir;
+        subs_filter '(href=("|\')http)s://aur.archlinux.org' '$1://aur.shmilee.io' ir;
+    }
+}
+
+server {
+    listen       80;
+    server_name  archwiki.shmilee.io;
+    access_log  /srv/log/nginx-archwiki-access.log main buffer=32k;
+    error_log   /srv/log/nginx-archwiki-error.log notice;
+
+    location  / {
+        proxy_set_header Host wiki.archlinux.org;
+        proxy_pass https://wiki.archlinux.org;
+        proxy_cookie_domain wiki.archlinux.org archwiki.shmilee.io;
+        proxy_set_header Referer https://wiki.archlinux.org;
+        proxy_redirect off;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Accept-Encoding "";
+        subs_filter_types text/css;
+        subs_filter '(href=("|\')http)s://www.archlinux.org' '$1://arch.shmilee.io' ir;
+        subs_filter '(href=("|\')http)s://wiki.archlinux.org' '$1://archwiki.shmilee.io' ir;
+        subs_filter '(href=("|\')http)s://aur.archlinux.org' '$1://aur.shmilee.io' ir;
+    }
+}
+
+server {
+    listen       80;
+    server_name  aur.shmilee.io;
+    access_log  /srv/log/nginx-aur-access.log main buffer=32k;
+    error_log   /srv/log/nginx-aur-error.log notice;
+
+    location  / {
+        proxy_set_header Host aur.archlinux.org;
+        proxy_pass https://aur.archlinux.org;
+        proxy_cookie_domain aur.archlinux.org aur.shmilee.io;
+        proxy_set_header Referer https://aur.archlinux.org;
+
+        proxy_redirect off;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Accept-Encoding "";
+        subs_filter_types text/css;
+        subs_filter '(href=("|\')http)s://www.archlinux.org' '$1://arch.shmilee.io' ir;
+        subs_filter '(href=("|\')http)s://wiki.archlinux.org' '$1://archwiki.shmilee.io' ir;
+        subs_filter '(href=("|\')http)s://aur.archlinux.org' '$1://aur.shmilee.io' ir;
+    }
+}
