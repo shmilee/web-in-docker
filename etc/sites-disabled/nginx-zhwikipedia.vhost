@@ -1,0 +1,71 @@
+## only zh.wikipedia.org
+
+upstream wikibackend{
+  least_conn;
+  server 91.198.174.192:443 max_fails=3 weight=5;
+  server 208.80.154.224:443 max_fails=3 weight=10;
+  #server 198.35.26.96:443   max_fails=3 weight=1;
+  #server 198.35.26.108:443  max_fails=3 weight=1;
+  keepalive 32;
+}
+
+server {
+  server_name zh.wiki.shmilee.io;
+  listen 80;
+  resolver 8.8.4.4;
+
+  location / {
+    if ( $http_user_agent ~* "qihoobot|Baiduspider|Googlebot|Googlebot-Mobile|Googlebot-Image|Mediapartners-Google|Adsbot-Google|Feedfetcher-Google|Yahoo! Slurp|Yahoo! Slurp China|YoudaoBot|Sosospider|Sogou spider|Sogou web spider|MSNBot|ia_archiver|Tomato Bot" ) {  
+      return 403;  
+    }  
+
+    proxy_pass https://wikibackend;
+    proxy_buffering off;
+
+    proxy_cookie_domain zh.wikipedia.org zh.wiki.shmilee.io;
+    proxy_redirect https://zh.wikipedia.org/ /;
+    proxy_redirect https://zh.m.wikipedia.org/ http://zh.m.wiki.shmilee.io/;
+
+    proxy_set_header Host zh.wikipedia.org;
+    proxy_set_header X-Real_IP $remote_addr;
+    proxy_set_header User-Agent $http_user_agent;
+    proxy_set_header Accept-Encoding '';
+    proxy_set_header Accept-Language "zh-CN";
+    proxy_set_header referer "https://zh.wikipedia.org$request_uri";
+
+    subs_filter_types text/css text/xml text/javascript application/javascript application/json;
+    subs_filter '维基百科' '维基百科镜像';
+    subs_filter zh.wikipedia.org zh.wiki.shmilee.io;
+    subs_filter zh.m.wikipedia.org zh.m.wiki.shmilee.io;
+  }
+}
+
+server {
+  server_name zh.m.wiki.shmilee.io;
+  listen 80;
+  resolver 8.8.4.4;
+
+  location / {
+    if ( $http_user_agent ~* "qihoobot|Baiduspider|Googlebot|Googlebot-Mobile|Googlebot-Image|Mediapartners-Google|Adsbot-Google|Feedfetcher-Google|Yahoo! Slurp|Yahoo! Slurp China|YoudaoBot|Sosospider|Sogou spider|Sogou web spider|MSNBot|ia_archiver|Tomato Bot" ) {  
+      return 403;  
+    }  
+    proxy_pass https://wikibackend;
+    proxy_buffering off;
+
+    proxy_cookie_domain zh.m.wikipedia.org zh.m.wiki.shmilee.io;
+    proxy_redirect https://zh.m.wikipedia.org/ /;
+
+    proxy_set_header Host zh.m.wikipedia.org;
+    proxy_set_header X-Real_IP $remote_addr;
+    proxy_set_header User-Agent $http_user_agent;
+    proxy_set_header Accept-Encoding '';
+    proxy_set_header Accept-Language "zh-CN";
+    proxy_set_header referer "https://zh.m.wikipedia.org$request_uri";
+
+    subs_filter_types text/css text/xml text/javascript application/javascript application/json;
+    subs_filter '维基百科' '维基百科镜像';
+    subs_filter zh.wikipedia.org zh.wiki.shmilee.io;
+    subs_filter zh.m.wikipedia.org zh.m.wiki.shmilee.io;
+  }
+}
+

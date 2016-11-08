@@ -1,0 +1,100 @@
+## proxy_set_header Host, it works except upload.wikimedia.org!
+## Fortunately, no need to proxy upload.wikimedia.org 
+
+upstream wikibackend{
+  least_conn;
+  server 91.198.174.192:443 max_fails=3 weight=5;
+  server 208.80.154.224:443 max_fails=3 weight=10;
+  #server 198.35.26.96:443   max_fails=3 weight=1;
+  #server 198.35.26.108:443  max_fails=3 weight=1;
+  keepalive 32;
+}
+
+#server {
+#  server_name up.wiki.shmilee.io;
+#  listen 80;
+#
+#  location / {
+#    proxy_pass https://upload.wikimedia.org;
+#    ### 91.198.174.208 upload.wikimedia.org
+#    ### 198.35.26.112 upload.wikimedia.org
+#    proxy_cookie_domain upload.wikimedia.org up.wiki.shmilee.io;
+#    proxy_buffering off;
+#    proxy_set_header X-Real_IP $remote_addr;
+#    proxy_set_header User-Agent $http_user_agent;
+#    proxy_set_header referer "https://upload.wikimedia.org$request_uri";
+#  }
+#}
+server {
+  server_name  wiki.shmilee.io;
+  listen 80;
+  resolver 8.8.4.4;
+  location / {
+    proxy_pass https://wikibackend;
+    proxy_buffering off;
+
+    proxy_redirect https://www.wikipedia.org/ http://wiki.shmilee.io/;
+    proxy_cookie_domain www.wikipedia.org wiki.shmilee.io;
+
+    proxy_set_header Host www.wikipedia.org;
+    proxy_set_header X-Real_IP $remote_addr;
+    proxy_set_header User-Agent $http_user_agent;
+    proxy_set_header Accept-Encoding '';
+    proxy_set_header referer "https://$proxy_host$request_uri";
+
+    subs_filter_types text/css text/xml text/javascript application/javascript application/json;
+    subs_filter .wikipedia.org .wiki.shmilee.io;
+    subs_filter //wikipedia.org //wiki.shmilee.io;
+#    subs_filter upload.wikimedia.org up.wiki.shmilee.io;
+  }
+}
+server {
+  server_name  ~^(?<subdomain>[^.]+)\.wiki\.shmilee\.io$;
+  listen 80;
+  resolver 8.8.4.4;
+  location / {
+    proxy_pass https://wikibackend;
+    proxy_buffering off;
+
+    proxy_redirect https://$subdomain.wikipedia.org/ http://$subdomain.wiki.shmilee.io/;
+    proxy_redirect https://$subdomain.m.wikipedia.org/ http://$subdomain.m.wiki.shmilee.io/;
+    proxy_cookie_domain $subdomain.wikipedia.org $subdomain.wiki.shmilee.io;
+
+    proxy_set_header Host $subdomain.wikipedia.org;
+    proxy_set_header X-Real_IP $remote_addr;
+    proxy_set_header User-Agent $http_user_agent;
+    proxy_set_header Accept-Encoding ''; 
+    proxy_set_header referer "https://$proxy_host$request_uri";
+
+    subs_filter_types text/css text/xml text/javascript application/javascript application/json;
+    subs_filter .wikipedia.org .wiki.shmilee.io;
+    subs_filter //wikipedia.org //wiki.shmilee.io;
+    subs_filter 'https://([^.]+).wiki' 'http://$1.wiki' igr; 
+#    subs_filter upload.wikimedia.org up.wiki.shmilee.io;
+  }
+}
+server {
+  server_name ~^(?<subdomain>[^.]+)\.m\.wiki\.shmilee\.io$;
+  listen 80;
+  resolver 8.8.4.4;
+
+  location / {
+    proxy_pass https://wikibackend;
+    proxy_buffering off;
+
+    proxy_redirect https://$subdomain.m.wikipedia.org/ http://$subdomain.m.wiki.shmilee.io/;
+    proxy_cookie_domain $subdomain.m.wikipedia.org $subdomain.m.wiki.shmilee.io;
+
+    proxy_set_header Host $subdomain.m.wikipedia.org;
+    proxy_set_header X-Real_IP $remote_addr;
+    proxy_set_header User-Agent $http_user_agent;
+    proxy_set_header Accept-Encoding ''; 
+    proxy_set_header referer "https://$proxy_host$request_uri";
+
+    subs_filter_types text/css text/xml text/javascript application/javascript application/json;
+    subs_filter .wikipedia.org .wiki.shmilee.io;
+    subs_filter //wikipedia.org //wiki.shmilee.io;
+    subs_filter 'https://([^.]+).m.wiki' 'http://$1.m.wiki' igr; 
+#    subs_filter upload.wikimedia.org up.wiki.shmilee.io;
+  }
+}
