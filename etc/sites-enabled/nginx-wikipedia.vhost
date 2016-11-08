@@ -10,6 +10,9 @@ upstream wikibackend{
   keepalive 32;
 }
 
+proxy_cache_path /srv/http/wikipedia-cache levels=2:2
+    keys_zone=WIKICACHE:20m inactive=10d max_size=2g use_temp_path=off;
+
 #server {
 #  server_name up.wiki.shmilee.io;
 #  listen 80;
@@ -31,7 +34,7 @@ server {
   resolver 8.8.4.4;
   location / {
     proxy_pass https://wikibackend;
-    proxy_buffering off;
+    proxy_buffering on;
 
     proxy_redirect https://www.wikipedia.org/ http://wiki.shmilee.io/;
     proxy_cookie_domain www.wikipedia.org wiki.shmilee.io;
@@ -41,6 +44,17 @@ server {
     proxy_set_header User-Agent $http_user_agent;
     proxy_set_header Accept-Encoding '';
     proxy_set_header referer "https://$proxy_host$request_uri";
+
+    proxy_cache WIKICACHE;
+    proxy_cache_key "$host+$scheme$proxy_host$request_uri";
+    proxy_cache_valid 200 301 302 304 10d;
+    proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_503 http_504;
+    proxy_cache_revalidate on;
+    proxy_cache_lock on;
+    add_header NGINX-Cache-Status $upstream_cache_status;
+    proxy_ignore_headers Set-Cookie Cache-Control Expires Vary;
+    proxy_hide_header "Set-Cookie";
+    #proxy_hide_header "Cache-Control";
 
     subs_filter_types text/css text/xml text/javascript application/javascript application/json;
     subs_filter .wikipedia.org .wiki.shmilee.io;
@@ -54,7 +68,7 @@ server {
   resolver 8.8.4.4;
   location / {
     proxy_pass https://wikibackend;
-    proxy_buffering off;
+    proxy_buffering on;
 
     proxy_redirect https://$subdomain.wikipedia.org/ http://$subdomain.wiki.shmilee.io/;
     proxy_redirect https://$subdomain.m.wikipedia.org/ http://$subdomain.m.wiki.shmilee.io/;
@@ -65,6 +79,17 @@ server {
     proxy_set_header User-Agent $http_user_agent;
     proxy_set_header Accept-Encoding ''; 
     proxy_set_header referer "https://$proxy_host$request_uri";
+
+    proxy_cache WIKICACHE;
+    proxy_cache_key "$host+$scheme$proxy_host$request_uri";
+    proxy_cache_valid 200 301 302 304 10d;
+    proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_503 http_504;
+    proxy_cache_revalidate on;
+    proxy_cache_lock on;
+    add_header NGINX-Cache-Status $upstream_cache_status;
+    proxy_ignore_headers Set-Cookie Cache-Control Expires Vary;
+    proxy_hide_header "Set-Cookie";
+    #proxy_hide_header "Cache-Control";
 
     subs_filter_types text/css text/xml text/javascript application/javascript application/json;
     subs_filter .wikipedia.org .wiki.shmilee.io;
@@ -80,7 +105,7 @@ server {
 
   location / {
     proxy_pass https://wikibackend;
-    proxy_buffering off;
+    proxy_buffering on;
 
     proxy_redirect https://$subdomain.m.wikipedia.org/ http://$subdomain.m.wiki.shmilee.io/;
     proxy_cookie_domain $subdomain.m.wikipedia.org $subdomain.m.wiki.shmilee.io;
@@ -90,6 +115,17 @@ server {
     proxy_set_header User-Agent $http_user_agent;
     proxy_set_header Accept-Encoding ''; 
     proxy_set_header referer "https://$proxy_host$request_uri";
+
+    proxy_cache WIKICACHE;
+    proxy_cache_key "$host+$scheme$proxy_host$request_uri";
+    proxy_cache_valid 200 301 302 304 10d;
+    proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_503 http_504;
+    proxy_cache_revalidate on;
+    proxy_cache_lock on;
+    add_header NGINX-Cache-Status $upstream_cache_status;
+    proxy_ignore_headers Set-Cookie Cache-Control Expires Vary;
+    proxy_hide_header "Set-Cookie";
+    #proxy_hide_header "Cache-Control";
 
     subs_filter_types text/css text/xml text/javascript application/javascript application/json;
     subs_filter .wikipedia.org .wiki.shmilee.io;
