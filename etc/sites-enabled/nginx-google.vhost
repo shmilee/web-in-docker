@@ -47,8 +47,9 @@ server {
     ssl_certificate_key    /srv/etc/ssl-certs/server-google-shmilee.key;
     access_log  /srv/log/nginx-google-access.log main buffer=32k;
     error_log   /srv/log/nginx-google-error.log notice;
-
     resolver 8.8.8.8;
+    set $vn_exec_flag '';
+
     location / {
         google on;
         google_scholar on;

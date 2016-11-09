@@ -34,6 +34,7 @@ server {
   resolver 8.8.4.4;
   access_log /srv/log/nginx-wikipedia-access.log main buffer=32k;
   error_log  /srv/log/nginx-wikipedia-error.log notice;
+  set $vn_exec_flag '';
   location / {
     proxy_pass https://wikibackend;
     proxy_buffering on;
@@ -70,6 +71,7 @@ server {
   resolver 8.8.4.4;
   access_log /srv/log/nginx-wikipedia-access.log main buffer=32k;
   error_log  /srv/log/nginx-wikipedia-error.log notice;
+  set $vn_exec_flag '';
   location / {
     proxy_pass https://wikibackend;
     proxy_buffering on;
@@ -108,6 +110,7 @@ server {
   resolver 8.8.4.4;
   access_log /srv/log/nginx-wikipedia-access.log main buffer=32k;
   error_log  /srv/log/nginx-wikipedia-error.log notice;
+  set $vn_exec_flag '';
   location / {
     proxy_pass https://wikibackend;
     proxy_buffering on;

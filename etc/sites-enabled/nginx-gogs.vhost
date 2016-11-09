@@ -4,6 +4,7 @@ server {
     server_name  gogs.shmilee.io;
     access_log  /srv/log/nginx-gogs-access.log main buffer=32k;
     error_log   /srv/log/nginx-gogs-error.log notice;
+    set $vn_exec_flag '';
 
     location  / {
         proxy_set_header X-Real-IP $remote_addr;
