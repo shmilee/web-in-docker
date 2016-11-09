@@ -1,3 +1,32 @@
+### BEGIN: verynginx/nginx_conf/in_http_block.conf ###
+upstream vn_upstream{
+    server 127.0.0.1;
+    balancer_by_lua_file /srv/http/verynginx/lua_script/on_banlance.lua;
+    keepalive 1024; #Connection pool
+}
+
+lua_package_path '/srv/http/verynginx/lua_script/?.lua;;/srv/http/verynginx/lua_script/module/?.lua;;';
+lua_package_cpath '/srv/http/verynginx/lua_script/?.so;;';   
+lua_code_cache on;
+
+lua_shared_dict status 1m;
+lua_shared_dict frequency_limit 10m;
+lua_shared_dict summary_long 10m;
+lua_shared_dict summary_short 10m;
+
+init_by_lua_file /srv/http/verynginx/lua_script/on_init.lua;
+rewrite_by_lua_file /srv/http/verynginx/lua_script/on_rewrite.lua;
+access_by_lua_file /srv/http/verynginx/lua_script/on_access.lua;
+log_by_lua_file /srv/http/verynginx/lua_script/on_log.lua;
+
+map $uri $vnloggable {
+    ~*\.(?:css|js)$ 0;
+    '/verynginx/status' 0;
+    ~*/index\.html 0;
+    default 1;
+}
+### END: verynginx/nginx_conf/in_http_block.conf ###
+
 server {
     listen       80;
     server_name  monit.shmilee.io;
@@ -11,6 +40,7 @@ server {
     ssl_certificate_key    /srv/etc/ssl-certs/server-monit-shmilee.key;
     access_log  /srv/log/nginx-monit-access.log main buffer=32k;
     error_log   /srv/log/nginx-monit-error.log notice;
+    client_body_buffer_size 64k;
 
     location  / {
         proxy_set_header X-Real-IP $remote_addr;
@@ -23,4 +53,45 @@ server {
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
     }
+    location = /favicon.ico {
+        access_log off;
+    }
+
+### BEGIN: verynginx/nginx_conf/in_server_block.conf ###
+    set $vn_exec_flag '';
+    set $vn_ctx_dump '';
+
+    #for proxy_pass backend
+    set $vn_proxy_scheme '';
+    set $vn_proxy_host '';
+    set $vn_proxy_port '';
+    set $vn_header_host '';
+    set $vn_static_expires 'epoch';
+
+    #for static file backend
+    set $vn_static_root '';
+
+    location @vn_static {
+        access_log /srv/log/nginx-verynginx-access.log main if=$vnloggable;
+        error_log  /srv/log/nginx-verynginx-error.log notice;
+        expires $vn_static_expires;
+        root $vn_static_root;
+    }
+
+    location @vn_proxy {
+        access_log /srv/log/nginx-verynginx-access.log main if=$vnloggable;
+        error_log  /srv/log/nginx-verynginx-error.log notice;
+        proxy_set_header Host $vn_header_host;
+        #proxy_set_header X-Real-IP $remote_addr;
+        #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header User-Agent $http_user_agent;
+        proxy_pass $vn_proxy_scheme://vn_upstream;
+        proxy_ssl_verify off;
+    }
+
+    location ~ /(verynginx|vn)/ {
+        access_log /srv/log/nginx-verynginx-access.log main if=$vnloggable;
+        error_log  /srv/log/nginx-verynginx-error.log notice;
+    }
+### END: verynginx/nginx_conf/in_server_block.conf ###
 }
