@@ -54,20 +54,12 @@ Docker image
 
 Build mynginx image, matplothub image.
 
-nbviewer
-========
-
-```
-nbviewer_commit='0bf9258c078c4b09eec914172d10524e644cdb4e'
-sh ./build_nbviewer.sh ${nbviewer_commit}
-```
-
 owncloud
 ========
 
-* `oc-perms.sh <owncloud-path>`
+* `other_tools/oc-perms.sh <owncloud-path>`
 
-* etc/nginx-owncloud.conf
+* etc/sites-disabled/nginx-owncloud.vhost
 
 * create database in MariaDB
 
