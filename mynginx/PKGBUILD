@@ -30,6 +30,7 @@ _githubmodules=(
   'array_var     array-var-nginx-module         0.05   openresty/%s/archive/v%s.tar.gz'
   'auth_pam      ngx_http_auth_pam_module       1.5.1  stogh/%s/archive/v%s.tar.gz'
   'auth_spnego   spnego-http-auth-nginx-module 48c6e2e38274ffd04c51ab628adb72af3a94a3a9 stnoonan/%s/archive/%s.tar.gz'
+  'cache_purge   ngx_cache_purge                2.3    FRiCKLE/%s/archive/%s.tar.gz' # patch src
   'concat        nginx-http-concat b8d3e7ec511724a6900ba3915df6b504337891a9 alibaba/%s/archive/%s.tar.gz' # patch src
   'echo          echo-nginx-module              0.60   openresty/%s/archive/v%s.tar.gz'
   'encrypted_session  encrypted-session-nginx-module 0.06 openresty/%s/archive/v%s.tar.gz'
@@ -78,7 +79,7 @@ _githubmodules=(
 pkgbase=mynginx
 pkgname=(mynginx mynginx-pagespeed mynginx-passenger)
 pkgver=${_pkgver}
-pkgrel=2
+pkgrel=3
 _shortNames='3rd party modules'
 for _m in "${_githubmodules[@]}";do
   _mod=($_m)
@@ -120,6 +121,7 @@ sha256sums=('1045ac4987a396e2fa5d0011daf8987b612dd2f05181b67507da68cbe7d765c2'
             'c949d4be6f3442c8e2937046448dc8d8def25c0e0fa6f4e805144cea45eabe80'
             '77676842919134af88a7b4bfca4470223e3a00d287d17c0dbdc9a114a685b6e7'
             'f5640c40406769b2cb930234b3ed4a86fe70c02998d39ec4426ad16fe3b108f6'
+            'cb7d5f22919c613f1f03341a1aeb960965269302e9eb23425ccaabd2f5dcbbec'
             'e34ef51c299bc3d662b6c74031f7ad9775d73e84cfaa4e72810959fe1760413c'
             '1077da2229ac7d0a0215e9e6817e297c10697e095010d88f1adbd1add1ce9f4e'
             'fa6537c406cee1dc7acd6152d16dba4581d53587860a0642f1b0f7c817ee006d'
@@ -217,7 +219,20 @@ _get_module_dir() {
 }
 
 prepare() {
-  cd $(_get_module_dir 'concat')
+  cd $(_get_module_dir 'cache_purge')
+  sed -i '18,19d' ./config
+  sed -i '17a \
+if test -n "$ngx_module_link"; then\
+    ngx_module_type=HTTP\
+    ngx_module_name=$ngx_addon_name\
+    ngx_module_srcs="$ngx_addon_dir/ngx_cache_purge_module.c"\
+    . auto/module\
+else\
+    HTTP_AUX_FILTER_MODULES="$HTTP_MODULES $ngx_addon_name"\
+    NGX_ADDON_SRCS="$NGX_ADDON_SRCS $ngx_addon_dir/ngx_cache_purge_module.c"\
+fi' ./config
+
+  cd ../$(_get_module_dir 'concat')
   cat >./config <<'EOF'
 ngx_addon_name=ngx_http_concat_module
 if test -n "$ngx_module_link"; then
