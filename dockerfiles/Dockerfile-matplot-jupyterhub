@@ -35,7 +35,7 @@ RUN PP_index='https://pypi.tuna.tsinghua.edu.cn/simple' && \
     pip3 install -i "$PP_index" matplotlib jupyterhub && \
     echo "==> add iruby kernel ..." && \
     pacman -Sy --noconfirm ruby make czmq && \
-    gem sources --add https://ruby.taobao.org/ --remove https://rubygems.org/ && \
+    gem sources --add https://gems.ruby-china.org/ --remove https://rubygems.org/ && \
     gem install --no-user-install rbczmq iruby -- --with-system-libs && \
     echo "==> add matlab kernel ..." && \
     pacman -Sy --noconfirm ncurses5-compat-libs libxpm libxmu libxp libxrandr && \
