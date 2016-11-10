@@ -11,7 +11,7 @@ upstream wikibackend{
 }
 
 proxy_cache_path /srv/http/wikipedia-cache levels=2:2
-    keys_zone=WIKICACHE:20m inactive=10d max_size=2g use_temp_path=off;
+    keys_zone=WIKICACHE:20m inactive=10d max_size=4g use_temp_path=off;
 
 #server {
 #  server_name up.wiki.shmilee.io;
@@ -87,7 +87,8 @@ server {
     proxy_set_header referer "https://$proxy_host$request_uri";
 
     proxy_cache WIKICACHE;
-    proxy_cache_key "$host+$scheme$proxy_host$request_uri";
+    #proxy_cache_key "$host+$scheme$proxy_host$request_uri";
+    proxy_cache_key  $host+$scheme$uri$is_args$args;
     proxy_cache_valid 200 301 302 304 10d;
     proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_503 http_504;
     proxy_cache_revalidate on;
@@ -102,6 +103,14 @@ server {
     subs_filter //wikipedia.org //wiki.shmilee.io;
     subs_filter 'https://([^.]+).wiki' 'http://$1.wiki' igr; 
 #    subs_filter upload.wikimedia.org up.wiki.shmilee.io;
+  }
+
+  # purge content from proxy caches
+  location ~ /purge(/.*) {
+    allow             127.0.0.1;
+    allow             192.168.5.126;
+    deny              all;
+    proxy_cache_purge WIKICACHE $host+$scheme$1$is_args$args;
   }
 }
 server {
@@ -125,7 +134,8 @@ server {
     proxy_set_header referer "https://$proxy_host$request_uri";
 
     proxy_cache WIKICACHE;
-    proxy_cache_key "$host+$scheme$proxy_host$request_uri";
+    #proxy_cache_key "$host+$scheme$proxy_host$request_uri";
+    proxy_cache_key  $host+$scheme$uri$is_args$args;
     proxy_cache_valid 200 301 302 304 10d;
     proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_503 http_504;
     proxy_cache_revalidate on;
@@ -140,5 +150,13 @@ server {
     subs_filter //wikipedia.org //wiki.shmilee.io;
     subs_filter 'https://([^.]+).m.wiki' 'http://$1.m.wiki' igr; 
 #    subs_filter upload.wikimedia.org up.wiki.shmilee.io;
+  }
+
+  # purge content from proxy caches
+  location ~ /purge(/.*) {
+    allow             127.0.0.1;
+    allow             192.168.5.126;
+    deny              all;
+    proxy_cache_purge WIKICACHE $host+$scheme$1$is_args$args;
   }
 }
