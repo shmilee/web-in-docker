@@ -13,7 +13,7 @@ server {
   server_name zh.wiki.shmilee.io;
   listen 80;
   resolver 8.8.4.4;
-  access_log /srv/log/nginx-zhwikipedia-access.log main buffer=32k;
+  access_log /srv/log/nginx-zhwikipedia-access.log main buffer=32k flush=2m;
   error_log  /srv/log/nginx-zhwikipedia-error.log notice;
 
   location / {
@@ -46,7 +46,7 @@ server {
   server_name zh.m.wiki.shmilee.io;
   listen 80;
   resolver 8.8.4.4;
-  access_log /srv/log/nginx-zhwikipedia-access.log main buffer=32k;
+  access_log /srv/log/nginx-zhwikipedia-access.log main buffer=32k flush=2m;
   error_log  /srv/log/nginx-zhwikipedia-error.log notice;
 
   location / {

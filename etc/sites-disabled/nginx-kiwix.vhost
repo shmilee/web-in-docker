@@ -2,7 +2,7 @@
 server {
     listen       80;
     server_name  kiwix.shmilee.io;
-    access_log  /srv/log/nginx-kiwix-access.log main buffer=32k;
+    access_log  /srv/log/nginx-kiwix-access.log main buffer=32k flush=2m;
     error_log   /srv/log/nginx-kiwix-error.log notice;
 
     location  / {

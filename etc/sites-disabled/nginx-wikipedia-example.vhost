@@ -32,7 +32,7 @@ upstream zh.m.wikipedia.org {
 server {
   server_name up.wiki.shmilee.io;
   listen 80;
-  access_log /srv/log/nginx-wikipedia-access.log main buffer=32k;
+  access_log /srv/log/nginx-wikipedia-access.log main buffer=32k flush=2m;
   error_log  /srv/log/nginx-wikipedia-error.log notice;
   location / {
     proxy_pass https://upload.wikimedia.org;
@@ -47,7 +47,7 @@ server {
   server_name  wiki.shmilee.io;
   listen 80;
   resolver 8.8.4.4;
-  access_log /srv/log/nginx-wikipedia-access.log main buffer=32k;
+  access_log /srv/log/nginx-wikipedia-access.log main buffer=32k flush=2m;
   error_log  /srv/log/nginx-wikipedia-error.log notice;
   location / {
     proxy_pass https://www.wikipedia.org;
@@ -71,7 +71,7 @@ server {
   server_name  ~^(?<subdomain>[^.]+)\.wiki\.shmilee\.io$;
   listen 80;
   resolver 8.8.4.4;
-  access_log /srv/log/nginx-wikipedia-access.log main buffer=32k;
+  access_log /srv/log/nginx-wikipedia-access.log main buffer=32k flush=2m;
   error_log  /srv/log/nginx-wikipedia-error.log notice;
   location / {
     proxy_pass https://$subdomain.wikipedia.org;
@@ -97,7 +97,7 @@ server {
   server_name ~^(?<subdomain>[^.]+)\.m\.wiki\.shmilee\.io$;
   listen 80;
   resolver 8.8.4.4;
-  access_log /srv/log/nginx-wikipedia-access.log main buffer=32k;
+  access_log /srv/log/nginx-wikipedia-access.log main buffer=32k flush=2m;
   error_log  /srv/log/nginx-wikipedia-error.log notice;
   location / {
     proxy_pass https://$subdomain.m.wikipedia.org;

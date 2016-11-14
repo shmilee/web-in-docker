@@ -2,7 +2,7 @@
 server {
     listen       80;
     server_name  arch.shmilee.io;
-    access_log  /srv/log/nginx-arch-access.log main buffer=32k;
+    access_log  /srv/log/nginx-arch-access.log main buffer=32k flush=2m;
     error_log   /srv/log/nginx-arch-error.log notice;
 
     location  / {
@@ -25,7 +25,7 @@ server {
 server {
     listen       80;
     server_name  archwiki.shmilee.io;
-    access_log  /srv/log/nginx-archwiki-access.log main buffer=32k;
+    access_log  /srv/log/nginx-archwiki-access.log main buffer=32k flush=2m;
     error_log   /srv/log/nginx-archwiki-error.log notice;
 
     location  / {
@@ -48,7 +48,7 @@ server {
 server {
     listen       80;
     server_name  aur.shmilee.io;
-    access_log  /srv/log/nginx-aur-access.log main buffer=32k;
+    access_log  /srv/log/nginx-aur-access.log main buffer=32k flush=2m;
     error_log   /srv/log/nginx-aur-error.log notice;
 
     location  / {

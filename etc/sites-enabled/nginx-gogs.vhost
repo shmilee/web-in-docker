@@ -2,7 +2,7 @@
 server {
     listen       80;
     server_name  gogs.shmilee.io;
-    access_log  /srv/log/nginx-gogs-access.log main buffer=32k;
+    access_log  /srv/log/nginx-gogs-access.log main buffer=32k flush=2m;
     error_log   /srv/log/nginx-gogs-error.log notice;
     set $vn_exec_flag '';
 

@@ -38,7 +38,7 @@ server {
     server_name monit.shmilee.io;
     ssl_certificate        /srv/etc/ssl-certs/server-monit-shmilee.crt;
     ssl_certificate_key    /srv/etc/ssl-certs/server-monit-shmilee.key;
-    access_log  /srv/log/nginx-monit-access.log main buffer=32k;
+    access_log  /srv/log/nginx-monit-access.log main buffer=32k flush=2m;
     error_log   /srv/log/nginx-monit-error.log notice;
     client_body_buffer_size 64k;
 

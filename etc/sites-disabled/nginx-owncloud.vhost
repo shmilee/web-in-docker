@@ -11,7 +11,7 @@ server {
 
     ssl_certificate            /srv/etc/ssl-certs/server-owncloud.crt;
     ssl_certificate_key        /srv/etc/ssl-certs/server-owncloud.key;
-    access_log  /srv/log/nginx-owncloud-access.log main buffer=32k;
+    access_log  /srv/log/nginx-owncloud-access.log main buffer=32k flush=2m;
     error_log   /srv/log/nginx-owncloud-error.log notice;
 
     # Add headers to serve security related headers
