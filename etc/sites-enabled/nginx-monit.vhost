@@ -52,9 +52,9 @@ server {
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
-    }
-    location = /favicon.ico {
-        access_log off;
+        if ($request_uri ~ ^/favicon.ico$) {
+            access_log off;
+        }
     }
 
 ### BEGIN: verynginx/nginx_conf/in_server_block.conf ###
