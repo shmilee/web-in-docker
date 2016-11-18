@@ -22,65 +22,91 @@ _PASS_PREFIX=/usr/lib/${_pkgname}/passenger
 # modules depend on ngx_devel_kit, subs_filter
 _modules_using_ndk=(array_var encrypted_session form_input iconv lua lua_upstream set_misc)
 _modules_using_subs=(google_filter)
-# (shortName) (fullName) (version) (downloadUrl)
-# format downloadUrl: printf "https://github.com/downloadUrl" fullName version
+# (shortName) (fullName) (version) (moduleName) (downloadUrl)
+# format moduleName:  printf "(moduleName)_module.so" (shortName)
+# format downloadUrl: printf "https://github.com/(downloadUrl)" (fullName) (version)
 _githubmodules=(
-  'ndk_http      ngx_devel_kit                  0.3.0  simpl/%s/archive/v%s.tar.gz' # add before _modules_using_ndk
-  'accounting    ngx_http_accounting_module 3c13f62b08fa9bf6b7d4706ad4e0d9c4b5c2996b lax/%s/archive/%s.tar.gz'
-  'array_var     array-var-nginx-module         0.05   openresty/%s/archive/v%s.tar.gz'
-  'auth_pam      ngx_http_auth_pam_module       1.5.1  stogh/%s/archive/v%s.tar.gz'
-  'auth_spnego   spnego-http-auth-nginx-module 48c6e2e38274ffd04c51ab628adb72af3a94a3a9 stnoonan/%s/archive/%s.tar.gz'
-  'cache_purge   ngx_cache_purge   da8a74cf63e2c3a36331adf449c2bf7c02cb8370 nginx-modules/%s/archive/%s.tar.gz'
-  'concat        nginx-http-concat b8d3e7ec511724a6900ba3915df6b504337891a9 alibaba/%s/archive/%s.tar.gz' # patch src
-  'dynamic_upstream ngx_dynamic_upstream        0.1.6  cubicdaiya/%s/archive/v%s.tar.gz'
-  'echo          echo-nginx-module              0.60   openresty/%s/archive/v%s.tar.gz'
-  'encrypted_session  encrypted-session-nginx-module 0.06 openresty/%s/archive/v%s.tar.gz'
-  'enhanced_memcached ngx_http_enhanced_memcached_module 80518efa78974bc0c1e7478e83964441fb2bbd78 bpaquet/%s/archive/%s.tar.gz'
-  'eval          nginx-eval-module         2016.06.10  openresty/%s/archive/%s.tar.gz'
-  'fancyindex    ngx-fancyindex                 0.4.1  aperezdc/%s/archive/v%s.tar.gz' #13 # patch src
-  'form_input    form-input-nginx-module        0.12   calio/%s/archive/v%s.tar.gz'
-  'geoip2        ngx_http_geoip2_module         1.1    leev/%s/archive/%s.tar.gz'
-  'google_filter ngx_http_google_filter_module  0.2.0  cuber/%s/archive/%s.tar.gz' # patch src
-  'headers_more_filter headers-more-nginx-module 0.31  openresty/%s/archive/v%s.tar.gz'
-  'http_upsync   nginx-upsync-module 6a840ddf0a1f281af605c4aa59098e3ee9537264 weibocom/%s/archive/%s.tar.gz'
-  'iconv         iconv-nginx-module             0.14   calio/%s/archive/v%s.tar.gz'
-  'lua           lua-nginx-module               0.10.6 openresty/%s/archive/v%s.tar.gz'
-  'lua_upstream  lua-upstream-nginx-module      0.06   openresty/%s/archive/v%s.tar.gz'
-  'memc          memc-nginx-module              0.17   openresty/%s/archive/v%s.tar.gz'
-  'naxsi         naxsi                          0.55.1 nbs-system/%s/archive/%s.tar.gz' # module path
-  'nchan         nchan                          1.0.4  slact/%s/archive/v%s.tar.gz' #24
-  "pagespeed     ngx_pagespeed  ${_NPS_VERSION}-beta   pagespeed/%s/archive/v%s.tar.gz" # Split Package # patch src
-  "passenger     passenger   release-${_PASS_VERSION}  phusion/%s/archive/%s.tar.gz" # Split Package # module path # patch src
-  'push_stream   nginx-push-stream-module       0.5.2  wandenberg/%s/archive/%s.tar.gz'
-  'rdns          nginx-http-rdns a32deecaf1fa4be4bd445c2b770283d20bf61da6 flant/%s/archive/%s.tar.gz'
-  'redis2        redis2-nginx-module            0.13   openresty/%s/archive/v%s.tar.gz'
-  'replace_filter replace-filter-nginx-module 2c7f0656c816e347ba43a7909120d434a168044c openresty/%s/archive/%s.tar.gz'
-  'rtmp          nginx-rtmp-module c3237ae747ff0b06494326731e215c23ae884966 sergey-dryabzhinsky/%s/archive/%s.tar.gz'
-  'rtmpt_proxy   nginx-rtmpt-proxy-module 62130c9a89b7209842616ae8551f554347e5707d kwojtek/%s/archive/%s.tar.gz'
-  'set_misc      set-misc-nginx-module          0.31   openresty/%s/archive/v%s.tar.gz'
-  'shibboleth    nginx-http-shibboleth          2.0.0  nginx-shib/%s/archive/v%s.tar.gz' #34
-  'small_light   ngx_small_light                0.9.0  cubicdaiya/%s/archive/v%s.tar.gz' # patch src
-  'sorted_querystring nginx-sorted-querystring-module 0.3   wandenberg/%s/archive/%s.tar.gz'
-  'srcache_filter srcache-nginx-module          0.31   openresty/%s/archive/v%s.tar.gz'
-  'ssl_ct        nginx-ct                       1.3.1  grahamedgecombe/%s/archive/v%s.tar.gz'
-  'stream_upsync nginx-stream-upsync-module f2515a226131c148555b342cb1439c6307711e67 xiaokai-wang/%s/archive/%s.tar.gz'
-  'subs_filter   ngx_http_substitutions_filter_module bc58cb11844bc42735bbaef7085ea86ace46d05b yaoweibin/%s/archive/%s.tar.gz' # patch src
-  'testcookie_access testcookie-nginx-module b20b5fde6516303eaec6e83f4154db5c03b7e609 kyprizel/%s/archive/%s.tar.gz'
-  'uploadprogress nginx-upload-progress-module afb2d31d1277c50bd6215c470ba94b843349e250 masterzen/%s/archive/%s.tar.gz'
-  'upstream_fair nginx-upstream-fair a18b4099fbd458111983200e098b6f0c8efed4bc gnosek/%s/archive/%s.tar.gz' #43 # patch src
-  'vhost_traffic_status nginx-module-vts 64e00555a788b93fd279f4c09db69795cf6414db vozlt/%s/archive/%s.tar.gz'
+  'ndk           ngx_devel_kit                  0.3.0  %s_http simpl/%s/archive/v%s.tar.gz' # add before _modules_using_ndk
+  'accounting    ngx_http_accounting_module 3c13f62b08fa9bf6b7d4706ad4e0d9c4b5c2996b ngx_http_%s lax/%s/archive/%s.tar.gz'
+  'array_var     array-var-nginx-module         0.05   ngx_http_%s  openresty/%s/archive/v%s.tar.gz'
+  'auth_pam      ngx_http_auth_pam_module       1.5.1  ngx_http_%s  stogh/%s/archive/v%s.tar.gz'
+  'auth_spnego   spnego-http-auth-nginx-module 48c6e2e38274ffd04c51ab628adb72af3a94a3a9 ngx_http_%s stnoonan/%s/archive/%s.tar.gz'
+  'cache_purge   ngx_cache_purge   da8a74cf63e2c3a36331adf449c2bf7c02cb8370 ngx_http_%s nginx-modules/%s/archive/%s.tar.gz'
+  'concat        nginx-http-concat b8d3e7ec511724a6900ba3915df6b504337891a9 ngx_http_%s alibaba/%s/archive/%s.tar.gz' # patch src
+  'dynamic_upstream ngx_dynamic_upstream        0.1.6  ngx_%s       cubicdaiya/%s/archive/v%s.tar.gz'
+  'echo          echo-nginx-module              0.60   ngx_http_%s  openresty/%s/archive/v%s.tar.gz'
+  'encrypted_session  encrypted-session-nginx-module 0.06 ngx_http_%s openresty/%s/archive/v%s.tar.gz'
+  'enhanced_memcached ngx_http_enhanced_memcached_module 80518efa78974bc0c1e7478e83964441fb2bbd78 ngx_http_%s bpaquet/%s/archive/%s.tar.gz'
+  'eval          nginx-eval-module         2016.06.10  ngx_http_%s  openresty/%s/archive/%s.tar.gz'
+  'fancyindex    ngx-fancyindex                 0.4.1  ngx_http_%s  aperezdc/%s/archive/v%s.tar.gz' #13 # patch src
+  'form_input    form-input-nginx-module        0.12   ngx_http_%s  calio/%s/archive/v%s.tar.gz'
+  'geoip2        ngx_http_geoip2_module         1.1    ngx_http_%s  leev/%s/archive/%s.tar.gz'
+  'google_filter ngx_http_google_filter_module  0.2.0  ngx_http_%s  cuber/%s/archive/%s.tar.gz' # patch src
+  'headers_more_filter headers-more-nginx-module 0.31  ngx_http_%s  openresty/%s/archive/v%s.tar.gz'
+  'http_upsync   nginx-upsync-module 6a840ddf0a1f281af605c4aa59098e3ee9537264 ngx_%s weibocom/%s/archive/%s.tar.gz'
+  'iconv         iconv-nginx-module             0.14   ngx_http_%s  calio/%s/archive/v%s.tar.gz'
+  'lua           lua-nginx-module               0.10.6 ngx_http_%s  openresty/%s/archive/v%s.tar.gz'
+  'lua_upstream  lua-upstream-nginx-module      0.06   ngx_http_%s  openresty/%s/archive/v%s.tar.gz'
+  'memc          memc-nginx-module              0.17   ngx_http_%s  openresty/%s/archive/v%s.tar.gz'
+  'naxsi         naxsi                          0.55.1 ngx_http_%s  nbs-system/%s/archive/%s.tar.gz' # module path
+  'nchan         nchan                          1.0.4  ngx_%s       slact/%s/archive/v%s.tar.gz' #24
+  "pagespeed     ngx_pagespeed  ${_NPS_VERSION}-beta   Exception  pagespeed/%s/archive/v%s.tar.gz" # Split Package # patch src
+  "passenger     passenger   release-${_PASS_VERSION}  Exception  phusion/%s/archive/%s.tar.gz" # Split Package # module path # patch src
+  'push_stream   nginx-push-stream-module       0.5.2  ngx_http_%s  wandenberg/%s/archive/%s.tar.gz'
+  'rdns          nginx-http-rdns a32deecaf1fa4be4bd445c2b770283d20bf61da6 ngx_http_%s flant/%s/archive/%s.tar.gz'
+  'redis2        redis2-nginx-module            0.13   ngx_http_%s  openresty/%s/archive/v%s.tar.gz'
+  'replace_filter replace-filter-nginx-module 2c7f0656c816e347ba43a7909120d434a168044c ngx_http_%s openresty/%s/archive/%s.tar.gz'
+  'rtmp          nginx-rtmp-module c3237ae747ff0b06494326731e215c23ae884966 ngx_%s sergey-dryabzhinsky/%s/archive/%s.tar.gz'
+  'rtmpt_proxy   nginx-rtmpt-proxy-module 62130c9a89b7209842616ae8551f554347e5707d ngx_%s kwojtek/%s/archive/%s.tar.gz'
+  'set_misc      set-misc-nginx-module          0.31   ngx_http_%s  openresty/%s/archive/v%s.tar.gz'
+  'shibboleth    nginx-http-shibboleth          2.0.0  ngx_http_%s  nginx-shib/%s/archive/v%s.tar.gz' #34
+  'small_light   ngx_small_light                0.9.0  ngx_http_%s  cubicdaiya/%s/archive/v%s.tar.gz' # patch src
+  'sorted_querystring nginx-sorted-querystring-module 0.3   ngx_http_%s wandenberg/%s/archive/%s.tar.gz'
+  'srcache_filter srcache-nginx-module          0.31   ngx_http_%s  openresty/%s/archive/v%s.tar.gz'
+  'ssl_ct        nginx-ct                       1.3.1  Exception    grahamedgecombe/%s/archive/v%s.tar.gz'
+  'stream_upsync nginx-stream-upsync-module f2515a226131c148555b342cb1439c6307711e67 ngx_%s xiaokai-wang/%s/archive/%s.tar.gz'
+  'subs_filter   ngx_http_substitutions_filter_module bc58cb11844bc42735bbaef7085ea86ace46d05b ngx_http_%s yaoweibin/%s/archive/%s.tar.gz' # patch src
+  'testcookie_access testcookie-nginx-module b20b5fde6516303eaec6e83f4154db5c03b7e609 ngx_http_%s kyprizel/%s/archive/%s.tar.gz'
+  'uploadprogress nginx-upload-progress-module afb2d31d1277c50bd6215c470ba94b843349e250 ngx_http_%s masterzen/%s/archive/%s.tar.gz'
+  'upstream_fair nginx-upstream-fair a18b4099fbd458111983200e098b6f0c8efed4bc ngx_http_%s gnosek/%s/archive/%s.tar.gz' #43 # patch src
+  'vhost_traffic_status nginx-module-vts 64e00555a788b93fd279f4c09db69795cf6414db ngx_http_%s vozlt/%s/archive/%s.tar.gz'
 )
 # 'brotli ngx_brotli 12529813a9f8475718370a19007c7905601a62ad google/%s/archive/%s.tar.gz' #depends brotli libbrotli
 # 'ip-blocker nginx-ip-blocker 4083de37dba7a74bada8519ca4401698d80489b8 tmthrgd/%s/archive/%s.tar.gz' #ip-blocker-agent
 # 'log-zmq nginx-log-zmq 808601efabb1856bf83bc7deb6953076fe6ce3b1 alticelabs/%s/archive/%s.tar.gz' #fix config: CORE_INCS,CORE_LIBS
 # 'stream-lua stream-lua-nginx-module 97d15ee8e0a969f9a64b676376de33050f94be4b openresty/%s/archive/%s.tar.gz' #luajit, dynamic not support
 # 'upstream_check nginx_upstream_check_module d6341aeeb86911d4798fbceab35015c63178e66f yaoweibin/%s/archive/%s.tar.gz' #dynamic not support, patch nginx, fair, upsync
+
+# usage: _get_module_dir shortName, -> fullName-version
+_get_module_dir() {
+  local _shortname=$1
+  for _m in "${_githubmodules[@]}";do
+    _mod=($_m)
+    if [[ x$_shortname == x${_mod[0]} ]]; then
+      echo ${_mod[1]}-${_mod[2]}
+      return 0
+    fi
+  done
+  error "$_shortname Not Found in '_githubmodules' array."
+}
+# usage: _get_moduleName shortName, -> moduleName_module.so
+_get_moduleName() {
+  local _shortname=$1
+  for _m in "${_githubmodules[@]}";do
+    _mod=($_m)
+    if [[ x$_shortname == x${_mod[0]} ]]; then
+      echo $(printf "${_mod[3]}_module.so" ${_mod[0]})
+      return 0
+    fi
+  done
+  error "$_shortname Not Found in '_githubmodules' array."
+}
 ### END
 
 pkgbase=mynginx
 pkgname=(mynginx mynginx-pagespeed mynginx-passenger)
 pkgver=${_pkgver}
-pkgrel=3
+pkgrel=4
 _shortNames='3rd party modules'
 for _m in "${_githubmodules[@]}";do
   _mod=($_m)
@@ -92,15 +118,16 @@ pkgdesc="Lightweight HTTP server and IMAP/POP3 proxy server - with $_shortNames 
 arch=('i686' 'x86_64')
 url='http://nginx.org'
 license=('custom')
-depends=('pcre' 'zlib' 'openssl' 'geoip')
+depends=('pcre' 'zlib' 'openssl')
 optdepends=('gd: image_filter support'
             'libxslt: xslt_filter support'
+            'geoip: geoip support'
             'libmaxminddb: geoip2 support'
             'sregex: replace_filter support'
-            'luajit: ngx_lua support'
+            'luajit: lua support'
             'imagemagick: small_light support'
-            'krb5: spnego-http-auth support')
-makedepends=('hardening-wrapper' 'git' 'gd' 'libxslt' 'libmaxminddb'
+            'krb5: auth_spnego support')
+makedepends=('hardening-wrapper' 'git' 'gd' 'libxslt' 'geoip' 'libmaxminddb'
              'sregex' 'luajit' 'ruby' 'imagemagick' 'krb5')
 
 source=($url/download/nginx-$pkgver.tar.gz
@@ -110,7 +137,7 @@ source=($url/download/nginx-$pkgver.tar.gz
         psol-${_NPS_VERSION}.tar.gz::https://dl.google.com/dl/page-speed/psol/${_NPS_VERSION}.tar.gz)
 for _m in "${_githubmodules[@]}";do
   _mod=($_m)
-  source+=($(printf "${_mod[1]}-${_mod[2]}.tar.gz::https://github.com/${_mod[3]}" ${_mod[1]} ${_mod[2]}))
+  source+=($(printf "${_mod[1]}-${_mod[2]}.tar.gz::https://github.com/${_mod[4]}" ${_mod[1]} ${_mod[2]}))
 done
 sha256sums=('1045ac4987a396e2fa5d0011daf8987b612dd2f05181b67507da68cbe7d765c2'
             '4ecbc33ce4bf2965996f51b0c7edb677904ba5cff9a32e93e1487a428d3a751b'
@@ -171,7 +198,6 @@ _common_flags=(
   --with-http_dav_module
   --with-http_degradation_module
   --with-http_flv_module
-  --with-http_geoip_module
   --with-http_gunzip_module
   --with-http_gzip_static_module
   --with-http_mp4_module
@@ -191,6 +217,7 @@ _common_flags=(
 _stable_flags=(
   --with-http_image_filter_module=dynamic
   --with-http_xslt_module=dynamic
+  --with-http_geoip_module=dynamic
 )
 
 _3d_party_modules_flags=(
@@ -206,19 +233,6 @@ for _m in "${_githubmodules[@]}";do
     _3d_party_modules_flags+=("--add-dynamic-module=../${_mod[1]}-${_mod[2]}")
   fi
 done
-
-# usage: _get_module_dir shortName, -> fullName-version
-_get_module_dir() {
-  local _shortname=$1
-  for _m in "${_githubmodules[@]}";do
-    _mod=($_m)
-    if [[ x$_shortname == x${_mod[0]} ]]; then
-      echo ${_mod[1]}-${_mod[2]}
-      return 0
-    fi
-  done
-  error "$_shortname Not Found in '_githubmodules' array."
-}
 
 prepare() {
   cd $(_get_module_dir 'concat')
@@ -387,36 +401,40 @@ package_mynginx() {
     >> "${pkgdir}/usr/share/vim/vimfiles/ftdetect/nginx.vim"
 
   # add _modules_conf=/etc/nginx/modules/available
-  _objs_dir='./objs'
+  _objs_dir="${srcdir}/${_pkgname}-${_pkgver}/objs"
   install -d "$pkgdir"${_modules_conf}
-  for _m in "${_githubmodules[@]}" image_filter xslt_filter; do
+  # builtin modules
+  for _m in image_filter xslt_filter geoip; do
+    find ${_objs_dir} -type f -name "ngx_http_${_m}_module.so"\
+      | sed "s|${_objs_dir}\(.*$\)|load_module ${_modules_path}\1;|" \
+      > "$pkgdir"${_modules_conf}/0-${_m}.conf
+  done
+  # github modules
+  for _m in "${_githubmodules[@]}"; do
     _mod=($_m)
     [[ xpagespeed == x${_mod[0]} ]] && continue
     [[ xpassenger == x${_mod[0]} ]] && continue
+    [[ xssl_ct == x${_mod[0]} ]] && continue
+    _modN="$(_get_moduleName ${_mod[0]})"
+    _modconf="$pkgdir"${_modules_conf}/0-${_mod[0]}.conf
+    if [ ! -f ${_objs_dir}/$_modN ]; then
+      error '%s module file lost!' ${_mod[0]}
+      exit 1
+    fi
     if in_array ${_mod[0]} ${_modules_using_ndk[@]}; then
-      find ${_objs_dir} -type f -name "*${_mod[0]}_module.so" \
-        | sed "s|${_objs_dir}\(.*$\)|load_module ${_modules_path}\1;|" \
-        >> "$pkgdir"${_modules_conf}/1-ndk_http-${_mod[0]}.conf
-      continue
+      _modconf="$pkgdir"${_modules_conf}/1-ndk-${_mod[0]}.conf
     fi
     if in_array ${_mod[0]} ${_modules_using_subs[@]}; then
-      find ${_objs_dir} -type f -name "*${_mod[0]}_module.so" \
-        | sed "s|${_objs_dir}\(.*$\)|load_module ${_modules_path}\1;|" \
-        >> "$pkgdir"${_modules_conf}/1-subs_filter-${_mod[0]}.conf
-      continue
+      _modconf="$pkgdir"${_modules_conf}/1-subs_filter-${_mod[0]}.conf
     fi
-    if [[ xssl_ct == x${_mod[0]} ]]; then
-      find ${_objs_dir} -type f -name "*${_mod[0]}_module.so" \
-        | sed -e '/ngx_ssl_ct_module.so/d' \
-              -e "1i load_module ${_modules_path}/ngx_ssl_ct_module.so;" \
-              -e "s|${_objs_dir}\(.*$\)|load_module ${_modules_path}\1;|" \
-        >> "$pkgdir"${_modules_conf}/0-${_mod[0]}.conf
-      continue
-    fi
-    find ${_objs_dir} -type f -name "*${_mod[0]}_module.so" \
-      | sed "s|${_objs_dir}\(.*$\)|load_module ${_modules_path}\1;|" \
-      > "$pkgdir"${_modules_conf}/0-${_mod[0]}.conf
+    echo "load_module ${_modules_path}/$_modN;" > $_modconf
   done
+  # ssl_ct
+  echo "load_module ${_modules_path}/ngx_ssl_ct_module.so;" > \
+    "$pkgdir"${_modules_conf}/0-ssl_ct.conf
+  find ${_objs_dir} -type f -name "ngx_*_ssl_ct_module.so" \
+    | sed "s|${_objs_dir}\(.*$\)|load_module ${_modules_path}\1;|" \
+    >> "$pkgdir"${_modules_conf}/0-ssl_ct.conf
 
   rm "${pkgdir}${_modules_path}"/ngx_http_passenger_module.so
   rm "${pkgdir}${_modules_path}"/ngx_pagespeed.so
