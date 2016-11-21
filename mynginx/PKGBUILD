@@ -31,7 +31,7 @@ _githubmodules=(
   'array_var     array-var-nginx-module         0.05   ngx_http_%s  openresty/%s/archive/v%s.tar.gz'
   'auth_pam      ngx_http_auth_pam_module       1.5.1  ngx_http_%s  stogh/%s/archive/v%s.tar.gz'
   'auth_spnego   spnego-http-auth-nginx-module 48c6e2e38274ffd04c51ab628adb72af3a94a3a9 ngx_http_%s stnoonan/%s/archive/%s.tar.gz'
-  'cache_purge   ngx_cache_purge   da8a74cf63e2c3a36331adf449c2bf7c02cb8370 ngx_http_%s nginx-modules/%s/archive/%s.tar.gz'
+  'cache_purge   ngx_cache_purge                2.3    ngx_http_%s  FRiCKLE/%s/archive/%s.tar.gz PATCH'
   'concat        nginx-http-concat b8d3e7ec511724a6900ba3915df6b504337891a9 ngx_http_%s alibaba/%s/archive/%s.tar.gz PATCH'
   'dynamic_upstream ngx_dynamic_upstream        0.1.6  ngx_%s       cubicdaiya/%s/archive/v%s.tar.gz'
   'echo          echo-nginx-module              0.60   ngx_http_%s  openresty/%s/archive/v%s.tar.gz'
@@ -106,7 +106,7 @@ _get_moduleName() {
 pkgbase=mynginx
 pkgname=(mynginx mynginx-pagespeed mynginx-passenger)
 pkgver=${_pkgver}
-pkgrel=4
+pkgrel=5
 _shortNames='3rd party modules'
 for _m in "${_githubmodules[@]}";do
   _mod=($_m)
@@ -373,7 +373,8 @@ sha256sums=('1045ac4987a396e2fa5d0011daf8987b612dd2f05181b67507da68cbe7d765c2'
             'c949d4be6f3442c8e2937046448dc8d8def25c0e0fa6f4e805144cea45eabe80'
             '77676842919134af88a7b4bfca4470223e3a00d287d17c0dbdc9a114a685b6e7'
             'f5640c40406769b2cb930234b3ed4a86fe70c02998d39ec4426ad16fe3b108f6'
-            '8c58b87d19c101029654654f2bfb1ec74414916f621c7e890d05855dcc51aec8'
+            'cb7d5f22919c613f1f03341a1aeb960965269302e9eb23425ccaabd2f5dcbbec'
+            '2988cffcf1eb9b363c1e3aa1c5e10eeca128b71229f4b5103c8e73ffe01b3f5a'
             'e34ef51c299bc3d662b6c74031f7ad9775d73e84cfaa4e72810959fe1760413c'
             '76af016c4f7affa4dfd82c76c3f539cbbe37b2abfdbe1dc049b91a9044460ab8'
             '056fcd63cab39c2f0144d6a8c3ce16e8ae2cfb6e02ad66e5972ffeeca6c6a4d3'
