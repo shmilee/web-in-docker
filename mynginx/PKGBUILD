@@ -22,7 +22,7 @@ _PASS_PREFIX=/usr/lib/${_pkgname}/passenger
 # modules depend on ngx_devel_kit, subs_filter
 _modules_using_ndk=(array_var encrypted_session form_input iconv lua lua_upstream set_misc)
 _modules_using_subs=(google_filter)
-# (shortName) (fullName) (version) (moduleName) (downloadUrl)
+# (shortName) (fullName) (version) (moduleName) (downloadUrl) (PATCH or NOT)
 # format moduleName:  printf "(moduleName)_module.so" (shortName)
 # format downloadUrl: printf "https://github.com/(downloadUrl)" (fullName) (version)
 _githubmodules=(
@@ -32,16 +32,16 @@ _githubmodules=(
   'auth_pam      ngx_http_auth_pam_module       1.5.1  ngx_http_%s  stogh/%s/archive/v%s.tar.gz'
   'auth_spnego   spnego-http-auth-nginx-module 48c6e2e38274ffd04c51ab628adb72af3a94a3a9 ngx_http_%s stnoonan/%s/archive/%s.tar.gz'
   'cache_purge   ngx_cache_purge   da8a74cf63e2c3a36331adf449c2bf7c02cb8370 ngx_http_%s nginx-modules/%s/archive/%s.tar.gz'
-  'concat        nginx-http-concat b8d3e7ec511724a6900ba3915df6b504337891a9 ngx_http_%s alibaba/%s/archive/%s.tar.gz' # patch src
+  'concat        nginx-http-concat b8d3e7ec511724a6900ba3915df6b504337891a9 ngx_http_%s alibaba/%s/archive/%s.tar.gz PATCH'
   'dynamic_upstream ngx_dynamic_upstream        0.1.6  ngx_%s       cubicdaiya/%s/archive/v%s.tar.gz'
   'echo          echo-nginx-module              0.60   ngx_http_%s  openresty/%s/archive/v%s.tar.gz'
   'encrypted_session  encrypted-session-nginx-module 0.06 ngx_http_%s openresty/%s/archive/v%s.tar.gz'
   'enhanced_memcached ngx_http_enhanced_memcached_module 80518efa78974bc0c1e7478e83964441fb2bbd78 ngx_http_%s bpaquet/%s/archive/%s.tar.gz'
   'eval          nginx-eval-module         2016.06.10  ngx_http_%s  openresty/%s/archive/%s.tar.gz'
-  'fancyindex    ngx-fancyindex                 0.4.1  ngx_http_%s  aperezdc/%s/archive/v%s.tar.gz' #13 # patch src
+  'fancyindex    ngx-fancyindex                 0.4.1  ngx_http_%s  aperezdc/%s/archive/v%s.tar.gz' #13 # template zh
   'form_input    form-input-nginx-module        0.12   ngx_http_%s  calio/%s/archive/v%s.tar.gz'
   'geoip2        ngx_http_geoip2_module         1.1    ngx_http_%s  leev/%s/archive/%s.tar.gz'
-  'google_filter ngx_http_google_filter_module  0.2.0  ngx_http_%s  cuber/%s/archive/%s.tar.gz' # patch src
+  'google_filter ngx_http_google_filter_module  0.2.0  ngx_http_%s  cuber/%s/archive/%s.tar.gz PATCH'
   'headers_more_filter headers-more-nginx-module 0.31  ngx_http_%s  openresty/%s/archive/v%s.tar.gz'
   'http_upsync   nginx-upsync-module 6a840ddf0a1f281af605c4aa59098e3ee9537264 ngx_%s weibocom/%s/archive/%s.tar.gz'
   'iconv         iconv-nginx-module             0.14   ngx_http_%s  calio/%s/archive/v%s.tar.gz'
@@ -50,8 +50,8 @@ _githubmodules=(
   'memc          memc-nginx-module              0.17   ngx_http_%s  openresty/%s/archive/v%s.tar.gz'
   'naxsi         naxsi                          0.55.1 ngx_http_%s  nbs-system/%s/archive/%s.tar.gz' # module path
   'nchan         nchan                          1.0.4  ngx_%s       slact/%s/archive/v%s.tar.gz' #24
-  "pagespeed     ngx_pagespeed  ${_NPS_VERSION}-beta   Exception  pagespeed/%s/archive/v%s.tar.gz" # Split Package # patch src
-  "passenger     passenger   release-${_PASS_VERSION}  Exception  phusion/%s/archive/%s.tar.gz" # Split Package # module path # patch src
+  "pagespeed     ngx_pagespeed  ${_NPS_VERSION}-beta   Exception  pagespeed/%s/archive/v%s.tar.gz" # Split Package # prepare psol
+  "passenger     passenger   release-${_PASS_VERSION}  Exception  phusion/%s/archive/%s.tar.gz PATCH" # Split Package # module path # gitsubmodules
   'push_stream   nginx-push-stream-module       0.5.2  ngx_http_%s  wandenberg/%s/archive/%s.tar.gz'
   'rdns          nginx-http-rdns a32deecaf1fa4be4bd445c2b770283d20bf61da6 ngx_http_%s flant/%s/archive/%s.tar.gz'
   'redis2        redis2-nginx-module            0.13   ngx_http_%s  openresty/%s/archive/v%s.tar.gz'
@@ -60,15 +60,15 @@ _githubmodules=(
   'rtmpt_proxy   nginx-rtmpt-proxy-module 62130c9a89b7209842616ae8551f554347e5707d ngx_%s kwojtek/%s/archive/%s.tar.gz'
   'set_misc      set-misc-nginx-module          0.31   ngx_http_%s  openresty/%s/archive/v%s.tar.gz'
   'shibboleth    nginx-http-shibboleth          2.0.0  ngx_http_%s  nginx-shib/%s/archive/v%s.tar.gz' #34
-  'small_light   ngx_small_light                0.9.0  ngx_http_%s  cubicdaiya/%s/archive/v%s.tar.gz' # patch src
+  'small_light   ngx_small_light                0.9.0  ngx_http_%s  cubicdaiya/%s/archive/v%s.tar.gz PATCH' # setup
   'sorted_querystring nginx-sorted-querystring-module 0.3   ngx_http_%s wandenberg/%s/archive/%s.tar.gz'
   'srcache_filter srcache-nginx-module          0.31   ngx_http_%s  openresty/%s/archive/v%s.tar.gz'
   'ssl_ct        nginx-ct                       1.3.1  Exception    grahamedgecombe/%s/archive/v%s.tar.gz'
   'stream_upsync nginx-stream-upsync-module f2515a226131c148555b342cb1439c6307711e67 ngx_%s xiaokai-wang/%s/archive/%s.tar.gz'
-  'subs_filter   ngx_http_substitutions_filter_module bc58cb11844bc42735bbaef7085ea86ace46d05b ngx_http_%s yaoweibin/%s/archive/%s.tar.gz' # patch src
+  'subs_filter   ngx_http_substitutions_filter_module bc58cb11844bc42735bbaef7085ea86ace46d05b ngx_http_%s yaoweibin/%s/archive/%s.tar.gz PATCH'
   'testcookie_access testcookie-nginx-module b20b5fde6516303eaec6e83f4154db5c03b7e609 ngx_http_%s kyprizel/%s/archive/%s.tar.gz'
   'uploadprogress nginx-upload-progress-module afb2d31d1277c50bd6215c470ba94b843349e250 ngx_http_%s masterzen/%s/archive/%s.tar.gz'
-  'upstream_fair nginx-upstream-fair a18b4099fbd458111983200e098b6f0c8efed4bc ngx_http_%s gnosek/%s/archive/%s.tar.gz' #43 # patch src
+  'upstream_fair nginx-upstream-fair a18b4099fbd458111983200e098b6f0c8efed4bc ngx_http_%s gnosek/%s/archive/%s.tar.gz PATCH' #43
   'vhost_traffic_status nginx-module-vts 64e00555a788b93fd279f4c09db69795cf6414db ngx_http_%s vozlt/%s/archive/%s.tar.gz'
 )
 # 'brotli ngx_brotli 12529813a9f8475718370a19007c7905601a62ad google/%s/archive/%s.tar.gz' #depends brotli libbrotli
@@ -133,61 +133,12 @@ makedepends=('hardening-wrapper' 'git' 'gd' 'libxslt' 'geoip' 'libmaxminddb'
 source=($url/download/nginx-$pkgver.tar.gz
         service
         logrotate
-        passenger-${_PASS_VERSION}.patch
         psol-${_NPS_VERSION}.tar.gz::https://dl.google.com/dl/page-speed/psol/${_NPS_VERSION}.tar.gz)
 for _m in "${_githubmodules[@]}";do
   _mod=($_m)
   source+=($(printf "${_mod[1]}-${_mod[2]}.tar.gz::https://github.com/${_mod[4]}" ${_mod[1]} ${_mod[2]}))
+  [[ xPATCH == x${_mod[5]} ]] && source+=(${_mod[1]}-${_mod[2]}.patch)
 done
-sha256sums=('1045ac4987a396e2fa5d0011daf8987b612dd2f05181b67507da68cbe7d765c2'
-            '4ecbc33ce4bf2965996f51b0c7edb677904ba5cff9a32e93e1487a428d3a751b'
-            '2613986dd5faab09ca962264f16841c8c55c3a0bc7a5bb737eabd83143090878'
-            'c1b14eb423442fa2b512a3a56f9938d9b025e392918f827ffa75d44683359e4d'
-            '1ccb59e81a4cdfd2d8e664c9ee1b31fa2f495aace640d4d14f58319688aaff8e'
-            '88e05a99a8a7419066f5ae75966fb1efc409bad4522d14986da074554ae61619'
-            'c0d684634aa9a53a4944622304b9e1220b0f8bc4b3cdb81acd7409b508b00136'
-            'c949d4be6f3442c8e2937046448dc8d8def25c0e0fa6f4e805144cea45eabe80'
-            '77676842919134af88a7b4bfca4470223e3a00d287d17c0dbdc9a114a685b6e7'
-            'f5640c40406769b2cb930234b3ed4a86fe70c02998d39ec4426ad16fe3b108f6'
-            '8c58b87d19c101029654654f2bfb1ec74414916f621c7e890d05855dcc51aec8'
-            'e34ef51c299bc3d662b6c74031f7ad9775d73e84cfaa4e72810959fe1760413c'
-            '056fcd63cab39c2f0144d6a8c3ce16e8ae2cfb6e02ad66e5972ffeeca6c6a4d3'
-            '1077da2229ac7d0a0215e9e6817e297c10697e095010d88f1adbd1add1ce9f4e'
-            'fa6537c406cee1dc7acd6152d16dba4581d53587860a0642f1b0f7c817ee006d'
-            '57b92c9e666b9761907db60daa97723de081e0ab993055c8bef7086e6fdf4e30'
-            '6b91d3c2c2f254ebb37eb3dd6dd41048dfb18320bb98a3afdd1ad38b47f6d609'
-            '2b00d8e0ad2a67152a9cee7b7ee67990c742d501412df912baaf1eee9bb6dc71'
-            '5c1869d55897075adb3fdf840b21060dc54669a1f840a36d1539acc7e59dd106'
-            'efa446c10fa4d80ffe8b5e340d83db62474ae7eba091016032b754a1d17a6769'
-            '9cd68c8e092efb1a419e1087bb9ca23aab1ff8650c400c0aa815d461d79385de'
-            'b2e8162cce2d24861b1ed5bbb30fc51d5215e3f4bb9d01f53fc344904d5911e7'
-            '072464f35d9931ea0e97a50da2f61785925a8356ff55d0e778b7359e4e2b09b1'
-            'b8b9f355c05c0790226512f6732348a2404d48531688a1fc04ce6768163bf462'
-            'b98c4f648589bbf3e2c3d5fd18664e7a7ef89ac083e96c8e984fa919e7a7c073'
-            '55475fe4f9e4b5220761269ccf0069ebb1ded61d7e7888f9c785c651cff3d141'
-            '25cbe3ff4931283a681260607bc91ae4a922075345d5770b293c6cd7f1e3bdcc'
-            '45dd0df7a6b0b6aa9c64eb8c39a8e294d659d87fb18e192cf58f1402f3cdb0a8'
-            '212e973a6fda6ce82344815baf6d2324200d1b5c49ac9c34cfc6f0fb5ebcafbb'
-            'dfb3c62345ea95e4aec50b449d75bcdf1c868b5c3d62d6c7e0e73632ebe20101'
-            '2eb54722ee6a12a3bcd56415efb1e08fd65975d036d5baf6d512250be9cf5b06'
-            '1d07f38acdb8194bd49344b0ba21de101070de9b8731d27a8d22e928850bc199'
-            'ad4657b140a714a4c1b780c5638a59861a1332cb13a118c27c6d0468c19906b1'
-            '1d2486e38cf10390961d507e0e1252e898c8cbc89bbef618f7439d6c23708523'
-            'ab1d3bbea62ab9f0b804d286980abe323c735635993c2b82806c7b9abe8186cd'
-            '3245b7747fb468cb94e367c4735a29a76bcc42f46ffd8f532e165b6db71d3ca6'
-            'df92be13c1ad46c8b3f73768c116cfa544408e8e0caf3e2896b86088f8259d8d'
-            '97946a68937b50ab8637e1a90a13198fe376d801dc3e7447052e43c28e9ee7de'
-            '0de456da31d5b45225b9d703e76a9a7b47e3dbf21f5d4f8d5ad116699099d67e'
-            '5dde5fb5bc32bb943638c06fb94d7ef30eb4af1145e168e54e91c9bb45456776'
-            '641d530f97f7206d074f384c96bfefa6db3543077870786c97546451b2275766'
-            '3f9729e73a8340926fa9d9fc15707c2f287cd27b6a9fe42e83f660ca48a5972d'
-            'c223b642fc541933b9cdb18b771a52ccf728fb309350898080970ab1fda18e6f'
-            '8181c7108bad0270c2526196c0c8b361dc090c53e82ca34c40aedf32a729a11d'
-            '8eabbcd5950fdcc718bb0ef9165206c2ed60f67cd9da553d7bc3e6fe4e338461'
-            '01f9be5338887260b2a56fefd65efc49724460abcbc06fb1aefc7768464cc198'
-            '953a7c28a2c9837b8212670df5427403e71a87133011faa69a5546413d16061a'
-            'c051d33a8732b671b33e0b3535e6fbbd82311c6d89532c4067b3d2ba738e1ce1'
-            'e2eb7d3f8e3778bf885fae18af99d360be1c94cda2353c76b13fb6c094cd54cd')
 
 _common_flags=(
   --with-ipv6
@@ -235,86 +186,24 @@ for _m in "${_githubmodules[@]}";do
 done
 
 prepare() {
-  cd $(_get_module_dir 'concat')
-  cat >./config <<'EOF'
-ngx_addon_name=ngx_http_concat_module
-if test -n "$ngx_module_link"; then
-    ngx_module_type=HTTP
-    ngx_module_name=$ngx_addon_name
-    ngx_module_srcs="$ngx_addon_dir/ngx_http_concat_module.c"
-    . auto/module
-else
-    HTTP_MODULES="$HTTP_MODULES $ngx_addon_name"
-    NGX_ADDON_SRCS="$NGX_ADDON_SRCS $ngx_addon_dir/ngx_http_concat_module.c"
-fi
-EOF
+  for _m in "${_githubmodules[@]}";do
+    _mod=($_m)
+    [[ xPATCH != x${_mod[5]} ]] && continue
+    cd "$srcdir/${_mod[1]}-${_mod[2]}"
+    patch -p1 < ../${_mod[1]}-${_mod[2]}.patch
+  done
 
-  cd ../$(_get_module_dir 'fancyindex')
+  cd "$srcdir/$(_get_module_dir 'fancyindex')"
   sed -i 's/Parent directory/\.\./' ngx_http_fancyindex_module.c template.h
   sed -i 's/File Name/文件名/;s/File Size/文件大小/;s/Date/日期/' template.h # zh ..
 
-  cd ../$(_get_module_dir 'google_filter')
-  cat >./config <<'EOF'
-ngx_addon_name=ngx_http_google_filter_module
-if test -n "$ngx_module_link"; then
-    ngx_module_type=HTTP_AUX_FILTER
-    ngx_module_name=$ngx_addon_name
-    ngx_module_srcs="$ngx_addon_dir/src/*.c"
-    . auto/module
-else
-    HTTP_AUX_FILTER_MODULES="$HTTP_AUX_FILTER_MODULES $ngx_addon_name"
-    NGX_ADDON_SRCS="$NGX_ADDON_SRCS $ngx_addon_dir/src/*.c"
-    NGX_ADDON_DEPS="$NGX_ADDON_DEPS $ngx_addon_dir/src/*.h"
-fi
-EOF
-sed -i '/apis.*google.*com/a \
-                                         "$google_host/!$1",\
-                                         "igr"))\
-      break;\
-    \
-    if (ngx_http_google_inject_subs_args(cf,\
-                                         "subs_filter", 3, \
-                                         "((id)\\.google\\.com)",' src/ngx_http_google_inject.c
-
-  cd ../$(_get_module_dir 'passenger')
-  patch -p1 <../passenger-${_PASS_VERSION}.patch
+  cd "$srcdir/$(_get_module_dir 'passenger')"
   sh ./gitsubmodules.sh
 
-  cd ../$(_get_module_dir 'small_light')
+  cd "$srcdir/$(_get_module_dir 'small_light')"
   ./setup
-  sed -i '/^CORE_LIBS=.*CORE_LIBS/d' ./config
-  sed -i '/NGX_ADDON_DEPS=.*NGX_ADDON_DEPS/a \
-    CORE_LIBS="$CORE_LIBS $ngx_feature_libs"' ./config
 
-  cd ../$(_get_module_dir 'subs_filter')
-  cat >./config <<'EOF'
-ngx_addon_name=ngx_http_subs_filter_module
-if test -n "$ngx_module_link"; then
-    ngx_module_type=HTTP_AUX_FILTER
-    ngx_module_name=$ngx_addon_name
-    ngx_module_srcs="$ngx_addon_dir/ngx_http_subs_filter_module.c"
-    . auto/module
-else
-    HTTP_AUX_FILTER_MODULES="$HTTP_AUX_FILTER_MODULES $ngx_addon_name"
-    NGX_ADDON_SRCS="$NGX_ADDON_SRCS $ngx_addon_dir/ngx_http_subs_filter_module.c"
-fi
-EOF
-
-  cd ../$(_get_module_dir 'upstream_fair')
-  cat >./config <<'EOF'
-ngx_addon_name=ngx_http_upstream_fair_module
-if test -n "$ngx_module_link"; then
-    ngx_module_type=HTTP
-    ngx_module_name=$ngx_addon_name
-    ngx_module_srcs="$ngx_addon_dir/ngx_http_upstream_fair_module.c"
-    . auto/module
-else
-    HTTP_MODULES="$HTTP_MODULES $ngx_addon_name"
-    NGX_ADDON_SRCS="$NGX_ADDON_SRCS $ngx_addon_dir/ngx_http_upstream_fair_module.c"
-fi
-EOF
-
-  cd ../$(_get_module_dir 'pagespeed')
+  cd "$srcdir/$(_get_module_dir 'pagespeed')"
   [ -d psol ] && rm -r psol/
   mv ../psol ./
 }
@@ -474,5 +363,60 @@ package_mynginx-passenger() {
 
   cp -R "${srcdir}/$(_get_module_dir 'passenger')"/pkg/fakeroot/* "${pkgdir}"/
 }
+
+sha256sums=('1045ac4987a396e2fa5d0011daf8987b612dd2f05181b67507da68cbe7d765c2'
+            '4ecbc33ce4bf2965996f51b0c7edb677904ba5cff9a32e93e1487a428d3a751b'
+            '2613986dd5faab09ca962264f16841c8c55c3a0bc7a5bb737eabd83143090878'
+            '1ccb59e81a4cdfd2d8e664c9ee1b31fa2f495aace640d4d14f58319688aaff8e'
+            '88e05a99a8a7419066f5ae75966fb1efc409bad4522d14986da074554ae61619'
+            'c0d684634aa9a53a4944622304b9e1220b0f8bc4b3cdb81acd7409b508b00136'
+            'c949d4be6f3442c8e2937046448dc8d8def25c0e0fa6f4e805144cea45eabe80'
+            '77676842919134af88a7b4bfca4470223e3a00d287d17c0dbdc9a114a685b6e7'
+            'f5640c40406769b2cb930234b3ed4a86fe70c02998d39ec4426ad16fe3b108f6'
+            '8c58b87d19c101029654654f2bfb1ec74414916f621c7e890d05855dcc51aec8'
+            'e34ef51c299bc3d662b6c74031f7ad9775d73e84cfaa4e72810959fe1760413c'
+            '76af016c4f7affa4dfd82c76c3f539cbbe37b2abfdbe1dc049b91a9044460ab8'
+            '056fcd63cab39c2f0144d6a8c3ce16e8ae2cfb6e02ad66e5972ffeeca6c6a4d3'
+            '1077da2229ac7d0a0215e9e6817e297c10697e095010d88f1adbd1add1ce9f4e'
+            'fa6537c406cee1dc7acd6152d16dba4581d53587860a0642f1b0f7c817ee006d'
+            '57b92c9e666b9761907db60daa97723de081e0ab993055c8bef7086e6fdf4e30'
+            '6b91d3c2c2f254ebb37eb3dd6dd41048dfb18320bb98a3afdd1ad38b47f6d609'
+            '2b00d8e0ad2a67152a9cee7b7ee67990c742d501412df912baaf1eee9bb6dc71'
+            '5c1869d55897075adb3fdf840b21060dc54669a1f840a36d1539acc7e59dd106'
+            'efa446c10fa4d80ffe8b5e340d83db62474ae7eba091016032b754a1d17a6769'
+            '9cd68c8e092efb1a419e1087bb9ca23aab1ff8650c400c0aa815d461d79385de'
+            '59cc52e25deea1ffeb9cfff2771f74f43d0ecf9a3d999a0f92e79f1398d70e56'
+            'b2e8162cce2d24861b1ed5bbb30fc51d5215e3f4bb9d01f53fc344904d5911e7'
+            '072464f35d9931ea0e97a50da2f61785925a8356ff55d0e778b7359e4e2b09b1'
+            'b8b9f355c05c0790226512f6732348a2404d48531688a1fc04ce6768163bf462'
+            'b98c4f648589bbf3e2c3d5fd18664e7a7ef89ac083e96c8e984fa919e7a7c073'
+            '55475fe4f9e4b5220761269ccf0069ebb1ded61d7e7888f9c785c651cff3d141'
+            '25cbe3ff4931283a681260607bc91ae4a922075345d5770b293c6cd7f1e3bdcc'
+            '45dd0df7a6b0b6aa9c64eb8c39a8e294d659d87fb18e192cf58f1402f3cdb0a8'
+            '212e973a6fda6ce82344815baf6d2324200d1b5c49ac9c34cfc6f0fb5ebcafbb'
+            'dfb3c62345ea95e4aec50b449d75bcdf1c868b5c3d62d6c7e0e73632ebe20101'
+            '2eb54722ee6a12a3bcd56415efb1e08fd65975d036d5baf6d512250be9cf5b06'
+            'c1b14eb423442fa2b512a3a56f9938d9b025e392918f827ffa75d44683359e4d'
+            '1d07f38acdb8194bd49344b0ba21de101070de9b8731d27a8d22e928850bc199'
+            'ad4657b140a714a4c1b780c5638a59861a1332cb13a118c27c6d0468c19906b1'
+            '1d2486e38cf10390961d507e0e1252e898c8cbc89bbef618f7439d6c23708523'
+            'ab1d3bbea62ab9f0b804d286980abe323c735635993c2b82806c7b9abe8186cd'
+            '3245b7747fb468cb94e367c4735a29a76bcc42f46ffd8f532e165b6db71d3ca6'
+            'df92be13c1ad46c8b3f73768c116cfa544408e8e0caf3e2896b86088f8259d8d'
+            '97946a68937b50ab8637e1a90a13198fe376d801dc3e7447052e43c28e9ee7de'
+            '0de456da31d5b45225b9d703e76a9a7b47e3dbf21f5d4f8d5ad116699099d67e'
+            '5dde5fb5bc32bb943638c06fb94d7ef30eb4af1145e168e54e91c9bb45456776'
+            'a7965a84efeb9ff8749392d00c3b876daa699d71321952ec55219b8f413672aa'
+            '641d530f97f7206d074f384c96bfefa6db3543077870786c97546451b2275766'
+            '3f9729e73a8340926fa9d9fc15707c2f287cd27b6a9fe42e83f660ca48a5972d'
+            'c223b642fc541933b9cdb18b771a52ccf728fb309350898080970ab1fda18e6f'
+            '8181c7108bad0270c2526196c0c8b361dc090c53e82ca34c40aedf32a729a11d'
+            '8eabbcd5950fdcc718bb0ef9165206c2ed60f67cd9da553d7bc3e6fe4e338461'
+            'bd44fb08f9d5877cc4f0e0b42dd1025f8b3e7219dc2d550cf2585f61153e9ce9'
+            '01f9be5338887260b2a56fefd65efc49724460abcbc06fb1aefc7768464cc198'
+            '953a7c28a2c9837b8212670df5427403e71a87133011faa69a5546413d16061a'
+            'c051d33a8732b671b33e0b3535e6fbbd82311c6d89532c4067b3d2ba738e1ce1'
+            'f43387c7d0247f7e1500ba243ce86283b52c41554f514ddcd702813eb6286140'
+            'e2eb7d3f8e3778bf885fae18af99d360be1c94cda2353c76b13fb6c094cd54cd')
 
 # vim:set ts=2 sw=2 et:
