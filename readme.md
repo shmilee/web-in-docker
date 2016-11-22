@@ -1,3 +1,13 @@
+Sites enabled
+==============
+
+* nginx-main.vhost, include jupyterhub
+* nginx-monit.vhost, include verynginx
+* nginx-google.vhost, google mirror
+* nginx-wikipedia.vhost, wikipedia mirror
+* nginx-hactar.vhost, Arch Catalyst's unofficial repository mirror
+* nginx-gogs.vhost, proxy gogs service
+
 Status preview
 ==============
 
@@ -5,7 +15,7 @@ Monit's web interface:
 
 ![monit](monit-works.png)
 
-```
+```shell
 $ docker exec -t mynginx_server ps aux
 USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
 root         1  0.0  0.0   4188   640 ?        Ss   Jul02   0:01 /usr/bin/tini -
@@ -44,15 +54,103 @@ Monit uptime: 16h 0m
  openwrt                          Online with all services    Remote Host   
  ap0                              Online with all services    Remote Host   
  eth0                             UP                          Network       
+```
+
+NGINX PKGBUILD
+==============
+
+In Arch Linux, build package:
+
+```shell
+cd ./mynginx/
+yaourt -S libmaxminddb sregex-git
+makepkg -s
+```
+The packages:
 
 ```
+mynginx/1.10.2-5:mynginx-1.10.2-5-i686.pkg.tar.xz
+mynginx/1.10.2-5:mynginx-1.10.2-5-x86_64.pkg.tar.xz
+mynginx/1.10.2-5:mynginx-pagespeed-1.10.2_1.11.33.2-5-i686.pkg.tar.xz
+mynginx/1.10.2-5:mynginx-pagespeed-1.10.2_1.11.33.2-5-x86_64.pkg.tar.xz
+mynginx/1.10.2-5:mynginx-passenger-1.10.2_5.0.30-5-i686.pkg.tar.xz
+mynginx/1.10.2-5:mynginx-passenger-1.10.2_5.0.30-5-x86_64.pkg.tar.xz
+```
+
+The nginx dynamic modules:
+
+```shell
+$ ls /usr/lib/nginx/modules                                                           :) 0
+ndk_http_module.so                      ngx_http_push_stream_module.so
+ngx_dynamic_upstream_module.so          ngx_http_rdns_module.so
+ngx_http_accounting_module.so           ngx_http_redis2_module.so
+ngx_http_array_var_module.so            ngx_http_replace_filter_module.so
+ngx_http_auth_pam_module.so             ngx_http_set_misc_module.so
+ngx_http_auth_spnego_module.so          ngx_http_shibboleth_module.so
+ngx_http_cache_purge_module.so          ngx_http_small_light_module.so
+ngx_http_concat_module.so               ngx_http_sorted_querystring_module.so
+ngx_http_echo_module.so                 ngx_http_srcache_filter_module.so
+ngx_http_encrypted_session_module.so    ngx_http_ssl_ct_module.so
+ngx_http_enhanced_memcached_module.so   ngx_http_subs_filter_module.so
+ngx_http_eval_module.so                 ngx_http_testcookie_access_module.so
+ngx_http_fancyindex_module.so           ngx_http_uploadprogress_module.so
+ngx_http_form_input_module.so           ngx_http_upstream_fair_module.so
+ngx_http_geoip2_module.so               ngx_http_upsync_module.so
+ngx_http_geoip_module.so                ngx_http_vhost_traffic_status_module.so
+ngx_http_google_filter_module.so        ngx_http_xslt_filter_module.so
+ngx_http_headers_more_filter_module.so  ngx_mail_ssl_ct_module.so
+ngx_http_iconv_module.so                ngx_nchan_module.so
+ngx_http_image_filter_module.so         ngx_pagespeed.so
+ngx_http_lua_module.so                  ngx_rtmp_module.so
+ngx_http_lua_upstream_module.so         ngx_rtmpt_proxy_module.so
+ngx_http_memc_module.so                 ngx_ssl_ct_module.so
+ngx_http_naxsi_module.so                ngx_stream_ssl_ct_module.so
+ngx_http_passenger_module.so            ngx_stream_upsync_module.so
+
+$ ls /etc/nginx/modules/available                                                     :) 0
+0-accounting.conf           0-naxsi.conf               0-stream_upsync.conf
+0-auth_pam.conf             0-nchan.conf               0-subs_filter.conf
+0-auth_spnego.conf          0-ndk.conf                 0-testcookie_access.conf
+0-cache_purge.conf          0-pagespeed.conf           0-uploadprogress.conf
+0-concat.conf               0-passenger.conf           0-upstream_fair.conf
+0-dynamic_upstream.conf     0-push_stream.conf         0-vhost_traffic_status.conf
+0-echo.conf                 0-rdns.conf                0-xslt_filter.conf
+0-enhanced_memcached.conf   0-redis2.conf              1-ndk-array_var.conf
+0-eval.conf                 0-replace_filter.conf      1-ndk-encrypted_session.conf
+0-fancyindex.conf           0-rtmp.conf                1-ndk-form_input.conf
+0-geoip2.conf               0-rtmpt_proxy.conf         1-ndk-iconv.conf
+0-geoip.conf                0-shibboleth.conf          1-ndk-lua.conf
+0-headers_more_filter.conf  0-small_light.conf         1-ndk-lua_upstream.conf
+0-http_upsync.conf          0-sorted_querystring.conf  1-ndk-set_misc.conf
+0-image_filter.conf         0-srcache_filter.conf      1-subs_filter-google_filter.conf
+0-memc.conf                 0-ssl_ct.conf
+```
+
+Notes:
+
+1. `1-ndk-lua.conf` means module `lua` depends on module `ndk`.
+
+2. `passenger` demos config: `./mynginx/passenger-demos`
+
+3. Now `ngx_cache_purge` honors `server_tokens off;`.
+
 
 Docker image
 ============
 
 ./dockerfiles/readme.md
 
-Build mynginx image, matplothub image.
+Build mylnmp image, matplothub image.
+
+```shell
+$ docker images                                                                       :) 0
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+matplothub          161122              bc1d6b7eef9a        51 minutes ago      696 MB
+matplothub          using               bc1d6b7eef9a        51 minutes ago      696 MB
+mylnmp              161122              99ac7e076b8f        About an hour ago   653.7 MB
+mylnmp              using               99ac7e076b8f        About an hour ago   653.7 MB
+arch                1611                e2b5723e6252        About an hour ago   235 MB
+```
 
 owncloud
 ========
