@@ -34,6 +34,9 @@ RUN echo "==> tini monit nginx mariadb php cgit fcgi ssh ..." \
 		    \( -type d -a -name test -o -name tests \) \
 		    -exec rm -rf '{}' + ; \
     rm -rf /usr/share/{man/*,doc/*,gtk-doc/,info/} /{root/,tmp/} \
+    && rm -rf /etc/udev/ /usr/lib/udev/ \
+    && rm -rf /etc/systemd/ /usr/lib/systemd/ /usr/bin/system* \
+    && rm -rf /usr/share/zsh/ /usr/share/X11/locale/ \
     && install -d -m1777 /tmp \
     && install -d -m0750 /root \
     && rm -r /var/cache/pacman/pkg/* \
