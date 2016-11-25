@@ -22,6 +22,7 @@ ExecStart=/usr/bin/docker run --rm -p 80:80 -p 443:443 \
     -v ${WebData}/repo-shmilee:/srv/repo-shmilee:ro \
     -v /home/IFTS_shmilee:/srv/http/upload/IFTS_shmilee:ro \
     -v /home/VideoData:/srv/http/videos:ro \
+    -e TERM=xterm \
     --name mylnmp_server mylnmp:using
 ExecStop=/usr/bin/docker stop -t 2 mylnmp_server
 ExecStop=/usr/bin/docker rm mylnmp_server
