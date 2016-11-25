@@ -63,6 +63,9 @@ server {
         rewrite ^/cgit-web(/.*)$ $1 break;
         root /usr/share/webapps/cgit;
     }
+    location /cgit-web/cgit.css {
+        alias /srv/http/css/custom-cgit.css;
+    }
 
     #upload
     location ^~ /upload {
