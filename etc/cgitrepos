@@ -48,7 +48,7 @@ section=web
 
   repo.url=web-in-docker
   repo.path=/srv/project/web-in-docker/.git
-  repo.desc=monit+nginx+mysql+php+cgit+nbviewer+jupyterhub
+  repo.desc=monit+nginx+mysql+php+cgit+jupyterhub
   repo.owner=shmilee.zju@gmail.com
   repo.clone-url=https://github.com/shmilee/web-in-docker.git
 
@@ -77,6 +77,12 @@ section=tool
   repo.desc=Bootable Maintenance USB Drive 
   repo.owner=shmilee.zju@gmail.com
   repo.clone-url=https://github.com/shmilee/BMUDv2.git
+
+  repo.url=openwrt-backup
+  repo.path=/srv/project/openwrt-backup/.git
+  repo.desc=backup openwrt setup
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/openwrt-backup.git
 
 section=android
 
