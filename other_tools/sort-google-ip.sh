@@ -31,11 +31,25 @@ sort -k 4,4 -k 2,2 -k 6,6 -n 2-ip.test \
 #awk '{print "|"$1"|"$2"|"$3"|"$4"|"$5"|"$6"|"}'
 
 ## BEST output
-sort -k 4,4 -k 2,2 -k 6,6 -n 2-ip.test \
-    | awk '{ if($2=="0%") {printf $1"|"}} END {printf $1}' > 4-ip.best
+sort -k 4,4 -k 2,2 -k 6,6 -n 2-ip.test | awk '
+{
+    if($2=="0%" || $2=="10%" || $2=="20%") {
+        printf $1"|"
+    }
+}
+END {printf $1}' > 4-ip.best
 
 ## nginx conf output
 sed 's/[| ]/\n/g' 4-ip.best > 4-ip.best.tmp
-awk 'BEGIN{"wc -l 4-ip.best.tmp" | getline; weight=$1; weight++; print "fair;";}
-{print "server "$1":443 weight="weight";"; weight--;}' 4-ip.best.tmp > 4-ip.best.conf
+awk '
+BEGIN{
+    "wc -l 4-ip.best.tmp" | getline;
+    weight=$1;
+    weight++;
+    print "fair;";
+}
+{
+    print "server "$1":443 weight="weight";";
+    weight--;
+}' 4-ip.best.tmp > 4-ip.best.conf
 rm 4-ip.best.tmp
