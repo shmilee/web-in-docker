@@ -106,7 +106,7 @@ arch-chroot $ROOTFS locale-gen
 echo 'LANG="en_US.UTF-8"' > $ROOTFS/etc/locale.conf
 
 # terminfo
-find $ROOTFS/usr/share/terminfo/ -type f -not \( -name 'ansi' -o -name 'cygwin' -o -name 'linux' \
+find $ROOTFS/usr/share/terminfo/ -type f -not \( -name 'ansi' -o -name 'dumb' -o -name 'linux' \
     -o -name 'vt100' -o -name 'vt220' -o -name 'xterm' \) -exec rm {} \;
 
 # remove libgo.so
