@@ -16,7 +16,7 @@ Monit's web interface:
 ![monit](monit-works.png)
 
 ```shell
-$ docker exec -t mynginx_server ps aux
+$ docker exec -t lnmp_server ps aux
 USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
 root         1  0.0  0.0   4188   640 ?        Ss   Jul02   0:01 /usr/bin/tini -
 root         6  0.1  0.1 104960  6496 ?        Sl   Jul02   0:57 /usr/bin/monit 
@@ -30,7 +30,7 @@ http        23  0.0  0.0  30108  2408 ?        Ss   Jul02   0:00 /bin/fcgiwrap
 nbviewer    25  0.0  1.0 168136 42396 ?        S    Jul02   0:14 python -m nbvie
 root       151  0.0  0.0  36360  3236 ?        Rs+  14:25   0:00 ps aux
 
-$ docker exec -t mynginx_server pstree -p                                          :) 0
+$ docker exec -t lnmp_server pstree -p                                          :) 0
 tini(1)─┬─fcgiwrap(23)
         ├─monit(6)───{monit}(135)
         ├─nginx(15)─┬─nginx(16)
@@ -39,7 +39,7 @@ tini(1)─┬─fcgiwrap(23)
         │             └─php-fpm(21)
         └─python(25)
 
-$ docker exec -t mynginx_server monit -c /srv/etc/monitrc summary                  :) 0
+$ docker exec -t lnmp_server monit -c /srv/etc/monitrc summary                  :) 0
 Monit uptime: 16h 0m
  Service Name                     Status                      Type          
  d64b2b871998                     Running                     System        
@@ -140,17 +140,19 @@ Docker image
 
 ./dockerfiles/readme.md
 
-Build mylnmp image, matplothub image.
+Build lnmp image, matplothub image.
 
 ```shell
 $ docker images                                                                       :) 0
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-matplothub          161122              bc1d6b7eef9a        51 minutes ago      696 MB
-matplothub          using               bc1d6b7eef9a        51 minutes ago      696 MB
-mylnmp              161122              99ac7e076b8f        About an hour ago   653.7 MB
-mylnmp              using               99ac7e076b8f        About an hour ago   653.7 MB
-arch                1611                e2b5723e6252        About an hour ago   235 MB
+REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE
+shmilee/matplothub   161229              f756e139bc6d        2 hours ago         683.8 MB
+shmilee/matplothub   using               f756e139bc6d        2 hours ago         683.8 MB
+shmilee/lnmp         161229              4ac8c4ac7331        2 hours ago         671.2 MB
+shmilee/lnmp         using               4ac8c4ac7331        2 hours ago         671.2 MB
+shmilee/arch         1612                1b5aceb3ef3f        3 hours ago         252.2 MB
 ```
+
+TODO: Arch Linux -> Alpine Linux
 
 owncloud
 ========
@@ -188,8 +190,8 @@ systemd service
 examples:
 
 * service/matplothub.service
-* service/mynginx.service
-* service/kiwix-serve.service
+* service/lnmp.service
+* service/lnmpssh.service
 
 Deploy
 ======
