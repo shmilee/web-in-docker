@@ -2,11 +2,11 @@
 Description=AutoSSH service for local port 80,443 forwarded to 222-205-57-208:8080,8043
 # place this in /etc/systemd/system/, than enable this.
 After=network.target
-Requires=mylnmp.service
-After=mylnmp.service
+Requires=lnmp.service
+After=lnmp.service
 
 [Service]
-Environment="AUTOSSH_GATETIME=0" "AUTOSSH_POLL=60" "AUTOSSH_LOGFILE=/var/log/nginxssh.log"
+Environment="AUTOSSH_GATETIME=0" "AUTOSSH_POLL=60" "AUTOSSH_LOGFILE=/var/log/lnmpssh.log"
 ExecStart=/usr/bin/autossh -M 22000 -NR 127.0.0.1:8080:localhost:80 -NR 127.0.0.1:8043:localhost:443 -o TCPKeepAlive=yes -p 5321 shmilee@222.205.57.208 -i /home/shmilee/.ssh/id_rsa
 
 [Install]

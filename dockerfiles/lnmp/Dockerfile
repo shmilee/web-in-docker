@@ -4,17 +4,17 @@
 #
 # py3 docutils, pygments, markdown for cgit
 #
-# docker build --force-rm --no-cache --rm -f Dockerfile-mylnmp -t mylnmp:$(date +%y%m%d) .
-# docker tag mylnmp:$(date +%y%m%d) mylnmp:using
+# docker build --force-rm --no-cache --rm -t shmilee/lnmp:$(date +%y%m%d) .
+# docker tag shmilee/lnmp:$(date +%y%m%d) shmilee/lnmp:using
 #
 # etc/{monitrc,nginx.conf,cgitrc,php.ini,php-fpm.conf}: /srv/etc ro
 # http_files: /srv/http rw
 # log: /srv/log rw
 # docker run --rm -p 80:80 -p 443:443 -v $PWD/etc:/srv/etc:ro -v $PWD/http_files:/srv/http:rw \
-#   -v $PWD/log:/srv/log:rw mylnmp:$(date +%y%m%d)
+#   -v $PWD/log:/srv/log:rw shmilee/lnmp:$(date +%y%m%d)
 #
 
-FROM arch:1611
+FROM shmilee/arch:1612
 MAINTAINER shmilee <shmilee.zju@gmail.com>
 
 ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 CGIT_CONFIG=/srv/etc/cgitrc
@@ -23,12 +23,14 @@ ADD ./monit_init.sh /usr/bin/monit_init.sh
 RUN echo "==> tini monit nginx mariadb php cgit fcgi ssh ..." \
     && packages=(tini monit iproute2 \
         mynginx gd sregex luajit\
+        mynginx-passenger \
         mariadb \
         php-fpm php-intl php-mcrypt php-gd php-sqlite php-imap php-apcu php-memcached \
-        cgit spawn-fcgi fcgiwrap python-docutils python-pygments python-markdown \
+        cgit spawn-fcgi fcgiwrap python-docutils python-pygments python-markdown mime-types \
         openssh \
         mathjax) \
-    && pacman -Sy --noconfirm ${packages[@]} \
+    && pacman -Sy --noconfirm --assume-installed systemd ${packages[@]} \
+    && install -d -m755 /run/php-fpm \
     && echo "==> clean ..." \
     && find /usr/lib/python3* \
 		    \( -type d -a -name test -o -name tests \) \

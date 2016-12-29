@@ -1,13 +1,13 @@
 # use matplotlib in jupyterhub + iruby kernel + matlab kernel
 # python 3
 # select pypi-index-url $PP_index
-# docker build --force-rm --no-cache --rm -f Dockerfile-matplot-jupyterhub -t matplothub:$(date +%y%m%d) .
+# docker build --force-rm --no-cache --rm -t shmilee/matplothub:$(date +%y%m%d) .
 # docker run --rm -v $PWD/jupyterhub:/srv/jupyterhub \
-#   -v /usr/local/matlab2010a:/opt/matlab -p 8000:8000 matplothub:$(date +%y%m%d)
+#   -v /usr/local/matlab2010a:/opt/matlab -p 8000:8000 shmilee/matplothub:$(date +%y%m%d)
 # configfile: $PWD/jupyterhub/jupyterhub_config.py
 #
 
-FROM arch:1611
+FROM shmilee/arch:1612
 MAINTAINER shmilee <shmilee.zju@gmail.com>
 
 ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 PATH="/opt/matlab/bin:${PATH}"
