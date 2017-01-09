@@ -1,5 +1,5 @@
 ### https://www.phusionpassenger.com/library/config/nginx/reference/
-passenger_root /usr/lib/nginx/passenger/lib/ruby/vendor_ruby/phusion_passenger/locations.ini;
+passenger_root /usr/lib/mynginx/passenger/lib/ruby/vendor_ruby/phusion_passenger/locations.ini;
 passenger_ruby /usr/bin/ruby;
 passenger_nodejs /usr/bin/node;
 passenger_python /usr/bin/python3;
