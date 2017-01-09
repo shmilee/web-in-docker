@@ -1,14 +1,64 @@
 Build Docker image
 ==================
 
-arch base
-----------
+shmilee/abuild:3.5 (190M)
+-------------------------
+
+Alpine Docker image for building Alpine Linux packages.
+
+Generate a public/private rsa key pair placed in `abuild/abuild-key/`,
+edit `PACKAGER_PRIVKEY` in `abuild/abuild-key/abuild.conf`.
 
 ```
-cd arch/
-sudo ./mktar-miniarch.sh
-cat arch-$(date +%y%m).tar.xz | docker import - shmilee/arch:$(date +%y%m)
+privkey=./abuild/abuild-key/youremail@gmail.com.rsa
+pubkey="$privkey.pub"
+# generate the private key in a subshell with stricter umask
+(
+umask 0007
+openssl genrsa -out "$privkey" 2048
+)
+openssl rsa -in "$privkey" -pubout -out "$pubkey"
 ```
+
+### build image
+
+This will add public rsa key to the image `/etc/apk/keys/`.
+
+```
+cd ./abuild/
+docker build --force-rm --no-cache --rm -t shmilee/abuild:3.5 .
+cd ../
+```
+
+### build packages
+
+Change `REPODEST_DIR` to yours.
+For mine, it's URL is `http://shmilee.io/repo-shmilee/alpine-v3.5/`
+
+```
+KEY_DIR=$PWD/abuild/abuild-key
+APORTS_DIR=$PWD/abuild/aports
+REPODEST_DIR=/home/WebData/repo-shmilee/alpine-v3.5
+docker run --rm -t -i \
+    -v ${KEY_DIR}:/home/builder/.abuild \
+    -v ${APORTS_DIR}:/home/builder/aports \
+    -v ${REPODEST_DIR}:/home/builder/packages \
+    shmilee/abuild:3.5
+```
+
+__The following COMMANDs is in docker CONTAINER!__
+
+```
+sudo apk update
+cd /home/builder/aports/shmilee/php7-memcached/
+abuild -r
+cd /home/builder/aports/shmilee/sregex/
+abuild -r
+sudo apk update
+cd /home/builder/aports/shmilee/mynginx/
+abuild -r
+```
+
 
 shmilee/lnmp
 ------------
@@ -47,3 +97,14 @@ docker tag shmilee/matplothub:$(date +%y%m%d) shmilee/matplothub:using
 # prepare a password in jupyterhub_config.py
 ```
 
+
+__OLD__
+
+arch base
+----------
+
+```
+cd arch/
+sudo ./mktar-miniarch.sh
+cat arch-$(date +%y%m).tar.xz | docker import - shmilee/arch:$(date +%y%m)
+```

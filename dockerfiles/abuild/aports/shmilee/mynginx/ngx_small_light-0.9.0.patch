@@ -1,0 +1,17 @@
+diff -Nur ngx_small_light-0.9.0.orig/config.in ngx_small_light-0.9.0/config.in
+--- ngx_small_light-0.9.0.orig/config.in	2016-10-02 09:00:18.000000000 +0800
++++ ngx_small_light-0.9.0/config.in	2016-11-21 16:11:36.000000000 +0800
+@@ -28,7 +28,6 @@
+     exit 1
+ fi
+ 
+-CORE_LIBS="$CORE_LIBS $ngx_feature_libs"
+ 
+ SMALL_LIGHT_SRCS="                                                    \
+                 $ngx_addon_dir/src/ngx_http_small_light_module.c      \
+@@ -70,4 +69,5 @@
+     HTTP_AUX_FILTER_MODULES="$HTTP_AUX_FILTER_MODULES $ngx_addon_name"
+     NGX_ADDON_SRCS="$NGX_ADDON_SRCS $SMALL_LIGHT_SRCS"
+     NGX_ADDON_DEPS="$NGX_ADDON_DEPS $SMALL_LIGHT_DEPS"
++    CORE_LIBS="$CORE_LIBS $ngx_feature_libs"
+ fi

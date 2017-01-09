@@ -1,0 +1,17 @@
+#!/bin/sh
+
+ver_new="$1"
+ver_old="$2"
+
+if [ "$(apk version -t "$ver_old" "1.10.1-r3")" = "<" ]; then
+	cat 1>&2 <<-EOF
+	*
+	* The nginx package has been modified to use dynamic modules. Now there's
+	* just single package providing nginx executable and bunch of mynginx-mod-*
+	* subpackages.
+	*
+	*
+	EOF
+fi
+
+exit 0

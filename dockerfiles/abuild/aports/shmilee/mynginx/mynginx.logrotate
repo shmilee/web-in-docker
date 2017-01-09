@@ -1,0 +1,8 @@
+/var/log/mynginx/*.log {
+	missingok
+	sharedscripts
+	postrotate
+		/etc/init.d/mynginx --quiet --ifstarted reopen
+	endscript
+}
+

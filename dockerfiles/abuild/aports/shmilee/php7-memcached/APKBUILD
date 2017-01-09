@@ -1,0 +1,46 @@
+# Maintainer: shmilee <shmilee.zju@gmail.com>
+# Contributor: Evangelos Foutras <evangelos@foutrelis.com>
+# Contributor: Fabio Ribeiro <fabiorphp@gmail.com>
+
+_pkgname=php-memcached
+_commit=67750f851ad01d054401ce988fe95f7bfe4cb9bf
+
+pkgname=php7-memcached
+pkgver=v861.${_commit:0:7}
+pkgrel=0
+pkgdesc="PHP extension for interfacing with memcached via libmemcached library"
+arch="all"
+url="http://pecl.php.net/package/memcached"
+license="PHP"
+depends="php7-session"
+pecldepends="php7-dev autoconf zlib-dev"
+makedepends="$pecldepends libmemcached-dev cyrus-sasl-dev"
+source="${_pkgname}-${pkgver}.tar.gz::https://github.com/php-memcached-dev/$_pkgname/archive/${_commit}.tar.gz"
+
+_builddir="$srcdir"/$_pkgname-$_commit
+
+build() {
+    cd "$_builddir"
+
+  phpize7 || return 1
+  ./configure \
+    --build=$CBUILD \
+		--host=$CHOST \
+    --prefix=/usr \
+    --with-php-config=/usr/bin/php-config7 \
+    || return 1
+  make || return 1
+}
+
+package() {
+  cd "$_builddir"
+
+  make INSTALL_ROOT="$pkgdir" install || return 1
+
+  install -d "$pkgdir/etc/php7/conf.d"
+  echo 'extension=memcached.so' >"$pkgdir/etc/php7/conf.d/20_memcached.ini"
+}
+
+md5sums="4b200401c5b4779e8cc5d7b5c77c3ff6  php-memcached-v861.67750f8.tar.gz"
+sha256sums="eb026e2a8a96910077fea9b1c2748a8c9e28f099431cc6638b861967eeb85f51  php-memcached-v861.67750f8.tar.gz"
+sha512sums="709bfeffbcdf4505e196d843894cb190663e5ce922263891f6cae3a823be8e6d87e2bb9d1d52f001b2bc1d6731a4318492b27f72208ea6980416e04ea4079a50  php-memcached-v861.67750f8.tar.gz"

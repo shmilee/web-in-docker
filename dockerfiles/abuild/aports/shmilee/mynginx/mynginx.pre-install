@@ -1,0 +1,6 @@
+#!/bin/sh
+
+addgroup -Sg 82 www-data 2>/dev/null
+adduser -S -D -H -u 666 -h /var/lib/mynginx -s /sbin/nologin -G www-data -g www-data mynginx 2>/dev/null
+
+exit 0
