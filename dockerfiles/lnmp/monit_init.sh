@@ -1,7 +1,7 @@
 #!/bin/bash
-sleep ${1:-10}
+sleep ${1:-8}
 config=${2:-/srv/etc/monitrc}
-hook_script="$3"
+hook_script="${3:-/srv/etc/hook_script}"
 if [ ! -f $config ]; then
     echo "!!! lost etc/monitrc"
     exit 1

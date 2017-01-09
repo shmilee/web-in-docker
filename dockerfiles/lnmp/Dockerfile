@@ -1,6 +1,6 @@
-# nginx + mariadb(mysql) + php + (fcgi+cgit) + ssh + mathjax
+# mynginx + mariadb(mysql) + php + (fcgi+cgit)
 #
-# Use community/monit to manage multiple processes
+# Use monit to manage multiple processes
 #
 # py3 docutils, pygments, markdown for cgit
 #
@@ -14,36 +14,42 @@
 #   -v $PWD/log:/srv/log:rw shmilee/lnmp:$(date +%y%m%d)
 #
 
-FROM shmilee/arch:1612
+FROM alpine:3.5
 MAINTAINER shmilee <shmilee.zju@gmail.com>
 
-ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 CGIT_CONFIG=/srv/etc/cgitrc
+ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
+    TIMEZONE=Asia/Shanghai \
+    CGIT_CONFIG=/srv/etc/cgitrc \
+    TERM=xterm-color
 
 ADD ./monit_init.sh /usr/bin/monit_init.sh
-RUN echo "==> tini monit nginx mariadb php cgit fcgi ssh ..." \
-    && packages=(tini monit iproute2 \
-        mynginx gd sregex luajit\
-        mynginx-passenger \
-        mariadb \
-        php-fpm php-intl php-mcrypt php-gd php-sqlite php-imap php-apcu php-memcached \
-        cgit spawn-fcgi fcgiwrap python-docutils python-pygments python-markdown mime-types \
-        openssh \
-        mathjax) \
-    && pacman -Sy --noconfirm --assume-installed systemd ${packages[@]} \
-    && install -d -m755 /run/php-fpm \
-    && echo "==> clean ..." \
-    && find /usr/lib/python3* \
-		    \( -type d -a -name test -o -name tests \) \
-		    -exec rm -rf '{}' + ; \
-    rm -rf /usr/share/{man/*,doc/*,gtk-doc/,info/} /{root/,tmp/} \
-    && rm -rf /etc/udev/ /usr/lib/udev/ \
-    && rm -rf /etc/systemd/ /usr/lib/systemd/ /usr/bin/system* \
-    && rm -rf /usr/share/zsh/ /usr/share/X11/locale/ \
-    && install -d -m1777 /tmp \
-    && install -d -m0750 /root \
-    && rm -r /var/cache/pacman/pkg/* \
-    && rm -r /var/lib/pacman/sync/* \
-    && chmod +x /usr/bin/monit_init.sh
 
-ENTRYPOINT ["/usr/bin/tini", "--"]
+# Add my repository
+COPY ./*@*.rsa.pub /etc/apk/keys/
+RUN echo http://shmilee.io/repo-shmilee/alpine-v3.5/shmilee > /etc/apk/repositories
+
+RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.5/main >> /etc/apk/repositories \
+ && echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.5/community >> /etc/apk/repositories \
+ && addgroup -g 82 -S www-data \
+ && adduser -u 82 -D -S -h /srv/http -G www-data -g www-data www-data \
+ && echo "==> tini monit nginx mariadb php cgit fcgi ssh ..." \
+ && apk --no-cache add coreutils bash nano tzdata \
+        tini monit iproute2 \
+        mynginx mynginx-meta-small-modules \
+        mariadb mariadb-client \
+        php7-apcu php7-bcmath php7-bz2 php7-ctype php7-curl php7-dom php7-fpm \
+        php7-gd php7-gettext php7-iconv php7-imap php7-intl php7-json \
+        php7-mcrypt php7-memcached php7-mysqli php7-openssl \
+        php7-pdo php7-pdo_mysql php7-pdo_sqlite php7-soap php7-sqlite3 \
+        php7-xmlreader php7-xmlrpc php7-zip \
+        cgit spawn-fcgi fcgiwrap py3-docutils py3-pygments py3-markdown \
+ && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
+ && echo "${TIMEZONE}" > /etc/timezone \
+ && install -d -m755 /run/php-fpm \
+ && echo "==> clean ..." \
+ && find /usr/share/terminfo/ -type f -not \( -name 'ansi' -o -name 'dumb' -o -name 'linux' \
+        -o -name 'vt100' -o -name 'vt220' -o -name 'xterm' \) -exec rm {} \; \
+ && chmod +x /usr/bin/monit_init.sh
+
+ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["monit_init.sh", "5"]

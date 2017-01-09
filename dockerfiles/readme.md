@@ -4,7 +4,7 @@ Build Docker image
 shmilee/abuild:3.5 (190M)
 -------------------------
 
-Alpine Docker image for building Alpine Linux packages.
+Alpine Docker image for building Alpine Linux packages. Based on `alpine:3.5`.
 
 Generate a public/private rsa key pair placed in `abuild/abuild-key/`,
 edit `PACKAGER_PRIVKEY` in `abuild/abuild-key/abuild.conf`.
@@ -59,30 +59,67 @@ cd /home/builder/aports/shmilee/mynginx/
 abuild -r
 ```
 
+shmilee/lnmp (314 MB)
+---------------------
 
-shmilee/lnmp
-------------
+Based on `alpine:3.5`.
+
+Packages:
 
 ```
-cd lnmp/
-sed -i "s|FROM shmilee/arch:....|FROM shmilee/arch:$(date +%y%m)|" Dockerfile
+# mynginx + mariadb(mysql) + php + (fcgi+cgit)
+coreutils bash nano tzdata \
+tini monit iproute2 \
+mynginx mynginx-meta-small-modules \
+mariadb mariadb-client \
+php7-apcu php7-bcmath php7-bz2 php7-ctype php7-curl php7-dom php7-fpm \
+php7-gd php7-gettext php7-iconv php7-imap php7-intl php7-json \
+php7-mcrypt php7-memcached php7-mysqli php7-openssl \
+php7-pdo php7-pdo_mysql php7-pdo_sqlite php7-soap php7-sqlite3 \
+php7-xmlreader php7-xmlrpc php7-zip \
+cgit spawn-fcgi fcgiwrap py3-docutils py3-pygments py3-markdown
+```
+
+### build image
+
+Create a hard link to `./abuild/abuild-key/youremail@gmail.com.rsa.pub`
+in `./lnmp/youremail@gmail.com.rsa.pub`.
+
+```
+cd ./lnmp/
+ln ../abuild/abuild-key/youremail@gmail.com.rsa.pub youremail@gmail.com.rsa.pub
 docker build --force-rm --no-cache --rm -t shmilee/lnmp:$(date +%y%m%d) .
 docker tag shmilee/lnmp:$(date +%y%m%d) shmilee/lnmp:using
+```
 
-#initialize the MariaDB data directory
-docker run --rm -v <host-data-dir>/mysql:/var/lib/mysql:rw shmilee/lnmp:using bash -c \
+### initialize the MariaDB data directory
+
+```
+HOST_MYSQL_DIR=/home/WebData/mysql
+mkdir $HOST_MYSQL_DIR
+docker run --rm -v $HOST_MYSQL_DIR:/var/lib/mysql:rw shmilee/lnmp:using bash -c \
     'mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql'
-container_id=$(docker run -u mysql -d -v <host-data-dir>/mysql:/var/lib/mysql:rw \
-    shmilee/lnmp:using bash -c 'mysqld --pid-file=/run/mysqld/mysqld.pid;')
-docker exec -u root -i -t $container_id mysql_secure_installation
+container_id=$(docker run -d -v $HOST_MYSQL_DIR:/var/lib/mysql:rw \
+    shmilee/lnmp:using bash -c 'mysqld_safe --pid-file=/run/mysqld/mysqld.pid;')
+docker exec -i -t $container_id mysql_secure_installation
 docker stop $container_id
 docker rm $container_id
-
-docker run --rm -p 80:80 -p 443:443 -v <host-data-dir>/etc:/srv/etc:ro \
-    -v <host-data-dir>/http_files:/srv/http:rw \
-    -v <host-data-dir>/mysql:/var/lib/mysql:rw \
-    -v <host-data-dir>/log:/srv/log:rw shmilee/lnmp:using
 ```
+
+### run lnmp, an example
+
+```
+WebData=/home/WebData
+docker run --rm -p 80:80 -p 443:443 \
+    -v ${WebData}/etc:/srv/etc:ro \
+    -v ${WebData}/log:/srv/log:rw \
+    -v ${WebData}/root_files:/srv/http:rw \
+    -v ${WebData}/mysql:/var/lib/mysql:rw \
+    --name lnmp_server shmilee/lnmp:using
+```
+
+
+__TODO:__
 
 shmilee/matplothub
 ------------------
