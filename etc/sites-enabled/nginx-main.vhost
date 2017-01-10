@@ -9,8 +9,8 @@ server {
     server_name  shmilee.io;
 
     root      /srv/http;
-    include   /etc/nginx/fastcgi.conf;
-    include   /etc/nginx/fastcgi_params;
+    include   /etc/mynginx/fastcgi.conf;
+    include   /etc/mynginx/fastcgi_params;
     index     index.html index.htm index.php;
     charset   utf-8;
     client_max_body_size 30M;
@@ -28,7 +28,7 @@ server {
     #
     error_page   500 502 503 504  /50x.html;
     location = /50x.html {
-        root   /usr/share/nginx/html;
+        root   /usr/share/mynginx/html;
     }
 
     location ~ \.php$ {
@@ -38,7 +38,7 @@ server {
         if (!-f $document_root$fastcgi_script_name) {
             return 404;
         }
-        fastcgi_pass   unix:/run/php-fpm/php-fpm.sock;
+        fastcgi_pass   unix:/run/php-fpm/php-fpm7.sock;
     }
 
     # deny access to .htaccess files, if Apache's document root
@@ -53,7 +53,7 @@ server {
         try_files $uri @cgit;
     }
     location @cgit {
-        fastcgi_param SCRIPT_FILENAME /usr/lib/cgit/cgit.cgi;
+        fastcgi_param SCRIPT_FILENAME /usr/share/webapps/cgit/cgit.cgi;
         fastcgi_pass unix:/run/fcgiwrap.sock;
         fastcgi_split_path_info           ^(/cgit/?)(.+)$;
         fastcgi_param PATH_INFO $fastcgi_path_info;
@@ -73,7 +73,7 @@ server {
         fancyindex_exact_size off;
         fancyindex_localtime on;
         fancyindex_footer "/jQuery-File-Upload/footer.html";
-        include    /etc/nginx/mime.types;
+        include    /etc/mynginx/mime.types;
         types {
             # here is additional types
             text/plain  log sh m md rst in out;
@@ -86,7 +86,7 @@ server {
         autoindex on;
         autoindex_exact_size off;
         autoindex_localtime on;
-        include    /etc/nginx/mime.types;
+        include    /etc/mynginx/mime.types;
         types {
             text/plain  log;
         }

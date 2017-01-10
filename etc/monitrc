@@ -53,46 +53,36 @@ check filesystem srv with path /srv
     group server
 
 
-check process nginx with pidfile /run/nginx.pid
-    start program = "/bin/nginx -c /srv/etc/nginx.conf"
+check process mynginx with pidfile /run/mynginx.pid
+    start program = "/usr/bin/mynginx -c /srv/etc/nginx.conf"
         with timeout 10 seconds
-    stop program  = "/bin/nginx -c /srv/etc/nginx.conf -s quit"
+    stop program  = "/usr/bin/mynginx -c /srv/etc/nginx.conf -s quit"
     if failed host 192.168.5.126 port 80 protocol http
         with timeout 10 seconds then restart
     if 3 restarts within 3 cycles then alert
     group webserver
 
-check process php-fpm with pidfile /run/php-fpm/php-fpm.pid
-    start program = "/bin/php-fpm -c /srv/etc/php.ini -y /srv/etc/php-fpm.conf"
+check process php-fpm7 with pidfile /run/php-fpm/php-fpm7.pid
+    start program = "/usr/sbin/php-fpm7 -c /srv/etc/php.ini -y /srv/etc/php-fpm7.conf"
         with timeout 10 seconds
-    stop program  = "/bin/bash -c 'kill -s SIGTERM `cat /run/php-fpm/php-fpm.pid`'"
+    stop program  = "/bin/bash -c 'kill -s SIGTERM `cat /run/php-fpm/php-fpm7.pid`'"
     if cpu usage > 80% for 5 cycles then restart
     if loadavg(5min) > 4 then restart
     if 3 restarts within 3 cycles then alert
     group webserver
 
 check process fcgiwrap with pidfile /run/fcgiwrap.pid
-    start program = "/bin/spawn-fcgi -u http -s /run/fcgiwrap.sock -P /run/fcgiwrap.pid /bin/fcgiwrap"
+    start program = "/usr/bin/spawn-fcgi -u mynginx -s /run/fcgiwrap.sock -P /run/fcgiwrap.pid /usr/bin/fcgiwrap"
         with timeout 10 seconds
     stop program = "/bin/bash -c 'kill -s SIGTERM `cat /run/fcgiwrap.pid`'"
     if 3 restarts within 3 cycles then alert
     group webserver
 
-#check process nbviewer with matching "python -m nbviewer"
-#    start program = "/bin/bash -c 'cd /srv/http;nohup python -m nbviewer --port=8080 \
-#        --no-cache --mathjax_url=/static/mathjax/ --localfiles=./upload/IFTS_shmilee/notebook/ &'"
-#        as uid "nbviewer" and gid "users"
-#        with timeout 10 seconds
-#    stop program = "/bin/killall python"
-#    if 3 restarts within 3 cycles then alert
-#    group webserver
-
-#check process mysql with pidfile /run/mysqld/mysqld.pid
-#    start program = "/bin/mysqld_safe --pid-file=/run/mysqld/mysqld.pid"
-#        as uid "mysql" and gid "mysql"
+#check process mysqld with pidfile /run/mysqld/mysqld.pid
+#    start program = "/usr/bin/mysqld_safe --nowatch --pid-file=/run/mysqld/mysqld.pid"
 #        with timeout 10 seconds
 #    stop program = "/bin/bash -c 'kill -s SIGTERM `cat /run/mysqld/mysqld.pid`'"
-#    #stop program = "/bin/mysqladmin shutdown -uroot -hlocalhost -ppassword"
+#    #stop program = "/usr/bin/mysqladmin shutdown -uroot -hlocalhost -ppassword"
 #    if failed port 3306 protocol mysql
 #        with timeout 10 seconds then restart
 #    if 3 restarts within 3 cycles then alert
@@ -102,9 +92,9 @@ check file server_key with path /srv/etc/ssl-certs/server-shmilee.key
     if failed permission 0400 then alert
 
 check file shadow with path /etc/shadow
-    if failed permission 0600 then alert
+    if failed permission 0640 then alert
     if failed uid root then alert
-    if failed gid root then alert
+    if failed gid shadow then alert
 
 check network eth0 with interface eth0
     if failed link then alert
