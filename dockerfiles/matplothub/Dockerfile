@@ -32,7 +32,7 @@ RUN PP_index='https://pypi.tuna.tsinghua.edu.cn/simple' && \
         nodejs python-requests python-sqlalchemy npm) && \
     pacman -Sy --noconfirm ${packages[@]} && \
     npm install -g configurable-http-proxy --registry="$NPM_Registry" && \
-    pip3 install -i "$PP_index" matplotlib jupyterhub && \
+    pip3 install -i "$PP_index" matplotlib jupyterhub plotly && \
     echo "==> add iruby kernel ..." && \
     pacman -Sy --noconfirm ruby make czmq && \
     gem sources --add https://gems.ruby-china.org/ --remove https://rubygems.org/ && \
