@@ -199,16 +199,14 @@ Build lnmp image, matplothub image.
 
 ```shell
 $ docker images                                                                       :) 0
-REPOSITORY              TAG                 IMAGE ID            CREATED             SIZE
-shmilee/lnmp            170109              394eabbb7b45        17 hours ago        314.3 MB
-shmilee/lnmp            using               394eabbb7b45        17 hours ago        314.3 MB
-shmilee/abuild          3.5                 4f2bda183df9        4 days ago          189.9 MB
-shmilee/matplothub      161229              f756e139bc6d        12 days ago         683.8 MB
-shmilee/matplothub      using               f756e139bc6d        12 days ago         683.8 MB
-alpine                  3.5                 88e169ea8f46        13 days ago         3.98 MB
+REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE
+shmilee/lnmp         170111              2056f89f4b87        7 minutes ago       319.2 MB
+shmilee/lnmp         using               2056f89f4b87        7 minutes ago       319.2 MB
+shmilee/abuild       3.5                 4f2bda183df9        5 days ago          189.9 MB
+shmilee/matplothub   161229              f756e139bc6d        12 days ago         683.8 MB
+shmilee/matplothub   using               f756e139bc6d        12 days ago         683.8 MB
+alpine               3.5                 88e169ea8f46        13 days ago         3.98 MB
 ```
-
-TODO: matplothub: Arch Linux -> Alpine Linux
 
 owncloud
 ========

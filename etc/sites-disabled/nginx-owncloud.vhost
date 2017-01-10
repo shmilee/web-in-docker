@@ -13,6 +13,7 @@ server {
     ssl_certificate_key        /srv/etc/ssl-certs/server-owncloud.key;
     access_log  /srv/log/nginx-owncloud-access.log main buffer=32k flush=2m;
     error_log   /srv/log/nginx-owncloud-error.log notice;
+    set $vn_exec_flag '';
 
     # Add headers to serve security related headers
     add_header Strict-Transport-Security "max-age=15768000; includeSubDomains; preload;";
