@@ -1,7 +1,7 @@
 #!/bin/bash
 ocpath=${1:-'deploy/root_files/owncloud'}
-htuser='http'
-htgroup='http'
+htuser='82' #'www-data', uid is 33 in debian, arch
+htgroup='82' #'www-data', gid is 33 in debian, arch
 rootuser='root'
 
 printf "Creating possible missing Directories\n"
