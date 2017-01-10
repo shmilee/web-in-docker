@@ -33,7 +33,7 @@ RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.5/main >> /etc/apk/repos
  && addgroup -g 82 -S www-data \
  && adduser -u 82 -D -S -h /srv/http -G www-data -g www-data www-data \
  && echo "==> tini monit nginx mariadb php cgit fcgi ssh ..." \
- && apk --no-cache add coreutils bash nano tzdata \
+ && apk --no-cache add coreutils bash nano tzdata ca-certificates openssl \
         tini monit iproute2 \
         mynginx mynginx-meta-small-modules \
         mariadb mariadb-client \
