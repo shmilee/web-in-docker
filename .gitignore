@@ -4,3 +4,4 @@ deploy/*
 CA/*
 !CA/openssl.cnf
 shmilee*.rsa
+other_tools/gscan/gscan
