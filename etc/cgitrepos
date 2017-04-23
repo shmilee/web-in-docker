@@ -33,6 +33,12 @@ section=IFTS
   repo.desc=Gyrokinetic Toroidal Code
   repo.owner=shmilee.zju@gmail.com
 
+  repo.url=gdpy3
+  repo.path=/srv/project/gdpy3/.git
+  repo.desc=GTC Data Processing tools written in python3
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/gdpy3.git
+
   repo.url=gtc-tools
   repo.path=/srv/project/gtc-tools/.git
   repo.desc=plot tools for gtc
