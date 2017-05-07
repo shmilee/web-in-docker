@@ -1,107 +1,122 @@
-## List of repositories in /srv/project.
-
-section=archlinux
-
-  repo.url=myrepo
-  repo.path=/srv/project/myrepo/.git
-  repo.desc=Add, remove, check and update packages(from AUR) for my personal repo
-  repo.owner=shmilee.zju@gmail.com
-  repo.clone-url=https://github.com/shmilee/myrepo.git
-
-  repo.url=scripts
-  repo.path=/srv/project/scripts/.git
-  repo.desc=Some scripts (shell, python, perl, etc.)
-  repo.owner=shmilee.zju@gmail.com
-  repo.clone-url=https://github.com/shmilee/scripts.git
-
-  repo.url=config-awesome
-  repo.path=/srv/project/config-awesome/.git
-  repo.desc=Awesome Window Manager Config Files
-  repo.owner=shmilee.zju@gmail.com
-  repo.clone-url=https://github.com/shmilee/config-awesome.git
-
-  repo.url=ALL
-  repo.path=/srv/project/ALL/.git
-  repo.desc=Arch Linux Lodge
-  repo.owner=shmilee.zju@gmail.com
-  repo.clone-url=https://github.com/shmilee/ALL.git
-
-section=IFTS
-
-  repo.url=gtc
-  repo.path=/srv/project/gtc/.git
-  repo.desc=Gyrokinetic Toroidal Code
-  repo.owner=shmilee.zju@gmail.com
-
-  repo.url=gdpy3
-  repo.path=/srv/project/gdpy3/.git
-  repo.desc=GTC Data Processing tools written in python3
-  repo.owner=shmilee.zju@gmail.com
-  repo.clone-url=https://github.com/shmilee/gdpy3.git
-
-  repo.url=gtc-tools
-  repo.path=/srv/project/gtc-tools/.git
-  repo.desc=plot tools for gtc
-  repo.owner=shmilee.zju@gmail.com
-
-section=web
-
-  repo.url=blog
-  repo.path=/srv/project/blog/.git
-  repo.desc=manage my pages hosted at shmilee.github.io
-  repo.owner=shmilee.zju@gmail.com
-  repo.clone-url=https://github.com/shmilee/blog.git
-
-  repo.url=web-in-docker
-  repo.path=/srv/project/web-in-docker/.git
-  repo.desc=monit+nginx+mysql+php+cgit+jupyterhub
-  repo.owner=shmilee.zju@gmail.com
-  repo.clone-url=https://github.com/shmilee/web-in-docker.git
-
-section=tool
-
-  repo.url=oh-my-zsh-custom
-  repo.path=/srv/project/oh-my-zsh-custom/.git
-  repo.desc=Custom behaviors of oh-my-zsh
-  repo.owner=shmilee.zju@gmail.com
-  repo.clone-url=https://github.com/shmilee/oh-my-zsh-custom.git
-
-  repo.url=rst2arb
-  repo.path=/srv/project/rst2arb/.git
-  repo.desc=ReST to article report beamer
-  repo.owner=shmilee.zju@gmail.com
-  repo.clone-url=https://github.com/shmilee/rst2arb.git
-
-  repo.url=vpn4zju
-  repo.path=/srv/project/vpn4zju/.git
-  repo.desc=A utility for ZJU school L2TP VPN
-  repo.owner=shmilee.zju@gmail.com
-  repo.clone-url=https://github.com/shmilee/vpn4zju.git
-
-  repo.url=BMUDv2
-  repo.path=/srv/project/BMUDv2/.git
-  repo.desc=Bootable Maintenance USB Drive 
-  repo.owner=shmilee.zju@gmail.com
-  repo.clone-url=https://github.com/shmilee/BMUDv2.git
-
-  repo.url=openwrt-backup
-  repo.path=/srv/project/openwrt-backup/.git
-  repo.desc=backup openwrt setup
-  repo.owner=shmilee.zju@gmail.com
-  repo.clone-url=https://github.com/shmilee/openwrt-backup.git
-
-section=android
-
-  repo.url=android-cli-openssh
-  repo.path=/srv/project/android-cli-openssh/.git
-  repo.desc=android command line openssh, upstream:CyanogenMod
-  repo.owner=shmilee.zju@gmail.com
-  repo.clone-url=https://github.com/shmilee/android-cli-openssh.git
+## List of bare repositories in /srv/project.
 
 section=Hackintosh
 
   repo.url=T450-Hackintosh
-  repo.path=/srv/project/T450-Hackintosh/.git
+  repo.path=/srv/project/T450-Hackintosh.git
   repo.desc=Install Hackintosh on Thinkpad T450
   repo.owner=shmilee.zju@gmail.com
-  repo.clone-url=https://github.com/shmilee/T450-Hackintosh.git
+  repo.clone-url=https://github.com/shmilee/T450-Hackintosh.git ssh://git@shmilee.io:2323/~/T450-Hackintosh.git
+
+section=IFTS
+
+  repo.url=gdpy3
+  repo.path=/srv/project/gdpy3.git
+  repo.desc=GTC Data Processing tools written in python3
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/gdpy3.git ssh://git@shmilee.io:2323/~/gdpy3.git
+
+  repo.url=gtc
+  repo.path=/srv/project/gtc.git
+  repo.desc=Gyrokinetic Toroidal Code
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=ssh://git@shmilee.io:2323/~/gtc.git
+
+  repo.url=gtc-tools
+  repo.path=/srv/project/gtc-tools.git
+  repo.desc=plot tools for gtc
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=ssh://git@shmilee.io:2323/~/gtc-tools.git
+
+  repo.url=zion_setup
+  repo.path=/srv/project/zion_setup.git
+  repo.desc= zion setup tools
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=ssh://git@shmilee.io:2323/~/zion_setup.git ssh://gogs@git.ifts-zju.org:21322/tgzhang/ZION_Setup.git
+
+section=android
+
+  repo.url=android-cli-openssh
+  repo.path=/srv/project/android-cli-openssh.git
+  repo.desc=android command line openssh, upstream:CyanogenMod
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/android-cli-openssh.git ssh://git@shmilee.io:2323/~/android-cli-openssh.git
+
+  repo.url=vivo-Y13L
+  repo.path=/srv/project/vivo-Y13L.git
+  repo.desc= a cheap 4G phone 
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/vivo-Y13L.git ssh://git@shmilee.io:2323/~/vivo-Y13L.git
+
+section=archlinux
+
+  repo.url=ALL
+  repo.path=/srv/project/ALL.git
+  repo.desc=Arch Linux Lodge
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/ALL.git ssh://git@shmilee.io:2323/~/ALL.git
+
+  repo.url=config-awesome
+  repo.path=/srv/project/config-awesome.git
+  repo.desc=Awesome Window Manager Config Files
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/config-awesome.git ssh://git@shmilee.io:2323/~/config-awesome.git
+
+  repo.url=myrepo
+  repo.path=/srv/project/myrepo.git
+  repo.desc=Add, remove, check and update packages(from AUR) for my personal repo
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/myrepo.git ssh://git@shmilee.io:2323/~/myrepo.git
+
+  repo.url=scripts
+  repo.path=/srv/project/scripts.git
+  repo.desc=Some scripts (shell, python, perl, etc.)
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/scripts.git ssh://git@shmilee.io:2323/~/scripts.git
+
+section=tool
+
+  repo.url=BMUDv2
+  repo.path=/srv/project/BMUDv2.git
+  repo.desc=Bootable Maintenance USB Drive 
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/BMUDv2.git ssh://git@shmilee.io:2323/~/BMUDv2.git
+
+  repo.url=oh-my-zsh-custom
+  repo.path=/srv/project/oh-my-zsh-custom.git
+  repo.desc=Custom behaviors of oh-my-zsh
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/oh-my-zsh-custom.git ssh://git@shmilee.io:2323/~/oh-my-zsh-custom.git
+
+  repo.url=openwrt-backup
+  repo.path=/srv/project/openwrt-backup.git
+  repo.desc=backup openwrt setup
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/openwrt-backup.git ssh://git@shmilee.io:2323/~/openwrt-backup.git
+
+  repo.url=rst2arb
+  repo.path=/srv/project/rst2arb.git
+  repo.desc=ReST to article report beamer
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/rst2arb.git ssh://git@shmilee.io:2323/~/rst2arb.git
+
+  repo.url=vpn4zju
+  repo.path=/srv/project/vpn4zju.git
+  repo.desc=A utility for ZJU school L2TP VPN
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/vpn4zju.git ssh://git@shmilee.io:2323/~/vpn4zju.git
+
+section=web
+
+  repo.url=blog
+  repo.path=/srv/project/blog.git
+  repo.desc=manage my pages hosted at shmilee.github.io
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/blog.git ssh://git@shmilee.io:2323/~/blog.git
+
+  repo.url=web-in-docker
+  repo.path=/srv/project/web-in-docker.git
+  repo.desc=monit+nginx+mysql+php+cgit+jupyterhub
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/web-in-docker.git ssh://git@shmilee.io:2323/~/web-in-docker.git
+

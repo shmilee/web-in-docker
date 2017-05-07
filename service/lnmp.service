@@ -19,7 +19,7 @@ ExecStart=/usr/bin/docker run --rm \
     -v ${WebData}/etc:/srv/etc:ro \
     -v ${WebData}/log:/srv/log:rw \
     -v ${WebData}/root_files:/srv/http:rw \
-    -v ${WebData}/project:/srv/project:ro \
+    -v ${WebData}/project:/srv/project:rw \
     -v ${WebData}/repo-shmilee:/srv/repo-shmilee:ro \
     -v /home/IFTS_shmilee:/srv/http/upload/IFTS_shmilee:ro \
     -v /home/VideoData:/srv/http/videos:ro \
