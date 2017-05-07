@@ -88,4 +88,4 @@ readme=:INSTALL
 readme=:install
 
 ## List of repositories.
-include=/srv/etc/cgitrepos
+include=/srv/etc/cgit/cgitrepos

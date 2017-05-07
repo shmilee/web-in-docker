@@ -62,6 +62,16 @@ check process mynginx with pidfile /run/mynginx.pid
     if 3 restarts within 3 cycles then alert
     group webserver
 
+#check process mysqld with pidfile /run/mysqld/mysqld.pid
+#    start program = "/usr/bin/mysqld_safe --nowatch --pid-file=/run/mysqld/mysqld.pid"
+#        with timeout 10 seconds
+#    stop program = "/bin/bash -c 'kill -s SIGTERM `cat /run/mysqld/mysqld.pid`'"
+#    #stop program = "/usr/bin/mysqladmin shutdown -uroot -hlocalhost -ppassword"
+#    if failed port 3306 protocol mysql
+#        with timeout 10 seconds then restart
+#    if 3 restarts within 3 cycles then alert
+#    group database
+
 check process php-fpm7 with pidfile /run/php-fpm/php-fpm7.pid
     start program = "/usr/sbin/php-fpm7 -c /srv/etc/php.ini -y /srv/etc/php-fpm7.conf"
         with timeout 10 seconds
@@ -76,17 +86,14 @@ check process fcgiwrap with pidfile /run/fcgiwrap.pid
         with timeout 10 seconds
     stop program = "/bin/bash -c 'kill -s SIGTERM `cat /run/fcgiwrap.pid`'"
     if 3 restarts within 3 cycles then alert
-    group webserver
+    group gitweb
 
-#check process mysqld with pidfile /run/mysqld/mysqld.pid
-#    start program = "/usr/bin/mysqld_safe --nowatch --pid-file=/run/mysqld/mysqld.pid"
-#        with timeout 10 seconds
-#    stop program = "/bin/bash -c 'kill -s SIGTERM `cat /run/mysqld/mysqld.pid`'"
-#    #stop program = "/usr/bin/mysqladmin shutdown -uroot -hlocalhost -ppassword"
-#    if failed port 3306 protocol mysql
-#        with timeout 10 seconds then restart
-#    if 3 restarts within 3 cycles then alert
-#    group database
+check process sshd with pidfile /run/sshd.pid
+    start program = "/usr/sbin/sshd -f /srv/etc/ssh/sshd_config -E /srv/log/sshd.log"
+    stop program = "/bin/bash -c 'kill -s SIGTERM `cat /run/sshd.pid`'"
+    if 3 restarts within 3 cycles then alert
+    if failed port 2323 protocol ssh then restart
+    group gitweb
 
 check file server_key with path /srv/etc/ssl-certs/server-shmilee.key
     if failed permission 0400 then alert

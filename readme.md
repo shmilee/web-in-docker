@@ -24,6 +24,7 @@ PID   USER     TIME   COMMAND
    24 nobody     0:00 {php-fpm7} php-fpm: pool www
    25 nobody     0:00 {php-fpm7} php-fpm: pool www
    27 mynginx    0:00 /usr/bin/fcgiwrap
+   29 root       0:00 /usr/sbin/sshd -f /srv/etc/ssh/sshd_config -E /srv/log/ss
   331 mysql      0:01 /usr/bin/mysqld --basedir=/usr --datadir=/var/lib/mysql -
   365 root       0:00 {mynginx} nginx: master process /usr/bin/mynginx -c /srv/
   366 mynginx    0:01 {mynginx} nginx: worker process
@@ -39,8 +40,9 @@ tini(1)-+-fcgiwrap(27)
         |              |-mynginx(367)
         |              `-mynginx(368)
         |-mysqld(331)
-        `-php-fpm7(23)-+-php-fpm7(24)
-                       `-php-fpm7(25)
+        |-php-fpm7(23)-+-php-fpm7(24)
+        |              `-php-fpm7(25)
+        `-sshd(29)
 
 $ docker exec -t lnmp_server monit -c /srv/etc/monitrc summary                  :) 0
 Monit 5.20.0 uptime: 15h 20m
@@ -56,6 +58,8 @@ Monit 5.20.0 uptime: 15h 20m
 │ fcgiwrap                        │ Running                    │ Process       │
 ├─────────────────────────────────┼────────────────────────────┼───────────────┤
 │ mysqld                          │ Running                    │ Process       │
+├─────────────────────────────────┼────────────────────────────┼───────────────┤
+│ sshd                            │ Running                    │ Process       │
 ├─────────────────────────────────┼────────────────────────────┼───────────────┤
 │ server_key                      │ Accessible                 │ File          │
 ├─────────────────────────────────┼────────────────────────────┼───────────────┤
@@ -200,12 +204,13 @@ Build lnmp image, matplothub image.
 ```shell
 $ docker images                                                                       :) 0
 REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE
-shmilee/lnmp         170111              2056f89f4b87        7 minutes ago       319.2 MB
-shmilee/lnmp         using               2056f89f4b87        7 minutes ago       319.2 MB
-shmilee/abuild       3.5                 4f2bda183df9        5 days ago          189.9 MB
-shmilee/matplothub   161229              f756e139bc6d        12 days ago         683.8 MB
-shmilee/matplothub   using               f756e139bc6d        12 days ago         683.8 MB
-alpine               3.5                 88e169ea8f46        13 days ago         3.98 MB
+shmilee/lnmp         170507              3c70eb4999e6        26 minutes ago      344MB
+shmilee/lnmp         using               3c70eb4999e6        26 minutes ago      344MB
+shmilee/lnmp         170111              2056f89f4b87        3 months ago        319MB
+shmilee/abuild       3.5                 4f2bda183df9        4 months ago        190MB
+shmilee/matplothub   161229              f756e139bc6d        4 months ago        684MB
+shmilee/matplothub   using               f756e139bc6d        4 months ago        684MB
+alpine               3.5                 88e169ea8f46        4 months ago        3.98MB
 ```
 
 owncloud

@@ -1,0 +1,16 @@
+Protocol 2
+Port 2323
+
+ChallengeResponseAuthentication no
+PermitRootLogin no
+PasswordAuthentication no
+PubkeyAuthentication yes
+
+HostKey /srv/etc/ssh/ssh_host_rsa_key
+#HostKey /srv/etc/ssh/ssh_host_dsa_key
+#HostKey /srv/etc/ssh/ssh_host_ecdsa_key
+#HostKey /srv/etc/ssh/ssh_host_ed25519_key
+
+AllowUsers git
+AuthorizedKeysFile	/srv/etc/ssh/authorized_keys
+Subsystem	sftp	/usr/lib/ssh/sftp-server
