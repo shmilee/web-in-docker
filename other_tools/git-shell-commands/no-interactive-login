@@ -1,0 +1,7 @@
+#!/bin/sh
+printf '%s\n' "================================================"
+printf '%s\n' "Welcome to shmilee's git server!"
+printf '%s\n' "You've successfully authenticated, but I do not"
+printf '%s\n' "provide interactive shell access."
+printf '%s\n' "================================================"
+exit 128
