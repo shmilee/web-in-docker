@@ -1,10 +1,10 @@
 Build Docker image
 ==================
 
-shmilee/abuild:3.5 (190M)
+shmilee/abuild:3.6 (193M)
 -------------------------
 
-Alpine Docker image for building Alpine Linux packages. Based on `alpine:3.5`.
+Alpine Docker image for building Alpine Linux packages. Based on `alpine:3.6`.
 
 Generate a public/private rsa key pair placed in `abuild/abuild-key/`,
 edit `PACKAGER_PRIVKEY` in `abuild/abuild-key/abuild.conf`.
@@ -26,32 +26,30 @@ This will add public rsa key to the image `/etc/apk/keys/`.
 
 ```
 cd ./abuild/
-docker build --force-rm --no-cache --rm -t shmilee/abuild:3.5 .
+docker build --force-rm --no-cache --rm -t shmilee/abuild:3.6 .
 cd ../
 ```
 
 ### build packages
 
 Change `REPODEST_DIR` to yours.
-For mine, it's URL is `http://shmilee.io/repo-shmilee/alpine-v3.5/`
+For mine, it's URL is `http://shmilee.io/repo-shmilee/alpine-v3.6/`
 
 ```
 KEY_DIR=$PWD/abuild/abuild-key
 APORTS_DIR=$PWD/abuild/aports
-REPODEST_DIR=/home/WebData/repo-shmilee/alpine-v3.5
+REPODEST_DIR=/home/WebData/repo-shmilee/alpine-v3.6
 docker run --rm -t -i \
     -v ${KEY_DIR}:/home/builder/.abuild \
     -v ${APORTS_DIR}:/home/builder/aports \
     -v ${REPODEST_DIR}:/home/builder/packages \
-    shmilee/abuild:3.5
+    shmilee/abuild:3.6
 ```
 
 __The following COMMANDs is in docker CONTAINER!__
 
 ```
 sudo apk update
-cd /home/builder/aports/shmilee/php7-memcached/
-abuild -r
 cd /home/builder/aports/shmilee/sregex/
 abuild -r
 sudo apk update
