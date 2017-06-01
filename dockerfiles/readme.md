@@ -57,10 +57,10 @@ cd /home/builder/aports/shmilee/mynginx/
 abuild -r
 ```
 
-shmilee/lnmp (344 MB)
+shmilee/lnmp (345 MB)
 ---------------------
 
-Based on `alpine:3.5`.
+Based on `alpine:3.6`.
 
 Packages:
 
