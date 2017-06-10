@@ -186,10 +186,9 @@ elif [[ $casetype == 'notebook' ]]; then
         -e 's|\(<script src="\)http..*jquery.min.js\("></script>\)|\1/js/jquery-1.12.4.min.js\2|g' \
         -e 's|\(<script src="\)https.*/latest/\(MathJax.js.*".*$\)|\1/js/mathjax/\2|g' \
         -e 's|../components/bootstrap\(/fonts/glyphicons-halflings\)|\1|g' \
+        -e 's|../components/font-awesome\(/fonts/fontawesome-webfont\)|\1|g' \
         -e 's|\(^.*stylesheet.*custom\.css.*$\)|<!-- \1 -->|g' \
         -i "{}" \;
-    # ignore FontAwesome
-    # -e 's|../components/font-awesome\(/fonts/fontawesome-webfont\)|\1|g' \
     date > $deploy_dir/convert-date.txt
 fi
 
