@@ -55,6 +55,17 @@ abuild -r
 sudo apk update
 cd /home/builder/aports/shmilee/mynginx/
 abuild -r
+cd /home/builder/aports/shmilee/py3-scipy/
+abuild -r
+cd /home/builder/aports/shmilee/py3-cycler/
+abuild -r
+sudo apk update
+cd /home/builder/aports/shmilee/py3-matplotlib/
+abuild -r
+cd /home/builder/aports/shmilee/czmq/
+abuild -r
+cd /home/builder/aports/shmilee/ruby-ffi/
+abuild -r
 ```
 
 shmilee/lnmp (345 MB)

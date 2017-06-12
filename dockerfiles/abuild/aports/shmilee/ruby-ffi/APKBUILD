@@ -1,0 +1,37 @@
+# Maintainer: shmilee <shmilee.zju@gmail.com>
+
+pkgname=ruby-ffi
+_gemname=${pkgname#ruby-}
+pkgver=1.9.18
+pkgrel=0
+pkgdesc="ruby ffi"
+url="https://github.com/ffi/ffi"
+arch="all"
+license="BSD-3"
+depends="ruby"
+makedepends="ruby-dev libffi-dev"
+subpackages="$pkgname-dev"
+source="https://rubygems.org/downloads/$_gemname-$pkgver.gem"
+options="!check"  # FIXME
+
+package() {
+    local gemdir="$pkgdir/$(ruby -rubygems -e 'puts Gem.default_dir')"
+    local geminstdir="$gemdir/gems/$_gemname-$pkgver"
+
+    gem install --local \
+        --install-dir "$gemdir" \
+        --ignore-dependencies \
+        --no-document \
+        --verbose \
+        "$srcdir"/$_gemname-$pkgver.gem || return 1
+
+    rm -rf "$gemdir"/cache \
+        "$geminstdir"/test \
+        "$geminstdir"/*.md \
+        "$geminstdir"/*.txt \
+        "$geminstdir"/*.yml \
+        "$gemdir"/build_info \
+        "$gemdir"/doc
+}
+
+sha512sums="957bdda13eb84bcda43280ee6025f13c6cff8b14090079f7bbb1296e13082c4d6027c25de2b0c6e1f9d9c2f020ef66d1e6db2c5d9cfa50e828e146ab83e7a6d9  ffi-1.9.18.gem"

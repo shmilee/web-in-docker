@@ -15,8 +15,8 @@ makedepends="python3-dev py-setuptools"
 install=""
 subpackages=""
 source="https://files.pythonhosted.org/packages/source/C/Cycler/$_pkgname-$pkgver.tar.gz"
-
 builddir="${srcdir}/${_pkgname}-$pkgver"
+
 build() {
     cd "$builddir" || return 1
     python3 setup.py build || return 1
