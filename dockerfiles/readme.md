@@ -134,7 +134,8 @@ shmilee/jupyterhub
 
 jupyterhub notebook image based on alpine.
 
-(numpy scipy pandas sympy matplotlib plotly)
+* ipykernel: py3, numpy scipy matplotlib sympy gdpy3
+* iruby kernel: awesome_print
 
 ```
 cd ./jupyterhub/

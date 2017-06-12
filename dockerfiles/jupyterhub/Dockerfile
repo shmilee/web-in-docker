@@ -1,17 +1,17 @@
-# use matplotlib in jupyterhub
-#
 # python 3
+# jupyterhub, jupyter-notebook:
+# 1. ipykernel: py3, numpy scipy matplotlib sympy gdpy3
+# 2. iruby kernel: awesome_print
 #
 # docker build --force-rm --no-cache --rm -t shmilee/jupyterhub:$(date +%y%m%d) .
+#
 # docker run --rm -v $PWD/jupyterhub:/srv/jupyterhub \
 #   -p 8000:8000 shmilee/jupyterhub:$(date +%y%m%d)
 # configfile: $PWD/jupyterhub/jupyterhub_config.py
 #
-# TODO: add pandoc, openssh, iruby kernel, matlab kernel
-# iruby:  usradd problem, iruby register
-# matlab: glibc, bin/glnxa64/need_softwareopengl etc. Alpine is not a good platform for matlab!
+# TODO: add pandoc
 
-FROM alpine:3.5
+FROM alpine:3.6
 MAINTAINER shmilee <shmilee.zju@gmail.com>
 
 ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
@@ -23,17 +23,13 @@ ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
 
 ADD ./jupyterhub_init.sh /usr/bin/jupyterhub_init.sh
 
-RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.5/main > /etc/apk/repositories \
- && echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.5/community >> /etc/apk/repositories \
- && apk --no-cache add tini bash shadow python3 libstdc++ ca-certificates openssl \
- && apk --no-cache add --virtual=build_dependencies \
-        gcc \
-        g++ \
-        make \
-        cmake \
-        curl \
-        musl-dev \
-        python3-dev \
+# Add my repository
+COPY ./*@*.rsa.pub /etc/apk/keys/
+RUN echo http://shmilee.io/repo-shmilee/alpine-v3.6/shmilee > /etc/apk/repositories
+
+RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.6/main >> /etc/apk/repositories \
+ && echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.6/community >> /etc/apk/repositories \
+ && apk --no-cache add tini bash shadow python3 libstdc++ ca-certificates openssl openssh \
  && echo "==> 1) add jupyter-notebook ..." \
  && apk --no-cache add \
         py3-tornado \
@@ -44,40 +40,33 @@ RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.5/main > /etc/apk/reposi
         py3-ptyprocess \
         py3-pygments \
         py3-pexpect \
- && pip3 --no-cache-dir install -i ${PIP_INDEX_URL} notebook \
+        py3-zmq \
+        py3-dateutil \
+ && pip3 --no-cache-dir install -i ${PIP_INDEX_URL} \
+        jupyter-console \
+        notebook \
+        ipywidgets \
  && echo "==> 2) add jupyterhub ..." \
  && apk --no-cache add \
         py3-requests \
         py3-sqlalchemy \
         linux-pam \
         nodejs \
+        nodejs-npm \
  && npm install -g configurable-http-proxy --registry="${NPM_REGISTRY}" \
  && pip3 --no-cache-dir install -i ${PIP_INDEX_URL} jupyterhub \
- && echo "==> 3) add numpy scipy ..." \
- && apk --no-cache add openblas libgfortran \
- && apk --no-cache add --virtual=build_scipy_dependencies \
-        gfortran \
-        openblas-dev \
- && ln -s /usr/include/locale.h /usr/include/xlocale.h \
- && pip3 --no-cache-dir install -i ${PIP_INDEX_URL} numpy scipy \
- && echo "==> 4) add sympy pandas ..." \
- && apk --no-cache add py3-dateutil \
- && pip3 --no-cache-dir install -i ${PIP_INDEX_URL} sympy pandas \
- && echo "==> 5) add matplotlib plotly ..." \
- && apk --no-cache add \
-        py3-parsing \
-        python3-tkinter \
-        py3-tz \
- && apk --no-cache add --virtual=build_plot_dependencies \
-        libpng-dev \
-        freetype-dev \
-        tk-dev \
- && pip3 --no-cache-dir install -i ${PIP_INDEX_URL} matplotlib plotly \
- && echo "==> clean ..." \
- && apk del --purge -r \
-        build_dependencies \
-        build_scipy_dependencies \
-        build_plot_dependencies \
+ && echo "==> 3) add numpy scipy matplotlib sympy gdpy3 ..." \
+ && apk --no-cache add py3-numpy py3-scipy py3-matplotlib \
+ && pip3 --no-cache-dir install -i ${PIP_INDEX_URL} sympy gdpy3 \
+ && echo "==> 4) add iruby kernel ..." \
+ && apk --no-cache add ruby ruby-ffi ruby-json czmq make \
+ && gem sources --add ${GEM_SOURCE_URI} --remove https://rubygems.org/ \
+ && gem install --no-user-install --no-document \
+        cztop \
+        iruby \
+        awesome_print \
+ && echo "==> x) clean ..." \
+ && apk --no-cache del --purge -r nodejs-npm make \
  && find /usr/lib/python3* \
 		\( -type d -a -name test -o -name tests \) \
 		-exec rm -rf '{}' + ; \
@@ -87,22 +76,6 @@ RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.5/main > /etc/apk/reposi
  && install -d -m1777 /tmp \
  && install -d -m0700 /root \
  && chmod +x /usr/bin/jupyterhub_init.sh
-
-# && echo "==> 7) add iruby kernel ..." \
-# && apk --no-cache add ruby ruby-json \
-# && apk --no-cache add --virtual=build_iruby_dependencies \
-#        zeromq-dev \
-#        ruby-dev \
-#        libtool \
-#        autoconf \
-#        automake \
-# && gem sources --add ${GEM_SOURCE_URI} --remove https://rubygems.org/ \
-# && gem install --no-user-install --no-document rbczmq iruby awesome_print \
-# && rm -rf /usr/lib/ruby/gems/*/gems/rbczmq-*/ext \
-# && echo "==> 8) add matlab kernel ..." \
-# && apk --no-cache add ncurses5-libs libxpm libxmu libxp libxrandr \
-# && pip3 --no-cache-dir install -i ${PIP_INDEX_URL} metakernel pymatbridge matlab_kernel \
-# && python3 -m matlab_kernel install \
 
 WORKDIR /srv/jupyterhub
 ENTRYPOINT ["/sbin/tini", "--"]
