@@ -1,26 +1,26 @@
-# docker tag <A matplothub docker image> shmilee/matplothub:using
+# docker tag <A jupyterhub docker image> shmilee/jupyterhub:using
 # Copy this file to /etc/systemd/system/
 # sudo systemctl daemon-reload
-# systemctl start matplothub
+# systemctl start jupyterhub
 # https://docs.docker.com/articles/systemd/
 
 [Unit]
-Description=jupyterhub+notebook+matplotlib+iruby_kernel+matlab_kernel
+Description=jupyterhub+notebook+matplotlib+iruby_kernel
 After=network.target
 Requires=docker.service
 After=docker.service
 
 [Service]
 Restart=always
-SyslogIdentifier=matplothub
+SyslogIdentifier=jupyterhub
 Environment='WebData=/home/WebData'
 ExecStart=/usr/bin/docker run --rm -p 8888:8000 \
     -v ${WebData}/jupyterhub:/srv/jupyterhub \
     -v /home/shmilee/.local/matlab2014b:/opt/matlab \
     -e TERM=xterm \
-    --name matplothub_server shmilee/matplothub:using
-ExecStop=/usr/bin/docker stop -t 5 matplothub_server
-ExecStop=/usr/bin/docker rm matplothub_server
+    --name jupyterhub_server shmilee/jupyterhub:using
+ExecStop=/usr/bin/docker stop -t 5 jupyterhub_server
+ExecStop=/usr/bin/docker rm jupyterhub_server
 User=shmilee
 
 [Install]

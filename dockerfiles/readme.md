@@ -129,8 +129,8 @@ docker run --rm -p 80:80 -p 443:443 \
 ```
 
 
-shmilee/jupyterhub
-------------------
+shmilee/jupyterhub (329 MB)
+---------------------------
 
 jupyterhub notebook image based on alpine.
 
@@ -140,35 +140,5 @@ jupyterhub notebook image based on alpine.
 ```
 cd ./jupyterhub/
 docker build --force-rm --no-cache --rm -t shmilee/jupyterhub:$(date +%y%m%d) .
-```
-
-shmilee/matplothub
-------------------
-
-jupyterhub notebook image based on archlinux.
-
-* (numpy scipy pandas sympy matplotlib plotly pandoc mathjax)
-* iruby kernel
-* matlab kernel (matlab2010a, matlab2014b)
-
-build arch base image:
-
-```
-cd ./arch/
-sudo ./mktar-miniarch.sh
-cat arch-$(date +%y%m).tar.xz | docker import - shmilee/arch:$(date +%y%m)
-```
-
-builad matplothub image:
-
-```
-cd ../matplothub/
-sed -i "s|FROM shmilee/arch:....|FROM shmilee/arch:$(date +%y%m)|" Dockerfile
-docker build --force-rm --no-cache --rm -t shmilee/matplothub:$(date +%y%m%d) .
-docker tag shmilee/matplothub:$(date +%y%m%d) shmilee/matplothub:using
-# prepare a password in $PWD/jupyterhub/jupyterhub_config.py
-
-docker run --rm -v $PWD/jupyterhub:/srv/jupyterhub \
-   -v /usr/local/matlab2010a:/opt/matlab -p 8000:8000 shmilee/matplothub:$(date +%y%m%d)
 ```
 
