@@ -79,4 +79,4 @@ RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.6/main >> /etc/apk/repos
 
 WORKDIR /srv/jupyterhub
 ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["jupyterhub_init.sh", "3", "/srv/jupyterhub/jupyterhub_config.py", "none", "--no-ssl"]
+CMD ["jupyterhub_init.sh", "3", "/srv/jupyterhub/jupyterhub_config.py", "/srv/jupyterhub/hook_script", "--no-ssl"]

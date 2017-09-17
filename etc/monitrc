@@ -114,7 +114,7 @@ check host 9201z with address 192.168.5.126
         #and certificate checksum = "Fingerprint"
     for 3 cycles then alert
 
-check host openwrt with address 222.205.57.208
+check host openwrt with address 222.205.55.11
     if failed ping with timeout 10 seconds for 2 cycles then alert
     if failed port 80 protocol http for 3 cycles then alert
     if failed port 443 protocol https
