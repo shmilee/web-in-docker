@@ -57,7 +57,7 @@ RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.6/main >> /etc/apk/repos
  && pip3 --no-cache-dir install -i ${PIP_INDEX_URL} jupyterhub jupyter_contrib_nbextensions \
  && jupyter contrib nbextension install --system --symlink \
  && echo "==> 3) add numpy scipy matplotlib sympy gdpy3 ..." \
- && apk --no-cache add py3-numpy py3-scipy py3-matplotlib \
+ && apk --no-cache add py3-numpy py3-scipy py3-matplotlib py3-pillow \
  && pip3 --no-cache-dir install -i ${PIP_INDEX_URL} sympy gdpy3 \
  && echo "==> 4) add iruby kernel ..." \
  && apk --no-cache add ruby ruby-ffi ruby-json czmq make \
