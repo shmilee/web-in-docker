@@ -88,12 +88,6 @@ section=tool
   repo.owner=shmilee.zju@gmail.com
   repo.clone-url=https://github.com/shmilee/oh-my-zsh-custom.git ssh://git@shmilee.io:2323/~/oh-my-zsh-custom.git
 
-  repo.url=openwrt-backup
-  repo.path=/srv/project/openwrt-backup.git
-  repo.desc=backup openwrt setup
-  repo.owner=shmilee.zju@gmail.com
-  repo.clone-url=https://github.com/shmilee/openwrt-backup.git ssh://git@shmilee.io:2323/~/openwrt-backup.git
-
   repo.url=rst2arb
   repo.path=/srv/project/rst2arb.git
   repo.desc=ReST to article report beamer
@@ -105,6 +99,20 @@ section=tool
   repo.desc=A utility for ZJU school L2TP VPN
   repo.owner=shmilee.zju@gmail.com
   repo.clone-url=https://github.com/shmilee/vpn4zju.git ssh://git@shmilee.io:2323/~/vpn4zju.git
+
+section=openwrt
+
+  repo.url=openwrt-wndr3700v4
+  repo.path=/srv/project/openwrt-wndr3700v4.git
+  repo.desc=openwrt setup for NETGEAR WNDR3700v4
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/openwrt-wndr3700v4.git ssh://git@shmilee.io:2323/~/openwrt-wndr3700v4.git
+
+  repo.url=openwrt-shmilee-feeds
+  repo.path=/srv/project/openwrt-shmilee-feeds.git
+  repo.desc=shmilee‘s feeds for OpenWrt
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/openwrt-shmilee-feeds.git ssh://git@shmilee.io:2323/~/openwrt-shmilee-feeds.git
 
 section=web
 
