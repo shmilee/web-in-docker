@@ -125,8 +125,8 @@ docker run --rm -p 80:80 -p 443:443 \
 ```
 
 
-shmilee/jupyterhub (329 MB)
----------------------------
+shmilee/jupyterhub
+------------------
 
 jupyterhub notebook image based on alpine.
 
