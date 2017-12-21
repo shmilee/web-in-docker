@@ -14,7 +14,7 @@
 #   -v $PWD/log:/srv/log:rw shmilee/lnmp:$(date +%y%m%d)
 #
 
-FROM alpine:3.6
+FROM alpine:3.7
 MAINTAINER shmilee <shmilee.zju@gmail.com>
 
 ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
@@ -26,10 +26,10 @@ ADD ./monit_init.sh /usr/bin/monit_init.sh
 
 # Add my repository
 COPY ./*@*.rsa.pub /etc/apk/keys/
-RUN echo http://shmilee.io/repo-shmilee/alpine-v3.6/shmilee > /etc/apk/repositories
+RUN echo http://shmilee.io/repo-shmilee/alpine-v3.7/shmilee > /etc/apk/repositories
 
-RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.6/main >> /etc/apk/repositories \
- && echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.6/community >> /etc/apk/repositories \
+RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.7/main >> /etc/apk/repositories \
+ && echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.7/community >> /etc/apk/repositories \
  && addgroup -g 82 -S www-data \
  && adduser -u 82 -D -S -h /srv/http -G www-data -g www-data www-data \
  && echo "==> tini monit nginx mariadb php ..." \
