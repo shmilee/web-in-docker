@@ -32,6 +32,4 @@ package() {
       "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
 
-md5sums="b6b1e68f104e75d09ddc66f119dc5d70  sregex-v222.c275d22.tar.gz"
-sha256sums="39ce408050325679e957ced947c53aff3d947fc484015dc8b84ac83ff5e6d76a  sregex-v222.c275d22.tar.gz"
 sha512sums="34f2c0e8623a88cbd134d4110eabbbcbccf926d55e726dac0df8aac1ef55d8e742901012eed20e5133a52d02ebf3577c7a477b0f318b809e3fda01be02fe4613  sregex-v222.c275d22.tar.gz"

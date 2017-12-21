@@ -1,30 +1,28 @@
-diff -Nur passenger-release-5.1.1-old/build/packaging.rb passenger-release-5.1.1/build/packaging.rb
---- passenger-release-5.1.1-old/build/packaging.rb	2016-07-21 23:11:23.000000000 +0800
-+++ passenger-release-5.1.1/build/packaging.rb	2016-11-02 08:33:41.000000000 +0800
-@@ -541,7 +541,7 @@
+diff -Nur passenger-release-5.1.12-old/build/packaging.rb passenger-release-5.1.12/build/packaging.rb
+--- passenger-release-5.1.12-old/build/packaging.rb	2017-11-23 08:15:47.000000000 +0800
++++ passenger-release-5.1.12/build/packaging.rb	2017-12-21 18:10:16.000000000 +0800
+@@ -115,7 +115,7 @@
  end
  
  desc "Create a fakeroot, useful for building native packages"
 -task :fakeroot => [:apache2, :nginx, 'nginx:as_dynamic_module', :doc] do
 +task :fakeroot => [:nginx, 'nginx:as_dynamic_module'] do
    require 'rbconfig'
-   require 'fileutils'
    include RbConfig
-@@ -661,9 +661,9 @@
+ 
+@@ -234,8 +234,8 @@
    sh "cp src/nginx_module/* #{fake_nginx_module_source_dir}/"
  
    # Documentation
 -  sh "mkdir -p #{fake_docdir}"
--  sh "cp doc/*.html #{fake_docdir}/"
 -  sh "cp -R doc/images #{fake_docdir}/"
 +  #sh "mkdir -p #{fake_docdir}"
-+  #sh "cp doc/*.html #{fake_docdir}/"
 +  #sh "cp -R doc/images #{fake_docdir}/"
  
    # User binaries
    sh "mkdir -p #{fake_bindir}"
-@@ -684,14 +684,14 @@
-     if Packaging::EXECUTABLES_WITH_FREE_RUBY.include?(exe)
+@@ -256,14 +256,14 @@
+     if PhusionPassenger::Packaging::EXECUTABLES_WITH_FREE_RUBY.include?(exe)
        shebang = psg_free_ruby
      else
 -      shebang = psg_ruby
@@ -41,9 +39,9 @@ diff -Nur passenger-release-5.1.1-old/build/packaging.rb passenger-release-5.1.1
  
    # Ruby extension sources
    sh "mkdir -p #{fake_ruby_extension_source_dir}"
-diff -Nur passenger-release-5.1.1-old/gitsubmodules.sh passenger-release-5.1.1/gitsubmodules.sh
---- passenger-release-5.1.1-old/gitsubmodules.sh	1970-01-01 08:00:00.000000000 +0800
-+++ passenger-release-5.1.1/gitsubmodules.sh	2016-11-02 08:33:41.000000000 +0800
+diff -Nur passenger-release-5.1.12-old/gitsubmodules.sh passenger-release-5.1.12/gitsubmodules.sh
+--- passenger-release-5.1.12-old/gitsubmodules.sh	1970-01-01 08:00:00.000000000 +0800
++++ passenger-release-5.1.12/gitsubmodules.sh	2017-12-21 18:05:45.000000000 +0800
 @@ -0,0 +1,13 @@
 +#!/bin/sh
 +set -e

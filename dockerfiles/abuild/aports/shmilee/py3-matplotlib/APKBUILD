@@ -3,7 +3,7 @@
 
 pkgname=py3-matplotlib
 _pkgname=matplotlib
-pkgver=2.0.2
+pkgver=2.1.1
 pkgrel=1
 pkgdesc="A python plotting library, making publication quality plotss"
 url="http://matplotlib.org"
@@ -39,4 +39,4 @@ tests() {
     mv "$pkgdir"$sitepath/testing "$subpkgdir"$sitepath/
 }
 
-sha512sums="154117eeb2a285bb3cd4a7e31b4a9681d036af558ad3c5b79a37916ca57e0961b1836ee4ce92bc5aef32fa64a7c980047d6c3d75cd529c8c51d6cabd152942fc  matplotlib-2.0.2.tar.gz"
+sha512sums="ccfb7d9496cb8e160a22adfae7ec6edf56bf65d24d38d9a24767b8f10074a006509e789f8b270da0cedee77ed4a98642a29d2d351c520e029d4680ce6ea713cf  matplotlib-2.1.1.tar.gz"
