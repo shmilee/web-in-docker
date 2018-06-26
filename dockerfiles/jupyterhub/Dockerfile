@@ -17,7 +17,7 @@ MAINTAINER shmilee <shmilee.zju@gmail.com>
 ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
     TIMEZONE=Asia/Shanghai \
     TERM=xterm-color \
-    PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple \
+    PIP_INDEX_URL=https://mirrors.ustc.edu.cn/pypi/web/simple \
     NPM_REGISTRY=https://registry.npm.taobao.org \
     GEM_SOURCE_URI=https://gems.ruby-china.org
 
@@ -27,12 +27,11 @@ ADD ./jupyterhub_init.sh /usr/bin/jupyterhub_init.sh
 COPY ./*@*.rsa.pub /etc/apk/keys/
 RUN echo http://shmilee.io/repo-shmilee/alpine-v3.7/shmilee > /etc/apk/repositories
 
-RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.7/main >> /etc/apk/repositories \
- && echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.7/community >> /etc/apk/repositories \
+RUN echo http://mirrors.ustc.edu.cn/alpine/v3.7/main >> /etc/apk/repositories \
+ && echo http://mirrors.ustc.edu.cn/alpine/v3.7/community >> /etc/apk/repositories \
  && apk --no-cache add tini bash shadow python3 libstdc++ ca-certificates openssl openssh \
  && echo "==> 1) add jupyter-notebook ..." \
  && apk --no-cache add \
-        py3-tornado \
         py3-jinja2 \
         py3-jsonschema \
         py3-decorator \
@@ -43,8 +42,9 @@ RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.7/main >> /etc/apk/repos
         py3-zmq \
         py3-dateutil \
  && pip3 --no-cache-dir install -i ${PIP_INDEX_URL} \
+        tornado==4.5.3 \
         jupyter-console \
-        notebook \
+        notebook==5.4.1 \
         ipywidgets \
  && echo "==> 2) add jupyterhub ..." \
  && apk --no-cache add \
@@ -56,11 +56,12 @@ RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.7/main >> /etc/apk/repos
         nodejs \
         nodejs-npm \
  && npm install -g configurable-http-proxy --registry="${NPM_REGISTRY}" \
- && pip3 --no-cache-dir install -i ${PIP_INDEX_URL} jupyterhub jupyter_contrib_nbextensions \
+ && pip3 --no-cache-dir install -i ${PIP_INDEX_URL} jupyterhub==0.8.1 jupyter_contrib_nbextensions \
  && jupyter contrib nbextension install --system --symlink \
  && echo "==> 3) add numpy scipy matplotlib sympy gdpy3 ..." \
- && apk --no-cache add py3-numpy py3-scipy py3-matplotlib py3-pillow \
- && pip3 --no-cache-dir install -i ${PIP_INDEX_URL} sympy gdpy3 \
+ && apk --no-cache add py3-numpy py3-scipy py3-matplotlib py3-pillow git \
+ && pip3 --no-cache-dir install -i ${PIP_INDEX_URL} sympy \
+ && pip3 --no-cache-dir install git+https://github.com/shmilee/gdpy3.git \
  && echo "==> 4) add iruby kernel ..." \
  && apk --no-cache add ruby ruby-ffi ruby-json czmq czmq-dev make \
  && gem sources --add ${GEM_SOURCE_URI} --remove https://rubygems.org/ \
@@ -70,7 +71,8 @@ RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.7/main >> /etc/apk/repos
         awesome_print \
  && echo "==> x) clean ..." \
  && apk --no-cache add nodejs-current \
- && apk --no-cache del --purge -r nodejs-npm make \
+ && apk --no-cache del --purge -r git nodejs-npm make \
+ && pip3 freeze > /py3-requirements.txt \
  && find /usr/lib/python3* \
 		\( -type d -a -name test -o -name tests \) \
 		-exec rm -rf '{}' + ; \
