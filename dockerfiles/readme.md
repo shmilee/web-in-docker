@@ -55,9 +55,9 @@ abuild -r
 sudo apk update
 cd /home/builder/aports/shmilee/mynginx/
 abuild -r
-cd /home/builder/aports/shmilee/py3-scipy/
+cd /home/builder/aports/shmilee/py-cycler/
 abuild -r
-cd /home/builder/aports/shmilee/py3-cycler/
+cd /home/builder/aports/shmilee/py-kiwisolver/
 abuild -r
 sudo apk update
 cd /home/builder/aports/shmilee/py3-matplotlib/

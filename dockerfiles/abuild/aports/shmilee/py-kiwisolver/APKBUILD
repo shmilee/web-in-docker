@@ -1,0 +1,44 @@
+# Maintainer: shmilee <shmilee.zju@gmail.com>
+# Contributor: Felix Yan <felixonmars@archlinux.org>
+
+pkgname=py-kiwisolver
+_pkgname=kiwi
+pkgver=1.0.1
+pkgrel=0
+pkgdesc="A fast implementation of the Cassowary constraint solver"
+url="https://github.com/nucleic/kiwi"
+arch="all"
+license="PerlArtistic"
+makedepends="python2-dev python3-dev py-setuptools py2-pytest py3-pytest"
+subpackages="py2-${pkgname#py-}:_subpackage py3-${pkgname#py-}:_subpackage"
+source="$pkgname-$pkgver.tar.gz::https://github.com/nucleic/kiwi/archive/$pkgver.tar.gz"
+builddir="${srcdir}/${_pkgname}-$pkgver"
+
+build() {
+    cd "$builddir"
+    python2 setup.py build
+    python3 setup.py build
+}
+
+check() {
+    cd "$builddir"
+    python2 setup.py test
+    python3 setup.py test
+}
+
+package() {
+    mkdir -p "$pkgdir"
+}
+
+_subpackage() {
+    local pyver="${subpkgname:2:1}"
+    local python="python$pyver"
+    pkgdesc="$pkgdesc (for $python)"
+    depends="$python ${depends//py-/py$pyver-}"
+    install_if="$pkgname=$pkgver-r$pkgrel $python"
+
+    cd "$builddir"
+    $python setup.py install --prefix=/usr --root="$subpkgdir"
+}
+
+sha512sums="01002ae1dbf6482ed68c49ad3da80b772db84ec221c4b111c42f1b493f19299e0ddb187e43e64b380eb2ddc292d5848d6e09a5a1dbfaf68950a65423a913ec18  py-kiwisolver-1.0.1.tar.gz"
