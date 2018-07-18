@@ -67,7 +67,7 @@ abuild -r
 shmilee/lnmp
 ------------
 
-Based on `alpine:3.7`.
+lnmp image based on alpine.
 
 Packages:
 
