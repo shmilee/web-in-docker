@@ -80,65 +80,65 @@ Monit 5.22.0 uptime: 15h 20m
 MyNGINX APKBUILD
 ================
 
-In Alpine Docker image `shmilee/abuild:3.7`,
+In Alpine Docker image `shmilee/abuild:3.8`,
 [build package](./dockerfiles/readme.md#build-packages):
 
 The packages:
 
 ```
-mynginx-1.12.2-r0.apk
-mynginx-doc-1.12.2-r0.apk
-mynginx-meta-buildin-modules-1.12.2-r0.apk
-mynginx-meta-github-modules-1.12.2-r0.apk
-mynginx-meta-small-modules-1.12.2-r0.apk
-mynginx-mod-accounting-1.12.2_3c13f62-r0.apk
-mynginx-mod-array-var-1.12.2_0.05-r0.apk
-mynginx-mod-auth-pam-1.12.2_1.5.1-r0.apk
-mynginx-mod-auth-spnego-1.12.2_7e028a5-r0.apk
-mynginx-mod-cache-purge-1.12.2_2.3-r0.apk
-mynginx-mod-concat-1.12.2_b8d3e7e-r0.apk
-mynginx-mod-devel-kit-1.12.2_0.3.0-r0.apk
-mynginx-mod-dynamic-upstream-1.12.2_0.1.6-r0.apk
-mynginx-mod-echo-1.12.2_0.61-r0.apk
-mynginx-mod-encrypted-session-1.12.2_0.07-r0.apk
-mynginx-mod-enhanced-memcached-1.12.2_a9b76b6-r0.apk
-mynginx-mod-eval-1.12.2_2016.06.10-r0.apk
-mynginx-mod-fancyindex-1.12.2_0.4.2-r0.apk
-mynginx-mod-form-input-1.12.2_0.12-r0.apk
-mynginx-mod-geoip-1.12.2-r0.apk
-mynginx-mod-geoip2-1.12.2_2.0-r0.apk
-mynginx-mod-google-filter-1.12.2_0.2.0-r0.apk
-mynginx-mod-headers-more-filter-1.12.2_0.33-r0.apk
-mynginx-mod-http-upsync-1.12.2_586f878-r0.apk
-mynginx-mod-iconv-1.12.2_0.14-r0.apk
-mynginx-mod-image-filter-1.12.2-r0.apk
-mynginx-mod-lua-1.12.2_0.10.12rc1-r0.apk
-mynginx-mod-lua-upstream-1.12.2_0.07-r0.apk
-mynginx-mod-mail-1.12.2-r0.apk
-mynginx-mod-memc-1.12.2_0.18-r0.apk
-mynginx-mod-naxsi-1.12.2_0.55.3-r0.apk
-mynginx-mod-nchan-1.12.2_1.1.13-r0.apk
-mynginx-mod-passenger-1.12.2_5.1.12-r0.apk
-mynginx-mod-perl-1.12.2-r0.apk
-mynginx-mod-push-stream-1.12.2_0.5.4-r0.apk
-mynginx-mod-rdns-1.12.2_a32deec-r0.apk
-mynginx-mod-redis2-1.12.2_0.14-r0.apk
-mynginx-mod-replace-filter-1.12.2_99b7fa6-r0.apk
-mynginx-mod-rtmp-1.12.2_21db986-r0.apk
-mynginx-mod-rtmpt-proxy-1.12.2_5f3bb0c-r0.apk
-mynginx-mod-set-misc-1.12.2_0.31-r0.apk
-mynginx-mod-shibboleth-1.12.2_2.0.1-r0.apk
-mynginx-mod-sorted-querystring-1.12.2_0.3-r0.apk
-mynginx-mod-srcache-filter-1.12.2_0.31-r0.apk
-mynginx-mod-stream-1.12.2-r0.apk
-mynginx-mod-stream-upsync-1.12.2_c4fed88-r0.apk
-mynginx-mod-subs-filter-1.12.2_bc58cb1-r0.apk
-mynginx-mod-testcookie-access-1.12.2_fa4ecc7-r0.apk
-mynginx-mod-uploadprogress-1.12.2_afb2d31-r0.apk
-mynginx-mod-upstream-fair-1.12.2_a18b409-r0.apk
-mynginx-mod-vhost-traffic-status-1.12.2_0.1.15-r0.apk
-mynginx-mod-xslt-filter-1.12.2-r0.apk
-mynginx-vim-1.12.2-r0.apk
+mynginx-1.14.0-r0
+mynginx-doc-1.14.0-r0
+mynginx-meta-buildin-modules-1.14.0-r0
+mynginx-meta-github-modules-1.14.0-r0
+mynginx-meta-small-modules-1.14.0-r0
+mynginx-mod-accounting-1.14.0_1.3-r0
+mynginx-mod-array-var-1.14.0_0.05-r0
+mynginx-mod-auth-pam-1.14.0_1.5.1-r0
+mynginx-mod-auth-spnego-1.14.0_7e028a5-r0
+mynginx-mod-cache-purge-1.14.0_2.3-r0
+mynginx-mod-concat-1.14.0_b8d3e7e-r0
+mynginx-mod-devel-kit-1.14.0_0.3.0-r0
+mynginx-mod-dynamic-upstream-1.14.0_0.1.6-r0
+mynginx-mod-echo-1.14.0_0.61-r0
+mynginx-mod-encrypted-session-1.14.0_0.08-r0
+mynginx-mod-enhanced-memcached-1.14.0_b58a450-r0
+mynginx-mod-eval-1.14.0_2016.06.10-r0
+mynginx-mod-fancyindex-1.14.0_0.4.3-r0
+mynginx-mod-form-input-1.14.0_0.12-r0
+mynginx-mod-geoip-1.14.0-r0
+mynginx-mod-geoip2-1.14.0_3.0-r0
+mynginx-mod-google-filter-1.14.0_0.2.0-r0
+mynginx-mod-headers-more-filter-1.14.0_0.33-r0
+mynginx-mod-http-upsync-1.14.0_75b4a12-r0
+mynginx-mod-iconv-1.14.0_0.14-r0
+mynginx-mod-image-filter-1.14.0-r0
+mynginx-mod-lua-1.14.0_0.10.13-r0
+mynginx-mod-lua-upstream-1.14.0_0.07-r0
+mynginx-mod-mail-1.14.0-r0
+mynginx-mod-memc-1.14.0_0.19-r0
+mynginx-mod-naxsi-1.14.0_0.56-r0
+mynginx-mod-nchan-1.14.0_1.1.15-r0
+mynginx-mod-passenger-1.14.0_5.3.3-r0
+mynginx-mod-perl-1.14.0-r0
+mynginx-mod-push-stream-1.14.0_0.5.4-r0
+mynginx-mod-rdns-1.14.0_a32deec-r0
+mynginx-mod-redis2-1.14.0_0.15-r0
+mynginx-mod-replace-filter-1.14.0_d66e1a5-r0
+mynginx-mod-rtmp-1.14.0_504b9ee-r0
+mynginx-mod-rtmpt-proxy-1.14.0_5f3bb0c-r0
+mynginx-mod-set-misc-1.14.0_0.32-r0
+mynginx-mod-shibboleth-1.14.0_2.0.1-r0
+mynginx-mod-sorted-querystring-1.14.0_0.3-r0
+mynginx-mod-srcache-filter-1.14.0_0.31-r0
+mynginx-mod-stream-1.14.0-r0
+mynginx-mod-stream-upsync-1.14.0_16566e3-r0
+mynginx-mod-subs-filter-1.14.0_bc58cb1-r0
+mynginx-mod-testcookie-access-1.14.0_3e0a32f-r0
+mynginx-mod-uploadprogress-1.14.0_afb2d31-r0
+mynginx-mod-upstream-fair-1.14.0_a18b409-r0
+mynginx-mod-vhost-traffic-status-1.14.0_0.1.18-r0
+mynginx-mod-xslt-filter-1.14.0-r0
+mynginx-vim-1.14.0-r0
 ```
 
 The nginx dynamic modules:
@@ -211,12 +211,12 @@ Build lnmp image, matplothub image.
 ```shell
 $ docker images                                                                       :) 0
 REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE
-shmilee/jupyterhub   171221              f77c62b8c5b8        20 minutes ago      384MB
-shmilee/jupyterhub   using               f77c62b8c5b8        20 minutes ago      384MB
-shmilee/lnmp         171221              840e22c79a94        2 hours ago         353MB
-shmilee/lnmp         using               840e22c79a94        2 hours ago         353MB
-shmilee/abuild       3.7                 e3da3f7eba06        9 hours ago         187MB
-alpine               3.7                 e21c333399e0        2 weeks ago         4.14MB
+shmilee/jupyterhub   180718              bf69c3a21a41        30 minutes ago      424MB
+shmilee/jupyterhub   using               bf69c3a21a41        30 minutes ago      424MB
+shmilee/lnmp         180718              6bcd0f497f56        About an hour ago   305MB
+shmilee/lnmp         using               6bcd0f497f56        About an hour ago   305MB
+shmilee/abuild       3.8                 38437594bdd0        41 hours ago        181MB
+alpine               3.8                 11cd0b38bc3c        11 days ago         4.41MB
 ```
 
 owncloud
