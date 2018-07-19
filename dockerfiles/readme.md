@@ -98,15 +98,19 @@ docker build --force-rm --no-cache --rm -t shmilee/lnmp:$(date +%y%m%d) .
 docker tag shmilee/lnmp:$(date +%y%m%d) shmilee/lnmp:using
 ```
 
-### initialize the MariaDB data directory
+### initialize the MariaDB data volume
 
 ```
-HOST_MYSQL_DIR=/home/WebData/mysql
-mkdir $HOST_MYSQL_DIR
-docker run --rm -v $HOST_MYSQL_DIR:/var/lib/mysql:rw shmilee/lnmp:using bash -c \
+MYSQL_VOLUME='mysql'
+MYSQL_IMAGE='shmilee/lnmp:using'
+MOUNT_ARG="type=volume,src=$MYSQL_VOLUME,dst=/var/lib/mysql"
+# first, create a volume
+docker volume create $MYSQL_VOLUME
+# then use volume with docker image
+docker run --rm --mount $MOUNT_ARG $MYSQL_IMAGE bash -c \
     'mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql'
-container_id=$(docker run -d -v $HOST_MYSQL_DIR:/var/lib/mysql:rw \
-    shmilee/lnmp:using bash -c 'mysqld_safe --pid-file=/run/mysqld/mysqld.pid;')
+container_id=$(docker run -d --mount $MOUNT_ARG $MYSQL_IMAGE bash -c \
+    'mysqld_safe --pid-file=/run/mysqld/mysqld.pid;')
 docker exec -i -t $container_id mysql_secure_installation
 docker stop $container_id
 docker rm $container_id
@@ -120,7 +124,7 @@ docker run --rm -p 80:80 -p 443:443 \
     -v ${WebData}/etc:/srv/etc:ro \
     -v ${WebData}/log:/srv/log:rw \
     -v ${WebData}/root_files:/srv/http:rw \
-    -v ${WebData}/mysql:/var/lib/mysql:rw \
+    --mount $MOUNT_ARG \
     --name lnmp_server shmilee/lnmp:using
 ```
 
