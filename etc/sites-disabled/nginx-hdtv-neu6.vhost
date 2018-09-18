@@ -1,0 +1,48 @@
+server {
+    listen       80;
+    server_name  hdtv.shmilee.io;
+
+    location / {
+        proxy_pass https://hdtv.neu6.edu.cn/;
+        proxy_redirect https://hdtv.neu6.edu.cn/ http://hdtv.shmilee.io/;
+        proxy_cookie_domain hdtv.neu6.edu.cn hdtv.shmilee.io;
+        proxy_set_header X-Real_IP $remote_addr;
+        proxy_set_header User-Agent $http_user_agent;
+        proxy_set_header Accept-Encoding '';
+        proxy_set_header referer "https://$proxy_host$request_uri";
+                                                        
+        subs_filter_types text/css text/javascript application/javascript application/json;
+        subs_filter https://hdtv.neu6.edu.cn http://hdtv.shmilee.io;
+        subs_filter //static.neu.cn //hdtv.shmilee.io/static;
+        subs_filter https:\/\/media2.neu6.edu.cn\/ http:\/\/hdtv.shmilee.io\/media\/;
+    }
+
+    location /static/piwik.js {
+        alias /dev/null;
+    }
+
+    location /media/ {
+    rewrite ^/media(/.*)$ $1 break;
+        proxy_pass https://media2.neu6.edu.cn/;
+        proxy_set_header X-Real_IP $remote_addr;
+        proxy_set_header User-Agent $http_user_agent;
+        proxy_set_header Accept-Encoding '';
+        proxy_set_header referer "https://$proxy_host$request_uri";
+                                                        
+        subs_filter_types text/m3u8 application/vnd.apple.mpegurl;
+        subs_filter https://ts.neu6.edu.cn/ http://hdtv.shmilee.io/ts/;
+    }
+
+    location /ts/ {
+        rewrite ^/ts(/.*)$ $1 break;
+        proxy_pass https://ts.neu6.edu.cn/;
+        proxy_set_header X-Real_IP $remote_addr;
+        proxy_set_header User-Agent $http_user_agent;
+        proxy_set_header referer "https://$proxy_host$request_uri";
+
+        proxy_buffering on;
+        proxy_buffer_size 4k;
+        proxy_buffers   24 32k;
+        proxy_busy_buffers_size 64k;
+    }
+}
