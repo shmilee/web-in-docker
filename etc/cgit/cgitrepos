@@ -56,6 +56,12 @@ section=archlinux
   repo.owner=shmilee.zju@gmail.com
   repo.clone-url=https://github.com/shmilee/ALL.git ssh://git@shmilee.io:2323/~/ALL.git
 
+  repo.url=awesome-away
+  repo.path=/srv/project/awesome-away.git
+  repo.desc=wallpapers, widgets and utilities for Awesome_ WM 4.x
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/awesome-away.git ssh://git@shmilee.io:2323/~/awesome-away.git
+
   repo.url=config-awesome
   repo.path=/srv/project/config-awesome.git
   repo.desc=Awesome Window Manager Config Files
@@ -127,4 +133,10 @@ section=web
   repo.desc=monit+nginx+mysql+php+cgit+jupyterhub
   repo.owner=shmilee.zju@gmail.com
   repo.clone-url=https://github.com/shmilee/web-in-docker.git ssh://git@shmilee.io:2323/~/web-in-docker.git
+
+  repo.url=zion_setup
+  repo.path=/srv/project/zion_setup.git
+  repo.desc=ZION setup tools
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=ssh://git@shmilee.io:2323/~/zion_setup.git
 
