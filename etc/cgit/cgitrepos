@@ -22,6 +22,12 @@ section=IFTS
   repo.owner=shmilee.zju@gmail.com
   repo.clone-url=ssh://git@shmilee.io:2323/~/gtc.git
 
+  repo.url=gtc-config
+  repo.path=/srv/project/gtc-config.git
+  repo.desc=Gyrokinetic Toroidal Code (config)
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=ssh://git@shmilee.io:2323/~/gtc-config.git
+
   repo.url=gtc-tools
   repo.path=/srv/project/gtc-tools.git
   repo.desc=plot tools for gtc
