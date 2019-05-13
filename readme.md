@@ -118,7 +118,7 @@ mynginx-mod-mail-1.14.0-r0
 mynginx-mod-memc-1.14.0_0.19-r0
 mynginx-mod-naxsi-1.14.0_0.56-r0
 mynginx-mod-nchan-1.14.0_1.1.15-r0
-mynginx-mod-passenger-1.14.0_5.3.3-r0
+mynginx-mod-passenger-1.14.0_5.3.7-r0
 mynginx-mod-perl-1.14.0-r0
 mynginx-mod-push-stream-1.14.0_0.5.4-r0
 mynginx-mod-rdns-1.14.0_a32deec-r0
@@ -211,12 +211,12 @@ Build lnmp image, matplothub image.
 ```shell
 $ docker images                                                                       :) 0
 REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE
-shmilee/jupyterhub   180718              bf69c3a21a41        30 minutes ago      424MB
-shmilee/jupyterhub   using               bf69c3a21a41        30 minutes ago      424MB
-shmilee/lnmp         180718              6bcd0f497f56        About an hour ago   305MB
-shmilee/lnmp         using               6bcd0f497f56        About an hour ago   305MB
-shmilee/abuild       3.8                 38437594bdd0        41 hours ago        181MB
-alpine               3.8                 11cd0b38bc3c        11 days ago         4.41MB
+shmilee/jupyterhub   190514              496440d8c71f        56 seconds ago      446MB
+shmilee/jupyterhub   using               496440d8c71f        56 seconds ago      446MB
+shmilee/lnmp         190513              afe0b1b802b0        About an hour ago   336MB
+shmilee/lnmp         using               afe0b1b802b0        About an hour ago   336MB
+shmilee/abuild       3.9                 9a941a2dae49        2 hours ago         191MB
+alpine               3.9                 055936d39205        2 days ago          5.53MB
 ```
 
 owncloud
