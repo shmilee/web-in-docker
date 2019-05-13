@@ -1,10 +1,10 @@
 Build Docker image
 ==================
 
-shmilee/abuild:3.8
+shmilee/abuild:3.9
 ------------------
 
-Alpine Docker image for building Alpine Linux packages. Based on `alpine:3.8`.
+Alpine Docker image for building Alpine Linux packages. Based on `alpine:3.9`.
 
 Generate a public/private rsa key pair placed in `abuild/abuild-key/`,
 edit `PACKAGER_PRIVKEY` in `abuild/abuild-key/abuild.conf`.
@@ -26,24 +26,24 @@ This will add public rsa key to the image `/etc/apk/keys/`.
 
 ```
 cd ./abuild/
-docker build --force-rm --no-cache --rm -t shmilee/abuild:3.8 .
+docker build --force-rm --no-cache --rm -t shmilee/abuild:3.9 .
 cd ../
 ```
 
 ### build packages
 
 Change `REPODEST_DIR` to yours.
-For mine, it's URL is `http://shmilee.io/repo-shmilee/alpine-v3.8/`
+For mine, it's URL is `http://shmilee.io/repo-shmilee/alpine-v3.9/`
 
 ```
 KEY_DIR=$PWD/abuild/abuild-key
 APORTS_DIR=$PWD/abuild/aports
-REPODEST_DIR=/home/WebData/repo-shmilee/alpine-v3.8
+REPODEST_DIR=/home/WebData/repo-shmilee/alpine-v3.9
 docker run --rm -t -i \
     -v ${KEY_DIR}:/home/builder/.abuild \
     -v ${APORTS_DIR}:/home/builder/aports \
     -v ${REPODEST_DIR}:/home/builder/packages \
-    shmilee/abuild:3.8
+    shmilee/abuild:3.9
 ```
 
 __The following COMMANDs is in docker CONTAINER!__
@@ -52,16 +52,21 @@ __The following COMMANDs is in docker CONTAINER!__
 sudo apk update
 cd /home/builder/aports/shmilee/sregex/
 abuild -r
+abuild srcpkg
 sudo apk update
 cd /home/builder/aports/shmilee/mynginx/
 abuild -r
+abuild srcpkg
 cd /home/builder/aports/shmilee/py-cycler/
 abuild -r
+abuild srcpkg
 cd /home/builder/aports/shmilee/py-kiwisolver/
 abuild -r
+abuild srcpkg
 sudo apk update
 cd /home/builder/aports/shmilee/py3-matplotlib/
 abuild -r
+abuild srcpkg
 ```
 
 shmilee/lnmp
