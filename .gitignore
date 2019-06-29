@@ -1,7 +1,6 @@
 ~
 build_nbviewer/*
 deploy/*
-CA/*
-!CA/openssl.cnf
+other_tools/gen-CA-crt/ca-results/*
 shmilee*.rsa
 other_tools/gscan/gscan

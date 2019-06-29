@@ -232,6 +232,7 @@ ssl certificate
 ===============
 
 ```
+cd ./other_tools/gen-CA-crt
 sh ./gen-crt.sh
 ```
 

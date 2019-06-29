@@ -26,7 +26,7 @@ default_ca	= CA_default		# The default ca section
 ####################################################################
 [ CA_default ]
 
-dir		= ./CA		# Where everything is kept
+dir		= ./ca-results		# Where everything is kept
 certs		= $dir/certs		# Where the issued certs are kept
 crl_dir		= $dir/crl		# Where the issued crl are kept
 database	= $dir/index.txt	# database index file.
@@ -116,12 +116,13 @@ localityName			= Locality Name (eg, city)
 localityName_default	= HangZhou
 
 0.organizationName		= Organization Name (eg, company)
-0.organizationName_default	= Shmilee CA
+0.organizationName_default	= Shmilee Org
 
 organizationalUnitName		= Organizational Unit Name (eg, section)
-#organizationalUnitName_default	=
+organizationalUnitName_default	= Shmilee Network
 
 0.commonName			= Common Name (e.g. server FQDN or YOUR name)
+0.commonName_default    = Shmilee Certification Authority Root
 0.commonName_max		= 64
 #1.commonName			= Other Common Name
 #1.commonName_max		= 64

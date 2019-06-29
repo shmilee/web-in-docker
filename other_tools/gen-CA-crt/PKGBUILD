@@ -1,0 +1,17 @@
+# Maintainer: shmilee <shmilee.zju@gmail.com>
+
+pkgname=ca-certificates-shmilee
+pkgver=20190629
+pkgrel=1
+pkgdesc="Shmilee org root certificates"
+arch=(any)
+url="http://shmilee.io/"
+license=('custom')
+depends=(ca-certificates-utils)
+source=(file://$PWD/ca-results/CA.crt)
+sha256sums=('SKIP')
+
+package() {
+  local _certdir="$pkgdir/usr/share/ca-certificates/trust-source/anchors"
+  install -Dm644 CA.crt "$_certdir/shmilee_root.crt"
+}
