@@ -22,7 +22,7 @@ mkdir -pv v2ray-deploy/etc
 echo "==> copy etc files ..."
 cp -r modules-enabled sites-enabled monitrc ../etc/nginx.conf v2ray-deploy/etc/
 chmod 600 v2ray-deploy/etc/monitrc
-sudo chown -v 0:0 v2ray-deploy/etc/monitrc
+#sudo chown -v 0:0 v2ray-deploy/etc/monitrc
 sed -i -e "s|{{domain-name}}|$domain|" -e "s|{{v2raypath}}|$v2raypath|" v2ray-deploy/etc/sites-enabled/nginx-*.vhost
 mkdir v2ray-deploy/etc/ssl-certs
 
@@ -49,7 +49,7 @@ echo "==> Done."
 cat <<'EOF' | sed "s|{{port1}}|$port|g" 
 
 1. Run v2ray
-docker run -d --name v2ray -p {{port1}}:{{port1}} \
+docker run --rm -d --name v2ray -p {{port1}}:{{port1}} \
     -v $PWD/v2ray-deploy/v2ray-server.config:/etc/v2ray/config.json \
     -v $PWD/v2ray-deploy/log:/var/log/v2ray:rw \
     v2ray/official

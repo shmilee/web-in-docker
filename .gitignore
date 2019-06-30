@@ -4,3 +4,4 @@ deploy/*
 other_tools/gen-CA-crt/ca-results/*
 shmilee*.rsa
 other_tools/gscan/gscan
+v2ray/v2ray-deploy/*
