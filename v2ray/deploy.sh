@@ -60,4 +60,6 @@ docker run --rm -d --name nginx --link v2ray -p 80:80 -p 443:443 \
     -v $PWD/v2ray-deploy/etc:/srv/etc:ro \
     -v $PWD/v2ray-deploy/log:/srv/log:rw \
     shmilee/lnmp:using
+
+3. If containers run scucessfully, the option '--rm' can replace by '--restart=always'
 EOF
