@@ -28,8 +28,8 @@ echo "==> log dir ..."
 mkdir v2ray-deploy/log
 
 echo "==> v2ray config ..."
-uuid1=$(uuidgen)
-uuid2=$(uuidgen)
+uuid1=$(cat /proc/sys/kernel/random/uuid)
+uuid2=$(cat /proc/sys/kernel/random/uuid)
 #uuid1='x-x-x-x-x' # test
 #uuid2='x-x-x-x-x'
 sed -e "s|{{UUID1}}|${uuid1}|" -e "s|{{UUID2}}|${uuid2}|" \
