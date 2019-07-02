@@ -35,3 +35,9 @@ check process mynginx with pidfile /run/mynginx.pid
     stop program  = "/usr/bin/mynginx -c /srv/etc/nginx.conf -s quit"
     if 3 restarts within 3 cycles then alert
     group webserver
+
+check process v2ray matching "v2ray.*/etc/v2ray/config.json"
+    start program = "/bin/bash -c 'nohup v2ray -config /etc/v2ray/config.json &'"
+    stop program = "/usr/bin/killall v2ray"
+    if cpu usage > 85% for 10 cycles then restart
+    group proxy
