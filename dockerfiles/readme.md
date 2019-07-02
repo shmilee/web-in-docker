@@ -147,3 +147,13 @@ cd ./jupyterhub/
 docker build --force-rm --no-cache --rm -t shmilee/jupyterhub:$(date +%y%m%d) .
 ```
 
+shmilee/v2ray
+-------------
+
+```
+cd ./v2ray
+docker build --force-rm --no-cache --rm -t shmilee/v2ray:$(date +%y%m%d) .
+docker run --rm -p 80:80 -p 443:443 -p $port4v2ray:$port4v2ray \
+   -v $PWD/etc:/srv/etc:ro -v $PWD/log:/srv/log:rw \
+    shmilee/v2ray:$(date +%y%m%d)
+```
