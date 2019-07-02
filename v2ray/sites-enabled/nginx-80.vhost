@@ -5,7 +5,7 @@ server {
     charset   utf-8;
 
     location / {
-        root   /usr/share/mynginx/html;
+        root   /usr/share/doc/python3/html;
         index  index.html index.htm;
     }
 
@@ -19,10 +19,5 @@ server {
 
     location ~ /\.ht {
         deny  all;
-    }
-
-    location /status {   
-        stub_status on;   
-        access_log on;
     }
 }

@@ -17,6 +17,11 @@ server {
         index  index.html index.htm;
     }
 
+    location /status {   
+        stub_status on;   
+        access_log on;
+    }
+
     location /{{v2raypath}} {
         proxy_redirect off;
         proxy_pass http://127.0.0.1:44944;
