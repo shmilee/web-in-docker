@@ -41,18 +41,27 @@ sed -e "s|{{UUID1}}|${uuid1}|" -e "s|{{UUID2}}|${uuid2}|" \
     -e "s|{{domain-name}}|$domain|" -e "s|{{v2raypath}}|$v2raypath|" \
     v2ray-client-config.json > v2ray-deploy/v2ray-client-config.json
 
+echo "==> v2ray-deploy/{test.sh,run.sh}"
 
-echo "==> Done."
-cat <<'EOF' | sed "s|{{port1}}|$port|g" 
-
-1. Put dhparam.pem server-v2ray.{crt,key} in v2ray-deploy/etc/ssl-certs
-   Run nginx and v2ray
+cat <<'EOF' | sed "s|{{port1}}|$port|g" > v2ray-deploy/test.sh
+#!/bin/bash
 docker run --rm --name nginx_v2ray \
     -p 80:80 -p 443:443 -p {{port1}}:{{port1}} \
-    -v $PWD/v2ray-deploy/etc:/srv/etc:ro \
-    -v $PWD/v2ray-deploy/v2ray-server-config.json:/etc/v2ray/config.json:ro \
-    -v $PWD/v2ray-deploy/log:/srv/log:rw \
-    shmilee/v2ray
+    -v $PWD/etc:/srv/etc:ro \
+    -v $PWD/v2ray-server-config.json:/etc/v2ray/config.json:ro \
+    -v $PWD/log:/srv/log:rw \
+    shmilee/v2ray:${1:-using}
+EOF
+sed 's|--rm|--detach --restart=always|'  v2ray-deploy/test.sh > v2ray-deploy/run.sh
+chmod +x v2ray-deploy/{test.sh,run.sh}
 
-2. If containers run scucessfully, the option '--rm' can be replaced by '--detach --restart=always'
+echo "==> Done."
+cat <<'EOF'
+
+1. Put dhparam.pem server-v2ray.{crt,key} in v2ray-deploy/etc/ssl-certs
+   Test nginx and v2ray
+   $ cd  v2ray-deploy/
+   $ ./test.sh [v2ray-image-tag]
+
+2. If containers run scucessfully, Run './run.sh [v2ray-image-tag]'
 EOF
