@@ -140,6 +140,12 @@ section=web
   repo.owner=shmilee.zju@gmail.com
   repo.clone-url=https://github.com/shmilee/web-in-docker.git ssh://git@shmilee.io:2323/~/web-in-docker.git
 
+  repo.url=naive-docker
+  repo.path=/srv/project/naive-docker.git
+  repo.desc=use nginx, aria2, v2ray to get data from somewhere
+  repo.owner=shmilee.zju@gmail.com
+  repo.clone-url=https://github.com/shmilee/naive-docker.git ssh://git@shmilee.io:2323/~/naive-docker.git
+
   repo.url=zion_setup
   repo.path=/srv/project/zion_setup.git
   repo.desc=ZION setup tools
