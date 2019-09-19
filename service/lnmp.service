@@ -13,7 +13,7 @@ After=docker.service
 [Service]
 Restart=always
 SyslogIdentifier=lnmp
-Environment='WebData=/home/WebData'
+Environment='WebData=/home/LFP/WebData'
 ExecStart=/usr/bin/docker run --rm \
     -p 80:80 -p 443:443 -p 2323:2323 \
     -v ${WebData}/etc:/srv/etc:ro \
@@ -22,7 +22,7 @@ ExecStart=/usr/bin/docker run --rm \
     -v ${WebData}/project:/srv/project:rw \
     -v ${WebData}/repo-shmilee:/srv/repo-shmilee:ro \
     -v /home/IFTS_shmilee:/srv/http/upload/IFTS_shmilee:ro \
-    -v /home/VideoData:/srv/http/videos:ro \
+    -v /home/LFP/VideoData:/srv/http/videos:ro \
     -e TERM=xterm \
     --name lnmp_server shmilee/lnmp:using
 ExecStop=/usr/bin/docker stop -t 2 lnmp_server

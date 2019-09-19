@@ -13,7 +13,7 @@ After=docker.service
 [Service]
 Restart=always
 SyslogIdentifier=jupyterhub
-Environment='WebData=/home/WebData'
+Environment='WebData=/home/LFP/WebData'
 ExecStart=/usr/bin/docker run --rm -p 8888:8000 \
     -v ${WebData}/jupyterhub:/srv/jupyterhub \
     -v /home/shmilee/.local/matlab2014b:/opt/matlab \

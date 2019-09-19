@@ -6,14 +6,14 @@ depends=(grep sed findutils coreutils
 
 casetype=${1:-'video'} #'notebook' 'site'
 if [[ $casetype == 'video' ]]; then
-    source_dir=${2:-/home/VideoData}
-    deploy_dir=${3:-/home/WebData/root_files/videos} # mount volume
+    source_dir=${2:-/home/LFP/VideoData}
+    deploy_dir=${3:-/home/LFP/WebData/root_files/videos} # mount volume
     url_path=${4:-/videos}     # root_files/videos/
     index=${5:-videolist} # root_files/tool/videolist.html
     head_name='Videos list'
 elif [[ $casetype == 'notebook' ]]; then
-    source_dir=${2:-/home/WebData/jupyterhub/shmilee}
-    deploy_dir=${3:-/home/WebData/root_files/notebooks}
+    source_dir=${2:-/home/LFP/WebData/jupyterhub/shmilee}
+    deploy_dir=${3:-/home/LFP/WebData/root_files/notebooks}
     url_path=${4:-/notebooks}  # root_files/notebooks/
     index=${5:-nblist}    # root_files/tool/nblist.html
     head_name='Jupyter Notebook list'
