@@ -77,7 +77,6 @@ check process php-fpm7 with pidfile /run/php-fpm/php-fpm7.pid
         with timeout 10 seconds
     stop program  = "/bin/bash -c 'kill -s SIGTERM `cat /run/php-fpm/php-fpm7.pid`'"
     if cpu usage > 80% for 5 cycles then restart
-    if loadavg(5min) > 4 then restart
     if 3 restarts within 3 cycles then alert
     group webserver
 
