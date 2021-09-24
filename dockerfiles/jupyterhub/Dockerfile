@@ -80,7 +80,7 @@ RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.14/main >> /etc/apk/repo
         awesome_print \
  && echo "==> x) clean ..." \
  && pip3 freeze > /py3-requirements.txt \
- && apk --no-cache del --purge -r git py3-pip npm \
+ && apk --no-cache del --purge -r git npm \
  && find /usr/lib/python3* \
 		\( -type d -a -name test -o -name tests \) \
 		-exec rm -rf '{}' + ; \
