@@ -1,13 +1,13 @@
 #
 # Alpine Docker image for building Alpine Linux packages.
-# docker build --force-rm --no-cache --rm -t shmilee/abuild:3.9 .
+# docker build --network=host --force-rm --no-cache --rm -t shmilee/abuild:3.14 .
 # docker run --rm -t -i \
 #   -v <package-key-dir>:/home/builder/.abuild \
 #   -v <aports-dir>:/home/builder/aports \
 #   -v <REPODEST-dir>:/home/builder/packages \
-#   shmilee/abuild:3.9
+#   shmilee/abuild:3.14
 
-FROM alpine:3.9
+FROM alpine:3.14
 
 LABEL maintainer="shmilee <shmilee.zju@gmail.com>" version="1.0"
 
@@ -18,9 +18,9 @@ ENV \
 
 # Install packages.
 RUN \
-    echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.9/main > /etc/apk/repositories \
- && echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.9/community >> /etc/apk/repositories \
- && apk --no-cache add alpine-sdk coreutils bash nano wget \
+    echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.14/main > /etc/apk/repositories \
+ && echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.14/community >> /etc/apk/repositories \
+ && apk --no-cache add alpine-sdk coreutils bash nano wget sudo \
  && adduser -s /bin/bash -G abuild -g "Alpine Package Builder" -u 1000 -D builder \
  && echo 'builder ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
  && mkdir $REPODEST \
@@ -28,7 +28,7 @@ RUN \
 
 # Add my repository
 COPY ./abuild-key/*@*.rsa.pub /etc/apk/keys/
-RUN echo http://shmilee.io/repo-shmilee/alpine-v3.9/shmilee >> /etc/apk/repositories
+RUN echo http://shmilee.io/repo-shmilee/alpine-v3.14/shmilee >> /etc/apk/repositories
 
 USER builder
 WORKDIR /home/builder
