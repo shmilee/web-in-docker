@@ -4,7 +4,7 @@
 #
 # py3 docutils, pygments, markdown for cgit
 #
-# docker build --force-rm --no-cache --rm -t shmilee/lnmp:$(date +%y%m%d) .
+# docker build --network=host --force-rm --no-cache --rm -t shmilee/lnmp:$(date +%y%m%d) .
 # docker tag shmilee/lnmp:$(date +%y%m%d) shmilee/lnmp:using
 #
 # etc/{monitrc,nginx.conf,cgitrc,php.ini,php-fpm.conf}: /srv/etc ro
@@ -14,7 +14,7 @@
 #   -v $PWD/log:/srv/log:rw shmilee/lnmp:$(date +%y%m%d)
 #
 
-FROM alpine:3.9
+FROM alpine:3.14
 
 LABEL maintainer="shmilee <shmilee.zju@gmail.com>" version="1.0"
 
@@ -27,12 +27,11 @@ ADD ./monit_init.sh /usr/bin/monit_init.sh
 
 # Add my repository
 COPY ./*@*.rsa.pub /etc/apk/keys/
-RUN echo http://shmilee.io/repo-shmilee/alpine-v3.9/shmilee > /etc/apk/repositories
+RUN echo http://shmilee.io/repo-shmilee/alpine-v3.14/shmilee > /etc/apk/repositories
 
-RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.9/main >> /etc/apk/repositories \
- && echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.9/community >> /etc/apk/repositories \
- && addgroup -g 82 -S www-data \
- && adduser -u 82 -D -S -h /srv/http -G www-data -g www-data www-data \
+RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.14/main >> /etc/apk/repositories \
+ && echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.14/community >> /etc/apk/repositories \
+ && adduser -u 88 -D -S -h /srv/http -G www-data -g www-data www-data \
  && echo "==> tini monit nginx mariadb php ..." \
  && apk --no-cache add coreutils bash nano tzdata ca-certificates openssl \
         tini monit iproute2 \
@@ -52,9 +51,6 @@ RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.9/main >> /etc/apk/repos
  && apk --no-cache add spawn-fcgi fcgiwrap \
         cgit py3-docutils py3-pygments py3-markdown \
         git openssh \
- && echo "==> clean ..." \
- && find /usr/share/terminfo/ -type f -not \( -name 'ansi' -o -name 'dumb' -o -name 'linux' \
-        -o -name 'vt100' -o -name 'vt220' -o -name 'xterm' \) -exec rm {} \; \
  && chmod +x /usr/bin/monit_init.sh
 
 ENTRYPOINT ["/sbin/tini", "--"]

@@ -1,10 +1,10 @@
 Build Docker image
 ==================
 
-shmilee/abuild:3.9
+shmilee/abuild:3.14
 ------------------
 
-Alpine Docker image for building Alpine Linux packages. Based on `alpine:3.9`.
+Alpine Docker image for building Alpine Linux packages. Based on `alpine:3.14`.
 
 Generate a public/private rsa key pair placed in `abuild/abuild-key/`,
 edit `PACKAGER_PRIVKEY` in `abuild/abuild-key/abuild.conf`.
@@ -26,24 +26,24 @@ This will add public rsa key to the image `/etc/apk/keys/`.
 
 ```
 cd ./abuild/
-docker build --force-rm --no-cache --rm -t shmilee/abuild:3.9 .
+docker build --network=host --force-rm --no-cache --rm -t shmilee/abuild:3.14 .
 cd ../
 ```
 
 ### build packages
 
 Change `REPODEST_DIR` to yours.
-For mine, it's URL is `http://shmilee.io/repo-shmilee/alpine-v3.9/`
+For mine, it's URL is `http://shmilee.io/repo-shmilee/alpine-v3.14/`
 
 ```
 KEY_DIR=$PWD/abuild/abuild-key
 APORTS_DIR=$PWD/abuild/aports
-REPODEST_DIR=/home/WebData/repo-shmilee/alpine-v3.9
+REPODEST_DIR=/LFP/WebData/repo-shmilee/alpine-v3.14
 docker run --rm -t -i \
     -v ${KEY_DIR}:/home/builder/.abuild \
     -v ${APORTS_DIR}:/home/builder/aports \
     -v ${REPODEST_DIR}:/home/builder/packages \
-    shmilee/abuild:3.9
+    shmilee/abuild:3.14
 ```
 
 __The following COMMANDs is in docker CONTAINER!__
@@ -55,16 +55,6 @@ abuild -r
 abuild srcpkg
 sudo apk update
 cd /home/builder/aports/shmilee/mynginx/
-abuild -r
-abuild srcpkg
-cd /home/builder/aports/shmilee/py-cycler/
-abuild -r
-abuild srcpkg
-cd /home/builder/aports/shmilee/py-kiwisolver/
-abuild -r
-abuild srcpkg
-sudo apk update
-cd /home/builder/aports/shmilee/py3-matplotlib/
 abuild -r
 abuild srcpkg
 ```
@@ -99,7 +89,7 @@ in `./lnmp/youremail@gmail.com.rsa.pub`.
 ```
 cd ./lnmp/
 ln ../abuild/abuild-key/youremail@gmail.com.rsa.pub youremail@gmail.com.rsa.pub
-docker build --force-rm --no-cache --rm -t shmilee/lnmp:$(date +%y%m%d) .
+docker build --network=host --force-rm --no-cache --rm -t shmilee/lnmp:$(date +%y%m%d) .
 docker tag shmilee/lnmp:$(date +%y%m%d) shmilee/lnmp:using
 ```
 
@@ -144,5 +134,5 @@ jupyterhub notebook image based on alpine.
 
 ```
 cd ./jupyterhub/
-docker build --force-rm --no-cache --rm -t shmilee/jupyterhub:$(date +%y%m%d) .
+docker build --network=host --force-rm --no-cache --rm -t shmilee/jupyterhub:$(date +%y%m%d) .
 ```
