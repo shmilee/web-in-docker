@@ -66,7 +66,7 @@ http-upsync:nginx-upsync-module:2.1.3:ngx_%s:weibocom/%s/archive/v%s.tar.gz::\
 :sync#upstreams#from#consul#or#others,#dynamiclly#modify#backend-servers#attribute
 iconv:iconv-nginx-module:0.14:ngx_http_%s:calio/%s/archive/v%s.tar.gz::\
 :a#character#conversion#nginx#module#using#libiconv
-lua:lua-nginx-module:0.10.19:ngx_http_%s:openresty/%s/archive/v%s.tar.gz::luajit-dev#paxmark\
+lua:lua-nginx-module:0.10.14:ngx_http_%s:openresty/%s/archive/v%s.tar.gz::luajit-dev#paxmark\
 :Embed#the#Power#of#Lua#into#NGINX#HTTP#servers
 lua-upstream:lua-upstream-nginx-module:0.07:ngx_http_%s:openresty/%s/archive/v%s.tar.gz::\
 :Nginx#C#module#to#expose#Lua#API#to#ngx_lua#for#Nginx#upstreams
@@ -494,7 +494,7 @@ b5241a2dc4974dd3ad22ff84e0ba2da7d4e1900e0629272ee9e57aa6c0121534a527d0e4e044a0be
 13165b1b8d4be281b8bd2404fa48d456013d560bace094c81da08a35dc6a4f025a809a3ae3a42be6bbf67abbcbe41e0730aba06f905220f3baeb01e1192a7d37  headers-more-nginx-module-0.33.tar.gz
 1c97678d20b4aebf0ee10207f052eb07e13cf754e493aa11a4830e6c99974d438e7ae6b130f5019f4f20ee076f9d7738be8bcf845588dc2d38d2a82f149e3a67  nginx-upsync-module-2.1.3.tar.gz
 63e5e4f1d667438f13aa93f56ec05f0af86147e996ae450f13664668f9813319cc895f0b5e72e05cb2d93722fdb17541972a4d492be8ad226bfc87e4672e29d9  iconv-nginx-module-0.14.tar.gz
-6b258bdcb45f99f9cec3df14fa6747704ab1f0005f8a2ccd4440f8ec477e3dcbf6026e1acffc9d5fecb79605248168a77bd2a26d67c98c7d5cc336f9474ef68c  lua-nginx-module-0.10.19.tar.gz
+f2c4241ff52130cd116220e48a1032b9cbc8ff70f0ed0fbb918e18bb7681f0b1e07a2108b2ba5bc551a6557d87971ae4c8bda30e255acff1f7d72dd9232132ba  lua-nginx-module-0.10.14.tar.gz
 72887c4490854b099cb26bb3f840073a36b0d812bde4486f04dc1be182ca74f0d1e3fd709e77c240c2dcf37665f74cf04e188ea9efe8e127c6789b27b487d0cd  lua-upstream-nginx-module-0.07.tar.gz
 a64ec8dffcd011db2cd12b501271bf5c408f2f31fd2bf477b8db4e88adc5bb5732c4c2181ed8378cab6a937869d8f747ef52b22fe256c90df8440b91890edbe7  memc-nginx-module-0.19.tar.gz
 d7aac69b5eceeb1b0db4741201159ade1e0e7f6f7c3e8c4afa2f8959c6c00c3b5285d5185747c2fb0b1400efda02e96799836315e7e492bb4a059b14acb2142d  naxsi-1.3.tar.gz

@@ -112,7 +112,7 @@ mynginx-mod-headers-more-filter-1.20.1_0.33-r0.apk
 mynginx-mod-http-upsync-1.20.1_2.1.3-r0.apk
 mynginx-mod-iconv-1.20.1_0.14-r0.apk
 mynginx-mod-image-filter-1.20.1-r0.apk
-mynginx-mod-lua-1.20.1_0.10.19-r0.apk
+mynginx-mod-lua-1.20.1_0.10.14-r0.apk
 mynginx-mod-lua-upstream-1.20.1_0.07-r0.apk
 mynginx-mod-mail-1.20.1-r0.apk
 mynginx-mod-memc-1.20.1_0.19-r0.apk

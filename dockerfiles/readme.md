@@ -39,7 +39,7 @@ For mine, it's URL is `http://shmilee.io/repo-shmilee/alpine-v3.14/`
 KEY_DIR=$PWD/abuild/abuild-key
 APORTS_DIR=$PWD/abuild/aports
 REPODEST_DIR=/LFP/WebData/repo-shmilee/alpine-v3.14
-docker run --rm -t -i \
+docker run --rm -t -i --network=host \
     -v ${KEY_DIR}:/home/builder/.abuild \
     -v ${APORTS_DIR}:/home/builder/aports \
     -v ${REPODEST_DIR}:/home/builder/packages \
