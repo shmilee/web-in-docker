@@ -47,6 +47,7 @@ RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.14/main >> /etc/apk/repo
         py3-argon2-cffi \
         py3-pip \
  && pip3 --no-cache-dir install -i ${PIP_INDEX_URL} \
+        jupyter-client==6.1.12 \
         jupyter-console \
         notebook \
         ipywidgets \
@@ -69,18 +70,17 @@ RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.14/main >> /etc/apk/repo
  && jupyter contrib nbextension install --system --symlink \
  && echo "==> 3) add numpy scipy matplotlib sympy gdpy3 ..." \
  && apk --no-cache add py3-numpy py3-scipy py3-matplotlib py3-pillow git \
- && pip3 --no-cache-dir install -i ${PIP_INDEX_URL} sympy \
- && pip3 --no-cache-dir install git+https://github.com/shmilee/gdpy3.git \
+ && pip3 --no-cache-dir install -i ${PIP_INDEX_URL} sympy gdpy3 \
  && echo "==> 4) add iruby kernel ..." \
- && apk --no-cache add ruby ruby-ffi ruby-json ruby-rake ruby-dev czmq czmq-dev make \
+ && apk --no-cache add ruby ruby-ffi ruby-json ruby-irb ruby-rake ruby-dev zeromq zeromq-dev \
  && gem sources --add ${GEM_SOURCE_URI} --remove https://rubygems.org/ \
  && gem install --no-user-install --no-document \
-        cztop \
+        ffi-rzmq \
         iruby \
         awesome_print \
  && echo "==> x) clean ..." \
- && apk --no-cache del --purge -r git py3-pip npm make \
  && pip3 freeze > /py3-requirements.txt \
+ && apk --no-cache del --purge -r git py3-pip npm \
  && find /usr/lib/python3* \
 		\( -type d -a -name test -o -name tests \) \
 		-exec rm -rf '{}' + ; \
