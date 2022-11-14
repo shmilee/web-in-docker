@@ -3,7 +3,7 @@
 # Contributor: Bartłomiej Piotrowski <bpiotrowski@archlinux.org>
 
 _pkgname=nginx
-_pkgver=1.20.1
+_pkgver=1.22.1
 
 pkgname=mynginx
 pkgver=$_pkgver
@@ -28,7 +28,7 @@ _modules_using_ndk="array-var encrypted-session form-input iconv lua lua-upstrea
 _modules_using_subs="google-filter"
 # moduleLine = (shortName):(fullName):(version):(moduleName):(downloadUrl):(PATCH or NOT):(makedepends):(desc)
 _githubmodulelines="
-devel-kit:ngx_devel_kit:0.3.1:ndk_http:simpl/%s/archive/v%s.tar.gz::\
+devel-kit:ngx_devel_kit:0.3.2:ndk_http:vision5/%s/archive/v%s.tar.gz::\
 :Nginx#Development#Kit#-#an#Nginx#module#that#adds#additional#generic#tools#that#module#developers#can#use#in#their#own#modules
 accounting:traffic-accounting-nginx-module:2.0:ngx_http_%s:Lax/%s/archive/v%s.tar.gz::\
 :Add#traffic#stat#function#to#nginx.#Useful#for#http#accounting#based#on#nginx#configuration#logic
@@ -44,29 +44,29 @@ concat:nginx-http-concat:b8d3e7ec511724a6900ba3915df6b504337891a9:ngx_http_%s:al
 :A#Nginx#module#for#concatenating#files#in#a#given#context,#CSS#and#JS#files#usually
 dynamic-upstream:ngx_dynamic_upstream:0.1.6:ngx_%s:cubicdaiya/%s/archive/v%s.tar.gz::\
 :Dynamic#upstream#for#nginx
-echo:echo-nginx-module:0.62:ngx_http_%s:openresty/%s/archive/v%s.tar.gz::\
+echo:echo-nginx-module:0.63:ngx_http_%s:openresty/%s/archive/v%s.tar.gz::\
 :Brings#echo,#sleep,#time,#exec#and#more#shell-style#goodies#to#Nginx#config#file
-encrypted-session:encrypted-session-nginx-module:0.08:ngx_http_%s:openresty/%s/archive/v%s.tar.gz::\
+encrypted-session:encrypted-session-nginx-module:0.09:ngx_http_%s:openresty/%s/archive/v%s.tar.gz::\
 :encrypt#and#decrypt#nginx#variable#values
 enhanced-memcached:ngx_http_enhanced_memcached_module:b58a4500db3c4ee274be54a18abc767219dcfd36:ngx_http_%s:bpaquet/%s/archive/%s.tar.gz::\
 :Use#memcached#to#perform#caching#in#nginx,#with#lot#of#advanced#features
 eval:nginx-eval-module:2016.06.10:ngx_http_%s:openresty/%s/archive/%s.tar.gz::\
 :A#module#for#evaluating#memcached#or#proxy#response#into#variable
-fancyindex:ngx-fancyindex:0.5.1:ngx_http_%s:aperezdc/%s/archive/v%s.tar.gz::\
+fancyindex:ngx-fancyindex:0.5.2:ngx_http_%s:aperezdc/%s/archive/v%s.tar.gz::\
 :Fancy#indexes#module#for#the#Nginx#web#server
 form-input:form-input-nginx-module:0.12:ngx_http_%s:calio/%s/archive/v%s.tar.gz::\
 :Reads#HTTP#POST#and#PUT#request#body#encoded#in#application/x-www-form-urlencoded,#and#parse#the#arguments#in#request#body#into#nginx#variables.
-geoip2:ngx_http_geoip2_module:3.3:ngx_http_%s:leev/%s/archive/%s.tar.gz::libmaxminddb-dev\
+geoip2:ngx_http_geoip2_module:3.4:ngx_http_%s:leev/%s/archive/%s.tar.gz::libmaxminddb-dev\
 :Nginx#GeoIP2#module
 google-filter:ngx_http_google_filter_module:0.2.0:ngx_http_%s:cuber/%s/archive/%s.tar.gz:PATCH:\
 :Nginx#Module#for#Google#Mirror
-headers-more-filter:headers-more-nginx-module:0.33:ngx_http_%s:openresty/%s/archive/v%s.tar.gz::\
+headers-more-filter:headers-more-nginx-module:0.34:ngx_http_%s:openresty/%s/archive/v%s.tar.gz::\
 :Set,#add,#and#clear#arbitrary#output#headers#in#NGINX#http#servers
 http-upsync:nginx-upsync-module:2.1.3:ngx_%s:weibocom/%s/archive/v%s.tar.gz::\
 :sync#upstreams#from#consul#or#others,#dynamiclly#modify#backend-servers#attribute
 iconv:iconv-nginx-module:0.14:ngx_http_%s:calio/%s/archive/v%s.tar.gz::\
 :a#character#conversion#nginx#module#using#libiconv
-lua:lua-nginx-module:0.10.14:ngx_http_%s:openresty/%s/archive/v%s.tar.gz::luajit-dev#paxmark\
+lua:lua-nginx-module:0.10.14:ngx_http_%s:openresty/%s/archive/v%s.tar.gz::luajit-dev\
 :Embed#the#Power#of#Lua#into#NGINX#HTTP#servers
 lua-upstream:lua-upstream-nginx-module:0.07:ngx_http_%s:openresty/%s/archive/v%s.tar.gz::\
 :Nginx#C#module#to#expose#Lua#API#to#ngx_lua#for#Nginx#upstreams
@@ -74,15 +74,15 @@ memc:memc-nginx-module:0.19:ngx_http_%s:openresty/%s/archive/v%s.tar.gz::\
 :An#extended#version#of#the#standard#memcached#module#that#supports#set,#add,#delete,#and#many#more#memcached#commands.
 naxsi:naxsi:1.3:ngx_http_%s:nbs-system/%s/archive/%s.tar.gz::\
 :an#open-source,#high#performance,#low#rules#maintenance#WAF#for#NGINX
-nchan:nchan:1.2.8:ngx_%s:slact/%s/archive/v%s.tar.gz::\
+nchan:nchan:1.3.5:ngx_%s:slact/%s/archive/v%s.tar.gz::\
 :Nchan#is#a#scalable,#flexible#pub/sub#server#for#the#modern#web,#built#as#a#module#for#the#Nginx#web#server.
-push-stream:nginx-push-stream-module:0.5.4:ngx_http_%s:wandenberg/%s/archive/%s.tar.gz::\
+push-stream:nginx-push-stream-module:0.5.5:ngx_http_%s:wandenberg/%s/archive/%s.tar.gz::\
 :A#pure#stream#http#push#technology#for#your#Nginx#setup.#Comet#made#easy#and#really#scalable.
-rdns:nginx-http-rdns:4946978a45c2ddf1cc19307f75464a7e0974ddc2:ngx_http_%s:flant/%s/archive/%s.tar.gz::\
+rdns:nginx-http-rdns:f1d00ada305fc4b7505e7bb7009f804567fae881:ngx_http_%s:flant/%s/archive/%s.tar.gz::\
 :Nginx#HTTP#rDNS#module
 redis2:redis2-nginx-module:0.15:ngx_http_%s:openresty/%s/archive/v%s.tar.gz::\
 :Nginx#upstream#module#for#the#Redis#2.0#protocol
-replace-filter:replace-filter-nginx-module:e0257b2d2a0b380f8645a6e68655dd77c19a3f69:ngx_http_%s:openresty/%s/archive/%s.tar.gz::sregex-dev\
+replace-filter:replace-filter-nginx-module:a93c6653a61ca226a14d84d66fc34ffe1ac247d8:ngx_http_%s:openresty/%s/archive/%s.tar.gz::sregex-dev\
 :Streaming#regular#expression#replacement#in#response#bodies
 rtmp:nginx-rtmp-module:8e344d799483145666fa875344bddf67a324e561:ngx_%s:sergey-dryabzhinsky/%s/archive/%s.tar.gz::\
 :NGINX-based#Media#Streaming#Serve
@@ -96,15 +96,15 @@ srcache-filter:srcache-nginx-module:0.32:ngx_http_%s:openresty/%s/archive/v%s.ta
 :Transparent#subrequest-based#caching#layout#for#arbitrary#nginx#locations.
 stream-upsync:nginx-stream-upsync-module:1.2.2:ngx_%s:xiaokai-wang/%s/archive/v%s.tar.gz::\
 :For#stream#protocol.#sync#upstreams#from#consul#or#others,#dynamiclly#modify#backend-servers#attribute
-subs-filter:ngx_http_substitutions_filter_module:b8a71eacc7f986ba091282ab8b1bbbc6ae1807e0:ngx_http_%s:yaoweibin/%s/archive/%s.tar.gz::\
+subs-filter:ngx_http_substitutions_filter_module:e12e965ac1837ca709709f9a26f572a54d83430e:ngx_http_%s:yaoweibin/%s/archive/%s.tar.gz::\
 :a#filter#module#which#can#do#both#regular#expression#and#fixed#string#substitutions#for#nginx
-testcookie-access:testcookie-nginx-module:51137466b12b2b023f0208a0b6a1bc9c0e805618:ngx_http_%s:kyprizel/%s/archive/%s.tar.gz::\
+testcookie-access:testcookie-nginx-module:64137c2f7e66e8866f56fdecaaf09ac10a034da9:ngx_http_%s:kyprizel/%s/archive/%s.tar.gz::\
 :simple#robot#mitigation#module#using#cookie#based#challenge/response#technique
-uploadprogress:nginx-upload-progress-module:afb2d31d1277c50bd6215c470ba94b843349e250:ngx_http_%s:masterzen/%s/archive/%s.tar.gz::\
+uploadprogress:nginx-upload-progress-module:68b3ab3b64a0cee7f785d161401c8be357bbed12:ngx_http_%s:masterzen/%s/archive/%s.tar.gz::\
 :Nginx#module#implementing#an#upload#progress#system,#that#monitors#RFC1867#POST#uploads#as#they#are#transmitted#to#upstream#servers
 upstream-fair:nginx-upstream-fair:a18b4099fbd458111983200e098b6f0c8efed4bc:ngx_http_%s:gnosek/%s/archive/%s.tar.gz:PATCH:\
 :The#fair#load#balancer#module#for#nginx
-vhost-traffic-status:nginx-module-vts:0.1.18:ngx_http_%s:vozlt/%s/archive/v%s.tar.gz::\
+vhost-traffic-status:nginx-module-vts:0.2.1:ngx_http_%s:vozlt/%s/archive/v%s.tar.gz::\
 :Nginx#virtual#host#traffic#status#module
 "
 
@@ -325,11 +325,6 @@ package() {
   cd "$builddir"
   make DESTDIR="$pkgdir" install || return 1
 
-  # Disable some PaX protections; this is needed for Lua module.
-  #local paxflags="-m"
-  #[ "$CARCH" = "x86" ] && paxflags="-msp"
-  #paxmark $paxflags "$pkgdir"/usr/bin/$pkgname || return 1
-
   install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
   install -Dm644 README "$pkgdir"/usr/share/doc/$pkgname/README
 
@@ -469,10 +464,10 @@ _metamod() {
 # vim:set ts=2 sw=2 et:
 
 sha512sums="
-3d9fd4bf2740eaf20fcc3c77260a3556aaf9dff2879afc2dbb5fff364dea27313ffbc51d335e9fc9c0186a2a44dac055ef60fde0d411b8cf842fdf661478c961  nginx-1.20.1.tar.gz
+1d468dcfa9bbd348b8a5dc514ac1428a789e73a92384c039b73a51ce376785f74bf942872c5594a9fcda6bbf44758bd727ce15ac2395f1aa989c507014647dcc  nginx-1.22.1.tar.gz
 3efc10b7729002fa5af4b55cd1fc743e84b0ef1b64f8304abfd9760cdce5c2e4289e4875c902d08117c0fe15b540fd3c6acbd40459d8b8f11a0e014228c58743  mynginx.logrotate
 8ffd70aef7290ded6ec907f78a3a8e70bd3a2132162914aaff920a8dcaaf9a558ff7569eeddaeb267f88912e1342f1cc6af7d2bd2e3fbf205938f6d0d6d5333d  mynginx.initd
-de1e3349d8dd08e5982279b2219dc8a8006739f0409b8e0f5c50d93434beff1fbafba43e9c5ac85a5fab90afc5c0a7244a340610339c36f82f2cba7233e72de9  ngx_devel_kit-0.3.1.tar.gz
+6deedeb3a95d7a6039ee474ee29cfc287f904a109f1c2908512d19521de89f3006fa3b650a368c637b23771cd5323558e30ad5d94b2c77242cbba691d349d232  ngx_devel_kit-0.3.2.tar.gz
 0df34c3765e18dc5cc5a053d3a17dbee17a686a1f6e76ad057c262741c4e4465c66bcef86e627a19258f836cad5f14745bf046fd396b00960ad79ed20c2a07bb  traffic-accounting-nginx-module-2.0.tar.gz
 7c9fa9b76bc7cd2473ceae6d5ffb8de26993be9293ea967908d6c4550e086affa7016df4c936fb0b79f1142dc0aa1a5f2058d417e6433b5a3497a45d7e866e84  array-var-nginx-module-0.05.tar.gz
 d1ab9205094eedfca3b8f41c4771c815bb033c4b4efa996e0b5aa7798c8e2bfb507502b565027b74fa26162750844242b57c9697148f0d9fb91083b3fc29d93e  ngx_http_auth_pam_module-1.5.3.tar.gz
@@ -482,39 +477,39 @@ d8a38d5049dcf129d53b12acb44bbf07be4ee357344c5bb0e40e5e22e9835376d1ea3c9e6ad0441a
 ff12b3a45a3e3626dff947a637cdc04cc66db98c20d026cb9f4f78686b0b72bfe04f179bf8ca880dd5f8f5878088a73f3ede9e8df1f0fbe32a139b056747114c  nginx-http-concat-b8d3e7ec511724a6900ba3915df6b504337891a9.tar.gz
 90067eafd09a3d314fe71346a5d5ad814856fc627034147bf4d7486f9eb9de28b329a8b2cfc32165ca7e18bfb8d584ad7b3769f65807ed052b35bb1f8c4e60a7  nginx-http-concat-b8d3e7ec511724a6900ba3915df6b504337891a9.patch
 c076ee4e22c44a8850c434db1548bacdbdd0b096a00fd5af3609847e8ad98854d724709234b2069edc302ded2eb6c3eb5477a51d8a1d46c1c280fcc3ea9a55aa  ngx_dynamic_upstream-0.1.6.tar.gz
-240896b1c559a71ca6ca87136d8535edd25b1d65ebb80d46080ad41c09ed1cec9737828f9efe260782294d660cea66cf402f4e75bba3fed26f3a94de0ae2f89b  echo-nginx-module-0.62.tar.gz
-80651951edd69d202e991a66f531bbe0398b4f062e822bb7748411f5f597eb1d5827102ba477bb6cd2793274adf6f6d60dd89fde7645174b091143251197af69  encrypted-session-nginx-module-0.08.tar.gz
+c325ac4e3f3f735739e156d8c7ada503b34475c62533b4830231ff1b42c25cb0c841aae06b3448b589c2ab35da8d211436ed194d6fd062cad925af8152c5e789  echo-nginx-module-0.63.tar.gz
+399ce2690e85ee27802e8031954a1a3aa3fdc9246e17323a72a298d235931a8dbebdcb121ac8788e074872df0ef5b5a8a3d512b17fbe860b38f696ce42de3655  encrypted-session-nginx-module-0.09.tar.gz
 1009b21437601e7406ad23b331c81f1def115660bfd88b646a4d71d87b897126f49cce93744042027b2b824d35067dddb0310e650c801c771a3b271368c265d2  ngx_http_enhanced_memcached_module-b58a4500db3c4ee274be54a18abc767219dcfd36.tar.gz
 b5241a2dc4974dd3ad22ff84e0ba2da7d4e1900e0629272ee9e57aa6c0121534a527d0e4e044a0be58bec3eb7e89a0a7c9547bbf87acb5e1db60ba3f8f0be89c  nginx-eval-module-2016.06.10.tar.gz
-5c9252713286056cb493b734c8aabef51538c4c3c3204404eecc6c09dffcd06f733ed4f134af8f5d38558db75ac0a6161a1fa29ae98284b68b30309d9a5e6b31  ngx-fancyindex-0.5.1.tar.gz
+c208cdf3e245527d7b313f9ef1f5d36ca26e3bdafe67df56492a13b7726587538665e5d9fd50f295fc933f218dc33394f2fe442713d15631701dbfc4a156799b  ngx-fancyindex-0.5.2.tar.gz
 1c5c5ab74156cac09da44a2dcdd84f7c03c9919a23a847e63613e00e3781ecd73d5ad12446174b4fdef9d064257a31570a8dbcccc00d8266f7048e3dcde0362e  form-input-nginx-module-0.12.tar.gz
-06963b598c54e22d75ce837fb222f5aa6c9494c29e558ff46f1205d7159fc305414bfac4ed3288c836dcbf7628d92f26458e1992d34fc2f4b73275a32847bdc0  ngx_http_geoip2_module-3.3.tar.gz
+18dea21e5ae2647bea1fc448058a1b773c936917245edef8d861d5e23ed92e9a3b1ec4ef43ffb2ece7b5899d787910adcf4fbd39f84d7e8d7c54759e2fee5b72  ngx_http_geoip2_module-3.4.tar.gz
 5ebdda5b61236385b336670fee50071d4559270f17eda4e3d4b2bead48a469473edf3dd36ddcc999545d18767024168a17fa57ea39d525106c049ccaf1b34d78  ngx_http_google_filter_module-0.2.0.tar.gz
 17e229071e889e7fa5c1b2fbefe8fc43c5705e12ff5c35e0fb0bbcc2611da9d987ddcb49d49df844d4312971bc93d7444f41af6528512ff61ada270502d2cb48  ngx_http_google_filter_module-0.2.0.patch
-13165b1b8d4be281b8bd2404fa48d456013d560bace094c81da08a35dc6a4f025a809a3ae3a42be6bbf67abbcbe41e0730aba06f905220f3baeb01e1192a7d37  headers-more-nginx-module-0.33.tar.gz
+2c0c140feeb29f0154a223dc3020ff956f894d63e0232a7bc0ca33fcb26f8b807bda868159ae30b6cac7456ec25b831c3d299ea18e234202ae5d14c1ff471a4b  headers-more-nginx-module-0.34.tar.gz
 1c97678d20b4aebf0ee10207f052eb07e13cf754e493aa11a4830e6c99974d438e7ae6b130f5019f4f20ee076f9d7738be8bcf845588dc2d38d2a82f149e3a67  nginx-upsync-module-2.1.3.tar.gz
 63e5e4f1d667438f13aa93f56ec05f0af86147e996ae450f13664668f9813319cc895f0b5e72e05cb2d93722fdb17541972a4d492be8ad226bfc87e4672e29d9  iconv-nginx-module-0.14.tar.gz
 f2c4241ff52130cd116220e48a1032b9cbc8ff70f0ed0fbb918e18bb7681f0b1e07a2108b2ba5bc551a6557d87971ae4c8bda30e255acff1f7d72dd9232132ba  lua-nginx-module-0.10.14.tar.gz
 72887c4490854b099cb26bb3f840073a36b0d812bde4486f04dc1be182ca74f0d1e3fd709e77c240c2dcf37665f74cf04e188ea9efe8e127c6789b27b487d0cd  lua-upstream-nginx-module-0.07.tar.gz
 a64ec8dffcd011db2cd12b501271bf5c408f2f31fd2bf477b8db4e88adc5bb5732c4c2181ed8378cab6a937869d8f747ef52b22fe256c90df8440b91890edbe7  memc-nginx-module-0.19.tar.gz
 d7aac69b5eceeb1b0db4741201159ade1e0e7f6f7c3e8c4afa2f8959c6c00c3b5285d5185747c2fb0b1400efda02e96799836315e7e492bb4a059b14acb2142d  naxsi-1.3.tar.gz
-bea5ce8669f43f752a42f5988125ac1beb7c7904e780605f7706bbb03e9ab4f30a2bcbcddac5bc1c67cff4d92f798023ec320e8d9a2db47953f9f7b08b5ad882  nchan-1.2.8.tar.gz
-467ae49409adb675979ff591f98df8c96d71ab5ebc2ef9b3c9430e38e7e84d311b4a98c2b1cb1886d895735223dd2a43370aab61b57b34adb1427c184e6b8c86  nginx-push-stream-module-0.5.4.tar.gz
-3dd82f555ff9caaf329bd53c2c00cba483d4daff8dbeb1fa98a7b13afcd76a3b417c222b263ac661419db7dfd17511ac6e76f763758efd4e7cfc88b3fa55797b  nginx-http-rdns-4946978a45c2ddf1cc19307f75464a7e0974ddc2.tar.gz
+65514e2c4b88344a9aa8bb50cec295bbaf4ba86d0260f4a64eb010d66f2e8c2ca3eaa595b21ac43ccfd3145e44dc4a0cd8beda5a4fcf4d8425fd541b4a1da91e  nchan-1.3.5.tar.gz
+012223e41188ab129391360175314b598ef37cb39cac2c4a9c840a499f269630a4c888ce87e7880a5a1700347d800481fe93c2adc56646839ab417162a644334  nginx-push-stream-module-0.5.5.tar.gz
+06bf4e563b64f346426746a2191a3650b5c86a9db96261fcb3c8228505d2bd390be52f7e11f5a17027fe8e76c23650fa36630f520cfc6037388ea3b8119a6c98  nginx-http-rdns-f1d00ada305fc4b7505e7bb7009f804567fae881.tar.gz
 d6ca250db8de93edbd7875afca35e73cecdaf82132d1a7ee933cf94c6b8afa8e629e9e647a9321f2bc1fbb92137ec0d32dcd89b82ac5fae31e342537fb7e0431  redis2-nginx-module-0.15.tar.gz
-fbe3f59c1bb6e319199efb754e82e6319f5c055e2198a92e5053822303f3afb026ea302b291965077524bf4c6866c886410e2d3d296b7da64420c9c103f65e55  replace-filter-nginx-module-e0257b2d2a0b380f8645a6e68655dd77c19a3f69.tar.gz
+bf61f6c1ed5ff6caf5a72f949d5d0434448f17c040771b1ae9bcea30483e2e03c7f65e7cb583b90eea832eca8ddded36cf13929da65d836d85450f48a5f88247  replace-filter-nginx-module-a93c6653a61ca226a14d84d66fc34ffe1ac247d8.tar.gz
 29564ccf5a39dd5ba237c8896946595ebddaf97432ff8774db1e9e3e39fc9f0de2389883fe08f4652366c2d7d554478ba52844807b625d32d3ec12d8fbb49d6d  nginx-rtmp-module-8e344d799483145666fa875344bddf67a324e561.tar.gz
 1ff4c947538a5bd5f9d6adcd87b37f2702f5cc90e3342bc08359cbe8f290b705a3a2daa3dedfb1df3ce4bc19478c8fcac07081c4a53a804fc2862d50078278dc  set-misc-nginx-module-0.33.tar.gz
 1730845ea2e52be8c2f6cfceb2894304c5a07959a96940bb1617ee0e7cf81d22283304f411d9a219ddb71e4d9a66012bba0f6f5574d101aeb3c406f26c5d6a4e  nginx-http-shibboleth-2.0.1.tar.gz
 0b9ddc053b9835a028342a1e94ef3b686b82cab83036e46e9996594de01288733236ec02179d4c69fdbbc89a799994c51691e60d1769ce4792056c59831fab57  nginx-sorted-querystring-module-0.3.tar.gz
 d505dd016b4bf5557fc8d65f472b4fbdc0cba408c0a309405a1e6a39edbffe6b6e83a90f709d7520d78a433d9471a1b9b4e5ba737d1b715ade89e25a1285e273  srcache-nginx-module-0.32.tar.gz
 41eca8318986f35dde61082ea1e2bd5b2980fa9ec88177d1bb44453f08ac186292ee15b0dab600951253b1009b90c5aa6f895d2d45f6140fa4aa203d57fa7625  nginx-stream-upsync-module-1.2.2.tar.gz
-ee863edd4080ce4282195029aff44db67a5c82e513276ec5c9d2828f4838c0154505d3238c6b5a96fe2750d4f89f3e174f35e4ceff75b078f1a0c6df85a4d96f  ngx_http_substitutions_filter_module-b8a71eacc7f986ba091282ab8b1bbbc6ae1807e0.tar.gz
-d74507bba05de714c76fe3a2f3b0f48c3aa737e10807f7435258236c31c75758f57c9dd0eb3ce313d9b9f86fb136289277cdaf20c1781ccbe235210229bcd3e3  testcookie-nginx-module-51137466b12b2b023f0208a0b6a1bc9c0e805618.tar.gz
-dabf30e7befbd1c01ac90ed1aba2823def4b937774eeda5b7f9f3802c424c964d302eda98e8c6d03ce58e794cb9fc987ee4d4c2ef88b932507d8eebb83a098ad  nginx-upload-progress-module-afb2d31d1277c50bd6215c470ba94b843349e250.tar.gz
+3c432388969e9b38b4f8f4c5a555cf0fa7b7f8ea80fa54790ff8e8734c7f2c54a8b1aa979754d30c854f2d4ffb73b6eaa924f166ee3a20c7472d122d7c3992fc  ngx_http_substitutions_filter_module-e12e965ac1837ca709709f9a26f572a54d83430e.tar.gz
+8276e9cec743f40db2b55bc65217d676b464ae2d73912e4e68afcf631ca68a666c0ae9115a011d06b967fb639064fe07634a0e1333d66f6859ac54208cad1142  testcookie-nginx-module-64137c2f7e66e8866f56fdecaaf09ac10a034da9.tar.gz
+6603e15aa33edca5e647fd04b4f008f1729c78c527be262ef481890f37a6d57e89609cebfb7459fad18b249024fbe3722e09473987401e8d8dfdd7cf50e4df4f  nginx-upload-progress-module-68b3ab3b64a0cee7f785d161401c8be357bbed12.tar.gz
 b5ff457928ad788f518c562a3da46ec4f3539b5a7c4955960b39f3867ecd9fd3377703960abf142b09716bac9b13ac75263708e5c02ea7dfa9207dfdc8b40af9  nginx-upstream-fair-a18b4099fbd458111983200e098b6f0c8efed4bc.tar.gz
 6d1e8dfa1c989e3c1d0aa4bc2dae83cfbbc50b759a5158a60a353e9c98bb5a4f682883cf609130201d92fb44312949fc52aa5d65acf9eb7cdfc367c523821b26  nginx-upstream-fair-a18b4099fbd458111983200e098b6f0c8efed4bc.patch
-86b980095b3b80c8dce2e355db514cb4b3039c8408a2f5ca6df9e105d5462952fddd70f6581ec6aa2763e560b591664c27eefd978c4ea777b1f1f808bc60d4ec  nginx-module-vts-0.1.18.tar.gz
+fadd4727ffc56111b443364d90e5b0597f09b25006404b11377586f0ed754f5a85e0b84796360be927bd455f43eb28e18004991f086b611146cd340937a6e5e9  nginx-module-vts-0.2.1.tar.gz
 425754cc7ab962dca9e23895741eeacdb40c116af7e12785df0dd2c0231a44536936d987fda7e59eb101bed694466b4701eeeedaecb8973c6afec23383d0ad77  passenger-release-5.3.7.tar.gz
 ddb9b572ea1a83af9fe57aea4a8124420059b3f269b609873afe505c22d49d675fc1d358e27a348dc00bdc6c2cc5a200f1d225d3f85694735460e7fa88152c7c  passenger-release-5.3.7.patch
 "

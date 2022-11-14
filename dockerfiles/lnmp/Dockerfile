@@ -14,7 +14,7 @@
 #   -v $PWD/log:/srv/log:rw shmilee/lnmp:$(date +%y%m%d)
 #
 
-FROM alpine:3.14
+FROM alpine:3.16
 
 LABEL maintainer="shmilee <shmilee.zju@gmail.com>" version="1.0"
 
@@ -27,21 +27,21 @@ ADD ./monit_init.sh /usr/bin/monit_init.sh
 
 # Add my repository
 COPY ./*@*.rsa.pub /etc/apk/keys/
-RUN echo http://shmilee.io/repo-shmilee/alpine-v3.14/shmilee > /etc/apk/repositories
+RUN echo http://shmilee.io/repo-shmilee/alpine-v3.16/shmilee > /etc/apk/repositories
 
-RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.14/main >> /etc/apk/repositories \
- && echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.14/community >> /etc/apk/repositories \
+RUN echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.16/main >> /etc/apk/repositories \
+ && echo https://mirrors.tuna.tsinghua.edu.cn/alpine/v3.16/community >> /etc/apk/repositories \
  && adduser -u 88 -D -S -h /srv/http -G www-data -g www-data www-data \
  && echo "==> tini monit nginx mariadb php ..." \
  && apk --no-cache add coreutils bash nano tzdata ca-certificates openssl \
         tini monit iproute2 \
         mynginx mynginx-meta-small-modules \
         mariadb mariadb-client \
-        php7-apcu php7-bcmath php7-bz2 php7-ctype php7-curl php7-dom php7-fpm \
-        php7-gd php7-gettext php7-iconv php7-imap php7-intl php7-json \
-        php7-mbstring php7-mcrypt php7-memcached php7-mysqli php7-openssl \
-        php7-pdo php7-pdo_mysql php7-pdo_sqlite php7-soap php7-sqlite3 \
-        php7-xmlreader php7-xmlrpc php7-zip php7-zlib \
+        php8-pecl-apcu php8-bcmath php8-bz2 php8-ctype php8-curl php8-dom php8-fpm \
+        php8-gd php8-gettext php8-iconv php8-imap php8-intl \
+        php8-mbstring php8-pecl-mcrypt php8-pecl-memcached php8-mysqli php8-openssl \
+        php8-pdo php8-pdo_mysql php8-pdo_sqlite php8-soap php8-sqlite3 \
+        php8-xmlreader php8-zip \
  && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
  && echo "${TIMEZONE}" > /etc/timezone \
  && install -d -m755 /run/php-fpm \

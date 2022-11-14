@@ -1,10 +1,10 @@
 Build Docker image
 ==================
 
-shmilee/abuild:3.14
+shmilee/abuild:3.16
 ------------------
 
-Alpine Docker image for building Alpine Linux packages. Based on `alpine:3.14`.
+Alpine Docker image for building Alpine Linux packages. Based on `alpine:3.16`.
 
 Generate a public/private rsa key pair placed in `abuild/abuild-key/`,
 edit `PACKAGER_PRIVKEY` in `abuild/abuild-key/abuild.conf`.
@@ -26,24 +26,24 @@ This will add public rsa key to the image `/etc/apk/keys/`.
 
 ```
 cd ./abuild/
-docker build --network=host --force-rm --no-cache --rm -t shmilee/abuild:3.14 .
+docker build --network=host --force-rm --no-cache --rm -t shmilee/abuild:3.16 .
 cd ../
 ```
 
 ### build packages
 
 Change `REPODEST_DIR` to yours.
-For mine, it's URL is `http://shmilee.io/repo-shmilee/alpine-v3.14/`
+For mine, it's URL is `http://shmilee.io/repo-shmilee/alpine-v3.16/`
 
 ```
 KEY_DIR=$PWD/abuild/abuild-key
 APORTS_DIR=$PWD/abuild/aports
-REPODEST_DIR=/LFP/WebData/repo-shmilee/alpine-v3.14
+REPODEST_DIR=/LFP/WebData/repo-shmilee/alpine-v3.16
 docker run --rm -t -i --network=host \
     -v ${KEY_DIR}:/home/builder/.abuild \
     -v ${APORTS_DIR}:/home/builder/aports \
     -v ${REPODEST_DIR}:/home/builder/packages \
-    shmilee/abuild:3.14
+    shmilee/abuild:3.16
 ```
 
 __The following COMMANDs is in docker CONTAINER!__
@@ -72,11 +72,11 @@ coreutils bash nano tzdata ca-certificates openssl \
 tini monit iproute2 \
 mynginx mynginx-meta-small-modules \
 mariadb mariadb-client \
-php7-apcu php7-bcmath php7-bz2 php7-ctype php7-curl php7-dom php7-fpm \
-php7-gd php7-gettext php7-iconv php7-imap php7-intl php7-json \
-php7-mbstring php7-mcrypt php7-memcached php7-mysqli php7-openssl \
-php7-pdo php7-pdo_mysql php7-pdo_sqlite php7-soap php7-sqlite3 \
-php7-xmlreader php7-xmlrpc php7-zip php7-zlib \
+php8-pecl-apcu php8-bcmath php8-bz2 php8-ctype php8-curl php8-dom php8-fpm \
+php8-gd php8-gettext php8-iconv php8-imap php8-intl \
+php8-mbstring php8-pecl-mcrypt php8-pecl-memcached php8-mysqli php8-openssl \
+php8-pdo php8-pdo_mysql php8-pdo_sqlite php8-soap php8-sqlite3 \
+php8-xmlreader php8-zip
 spawn-fcgi fcgiwrap cgit py3-docutils py3-pygments py3-markdown \
 git openssh
 ```
