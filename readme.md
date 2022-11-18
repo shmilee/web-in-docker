@@ -20,9 +20,9 @@ $ docker exec -t lnmp_server ps aux
 PID   USER     TIME   COMMAND
     1 root       0:01 /sbin/tini -- monit_init.sh 5
     7 root       0:17 /usr/bin/monit -c /srv/etc/monitrc
-   23 root       0:01 {php-fpm7} php-fpm: master process (/srv/etc/php-fpm7.con
-   24 nobody     0:00 {php-fpm7} php-fpm: pool www
-   25 nobody     0:00 {php-fpm7} php-fpm: pool www
+   23 root       0:01 {php-fpm8} php-fpm: master process (/srv/etc/php-fpm8.conf
+   24 nobody     0:00 {php-fpm8} php-fpm: pool www
+   25 nobody     0:00 {php-fpm8} php-fpm: pool www
    27 mynginx    0:00 /usr/bin/fcgiwrap
    29 root       0:00 /usr/sbin/sshd -f /srv/etc/ssh/sshd_config -E /srv/log/ss
   331 mysql      0:01 /usr/bin/mysqld --basedir=/usr --datadir=/var/lib/mysql -
@@ -40,8 +40,8 @@ tini(1)-+-fcgiwrap(27)
         |              |-mynginx(367)
         |              `-mynginx(368)
         |-mysqld(331)
-        |-php-fpm7(23)-+-php-fpm7(24)
-        |              `-php-fpm7(25)
+        |-php-fpm8(23)-+-php-fpm8(24)
+        |              `-php-fpm8(25)
         `-sshd(29)
 
 $ docker exec -t lnmp_server monit -c /srv/etc/monitrc summary                  :) 0
@@ -53,7 +53,7 @@ Monit 5.22.0 uptime: 15h 20m
 ├─────────────────────────────────┼────────────────────────────┼───────────────┤
 │ mynginx                         │ Running                    │ Process       │
 ├─────────────────────────────────┼────────────────────────────┼───────────────┤
-│ php-fpm7                        │ Running                    │ Process       │
+│ php-fpm8                        │ Running                    │ Process       │
 ├─────────────────────────────────┼────────────────────────────┼───────────────┤
 │ fcgiwrap                        │ Running                    │ Process       │
 ├─────────────────────────────────┼────────────────────────────┼───────────────┤
@@ -69,8 +69,6 @@ Monit 5.22.0 uptime: 15h 20m
 ├─────────────────────────────────┼────────────────────────────┼───────────────┤
 │ 9201z                           │ Online with all services   │ Remote Host   │
 ├─────────────────────────────────┼────────────────────────────┼───────────────┤
-│ openwrt                         │ Online with all services   │ Remote Host   │
-├─────────────────────────────────┼────────────────────────────┼───────────────┤
 │ ap0                             │ Online with all services   │ Remote Host   │
 ├─────────────────────────────────┼────────────────────────────┼───────────────┤
 │ eth0                            │ UP                         │ Network       │
@@ -80,64 +78,64 @@ Monit 5.22.0 uptime: 15h 20m
 MyNGINX APKBUILD
 ================
 
-In Alpine Docker image `shmilee/abuild:3.14`,
+In Alpine Docker image `shmilee/abuild:3.16`,
 [build package](./dockerfiles/readme.md#build-packages):
 
 The packages:
 
 ```
-mynginx-1.20.1-r0.apk
-mynginx-doc-1.20.1-r0.apk
-mynginx-meta-buildin-modules-1.20.1-r0.apk
-mynginx-meta-github-modules-1.20.1-r0.apk
-mynginx-meta-small-modules-1.20.1-r0.apk
-mynginx-mod-accounting-1.20.1_2.0-r0.apk
-mynginx-mod-array-var-1.20.1_0.05-r0.apk
-mynginx-mod-auth-pam-1.20.1_1.5.3-r0.apk
-mynginx-mod-auth-spnego-1.20.1_1.1.1-r0.apk
-mynginx-mod-cache-purge-1.20.1_2.3-r0.apk
-mynginx-mod-concat-1.20.1_b8d3e7e-r0.apk
-mynginx-mod-devel-kit-1.20.1_0.3.1-r0.apk
-mynginx-mod-dynamic-upstream-1.20.1_0.1.6-r0.apk
-mynginx-mod-echo-1.20.1_0.62-r0.apk
-mynginx-mod-encrypted-session-1.20.1_0.08-r0.apk
-mynginx-mod-enhanced-memcached-1.20.1_b58a450-r0.apk
-mynginx-mod-eval-1.20.1_2016.06.10-r0.apk
-mynginx-mod-fancyindex-1.20.1_0.5.1-r0.apk
-mynginx-mod-form-input-1.20.1_0.12-r0.apk
-mynginx-mod-geoip-1.20.1-r0.apk
-mynginx-mod-geoip2-1.20.1_3.3-r0.apk
-mynginx-mod-google-filter-1.20.1_0.2.0-r0.apk
-mynginx-mod-headers-more-filter-1.20.1_0.33-r0.apk
-mynginx-mod-http-upsync-1.20.1_2.1.3-r0.apk
-mynginx-mod-iconv-1.20.1_0.14-r0.apk
-mynginx-mod-image-filter-1.20.1-r0.apk
-mynginx-mod-lua-1.20.1_0.10.14-r0.apk
-mynginx-mod-lua-upstream-1.20.1_0.07-r0.apk
-mynginx-mod-mail-1.20.1-r0.apk
-mynginx-mod-memc-1.20.1_0.19-r0.apk
-mynginx-mod-naxsi-1.20.1_1.3-r0.apk
-mynginx-mod-nchan-1.20.1_1.2.8-r0.apk
-mynginx-mod-passenger-1.20.1_5.3.7-r0.apk
-mynginx-mod-perl-1.20.1-r0.apk
-mynginx-mod-push-stream-1.20.1_0.5.4-r0.apk
-mynginx-mod-rdns-1.20.1_4946978-r0.apk
-mynginx-mod-redis2-1.20.1_0.15-r0.apk
-mynginx-mod-replace-filter-1.20.1_e0257b2-r0.apk
-mynginx-mod-rtmp-1.20.1_8e344d7-r0.apk
-mynginx-mod-set-misc-1.20.1_0.33-r0.apk
-mynginx-mod-shibboleth-1.20.1_2.0.1-r0.apk
-mynginx-mod-sorted-querystring-1.20.1_0.3-r0.apk
-mynginx-mod-srcache-filter-1.20.1_0.32-r0.apk
-mynginx-mod-stream-1.20.1-r0.apk
-mynginx-mod-stream-upsync-1.20.1_1.2.2-r0.apk
-mynginx-mod-subs-filter-1.20.1_b8a71ea-r0.apk
-mynginx-mod-testcookie-access-1.20.1_5113746-r0.apk
-mynginx-mod-uploadprogress-1.20.1_afb2d31-r0.apk
-mynginx-mod-upstream-fair-1.20.1_a18b409-r0.apk
-mynginx-mod-vhost-traffic-status-1.20.1_0.1.18-r0.apk
-mynginx-mod-xslt-filter-1.20.1-r0.apk
-mynginx-vim-1.20.1-r0.apk
+mynginx-1.22.1-r0.apk
+mynginx-doc-1.22.1-r0.apk
+mynginx-meta-buildin-modules-1.22.1-r0.apk
+mynginx-meta-github-modules-1.22.1-r0.apk
+mynginx-meta-small-modules-1.22.1-r0.apk
+mynginx-mod-accounting-1.22.1_2.0-r0.apk
+mynginx-mod-array-var-1.22.1_0.05-r0.apk
+mynginx-mod-auth-pam-1.22.1_1.5.3-r0.apk
+mynginx-mod-auth-spnego-1.22.1_1.1.1-r0.apk
+mynginx-mod-cache-purge-1.22.1_2.3-r0.apk
+mynginx-mod-concat-1.22.1_b8d3e7e-r0.apk
+mynginx-mod-devel-kit-1.22.1_0.3.2-r0.apk
+mynginx-mod-dynamic-upstream-1.22.1_0.1.6-r0.apk
+mynginx-mod-echo-1.22.1_0.63-r0.apk
+mynginx-mod-encrypted-session-1.22.1_0.09-r0.apk
+mynginx-mod-enhanced-memcached-1.22.1_b58a450-r0.apk
+mynginx-mod-eval-1.22.1_2016.06.10-r0.apk
+mynginx-mod-fancyindex-1.22.1_0.5.2-r0.apk
+mynginx-mod-form-input-1.22.1_0.12-r0.apk
+mynginx-mod-geoip-1.22.1-r0.apk
+mynginx-mod-geoip2-1.22.1_3.4-r0.apk
+mynginx-mod-google-filter-1.22.1_0.2.0-r0.apk
+mynginx-mod-headers-more-filter-1.22.1_0.34-r0.apk
+mynginx-mod-http-upsync-1.22.1_2.1.3-r0.apk
+mynginx-mod-iconv-1.22.1_0.14-r0.apk
+mynginx-mod-image-filter-1.22.1-r0.apk
+mynginx-mod-lua-1.22.1_0.10.14-r0.apk
+mynginx-mod-lua-upstream-1.22.1_0.07-r0.apk
+mynginx-mod-mail-1.22.1-r0.apk
+mynginx-mod-memc-1.22.1_0.19-r0.apk
+mynginx-mod-naxsi-1.22.1_1.3-r0.apk
+mynginx-mod-nchan-1.22.1_1.3.5-r0.apk
+mynginx-mod-passenger-1.22.1_5.3.7-r0.apk
+mynginx-mod-perl-1.22.1-r0.apk
+mynginx-mod-push-stream-1.22.1_0.5.5-r0.apk
+mynginx-mod-rdns-1.22.1_f1d00ad-r0.apk
+mynginx-mod-redis2-1.22.1_0.15-r0.apk
+mynginx-mod-replace-filter-1.22.1_a93c665-r0.apk
+mynginx-mod-rtmp-1.22.1_8e344d7-r0.apk
+mynginx-mod-set-misc-1.22.1_0.33-r0.apk
+mynginx-mod-shibboleth-1.22.1_2.0.1-r0.apk
+mynginx-mod-sorted-querystring-1.22.1_0.3-r0.apk
+mynginx-mod-srcache-filter-1.22.1_0.32-r0.apk
+mynginx-mod-stream-1.22.1-r0.apk
+mynginx-mod-stream-upsync-1.22.1_1.2.2-r0.apk
+mynginx-mod-subs-filter-1.22.1_e12e965-r0.apk
+mynginx-mod-testcookie-access-1.22.1_64137c2-r0.apk
+mynginx-mod-uploadprogress-1.22.1_68b3ab3-r0.apk
+mynginx-mod-upstream-fair-1.22.1_a18b409-r0.apk
+mynginx-mod-vhost-traffic-status-1.22.1_0.2.1-r0.apk
+mynginx-mod-xslt-filter-1.22.1-r0.apk
+mynginx-vim-1.22.1-r0.apk
 ```
 
 The nginx dynamic modules:
@@ -186,12 +184,12 @@ Build lnmp image, matplothub image.
 ```shell
 $ docker images                                                                       :) 0
 REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE
-shmilee/jupyterhub   xxxxxx              496440d8c71f        56 seconds ago      446MB
-shmilee/jupyterhub   using               496440d8c71f        56 seconds ago      446MB
-shmilee/lnmp         xxxxxx              afe0b1b802b0        About an hour ago   336MB
-shmilee/lnmp         using               afe0b1b802b0        About an hour ago   336MB
-shmilee/abuild       x.x                 9a941a2dae49        2 hours ago         191MB
-alpine               x.x                 055936d39205        2 days ago          5.53MB
+shmilee/jupyterhub   xxxxxx              5e49f5c21f04        4 days ago          628MB
+shmilee/jupyterhub   using               5e49f5c21f04        4 days ago          628MB
+shmilee/lnmp         xxxxxx              e94b2c17e63f        4 days ago          312MB
+shmilee/lnmp         using               e94b2c17e63f        4 days ago          312MB
+shmilee/abuild       x.x                 0f88e4cd7228        4 days ago          215MB
+alpine               x.x                 bfe296a52501        6 days ago          5.54MB
 ```
 
 owncloud
@@ -220,7 +218,7 @@ configurations
     - cgitrc     
     - cgitrepos
     - php.ini
-    - php-fpm7.conf
+    - php-fpm8.conf
 * log/
 * root_files
 * ...
