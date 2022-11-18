@@ -43,12 +43,12 @@ set alert receiveID@receive.server.domain but not on { instance, nonexist }
 ##
 check system $HOST
     if cpu usage (user) > 95% for 10 cycles then alert
-    if loadavg(5min) > 2  then alert
+    #if loadavg(5min) > 2  then alert
     if memory usage > 85% for 5 cycles then alert
     group server
 
 check filesystem srv with path /srv/http
-    if space usage > 90% for 5 times within 15 cycles
+    if space usage > 98% for 5 times within 15 cycles
        then alert else if passed for 10 cycles then alert
     group server
 
@@ -57,7 +57,7 @@ check process mynginx with pidfile /run/mynginx.pid
     start program = "/usr/bin/mynginx -c /srv/etc/nginx.conf"
         with timeout 10 seconds
     stop program  = "/usr/bin/mynginx -c /srv/etc/nginx.conf -s quit"
-    if failed host 192.168.5.126 port 80 protocol http
+    if failed host 127.0.0.1 port 80 protocol http
         with timeout 10 seconds then restart
     if 3 restarts within 3 cycles then alert
     group webserver
@@ -72,10 +72,10 @@ check process mynginx with pidfile /run/mynginx.pid
 #    if 3 restarts within 3 cycles then alert
 #    group database
 
-check process php-fpm7 with pidfile /run/php-fpm/php-fpm7.pid
-    start program = "/usr/sbin/php-fpm7 -c /srv/etc/php.ini -y /srv/etc/php-fpm7.conf"
+check process php-fpm8 with pidfile /run/php-fpm/php-fpm8.pid
+    start program = "/usr/sbin/php-fpm8 -c /srv/etc/php.ini -y /srv/etc/php-fpm8.conf"
         with timeout 10 seconds
-    stop program  = "/bin/bash -c 'kill -s SIGTERM `cat /run/php-fpm/php-fpm7.pid`'"
+    stop program  = "/bin/bash -c 'kill -s SIGTERM `cat /run/php-fpm/php-fpm8.pid`'"
     if cpu usage > 80% for 5 cycles then restart
     if 3 restarts within 3 cycles then alert
     group webserver
@@ -106,19 +106,19 @@ check network eth0 with interface eth0
     if failed link then alert
     if saturation > 90% then alert
 
-check host 9201z with address 192.168.5.126
+check host 9201z with address 127.0.0.1
     if failed ping with timeout 10 seconds for 2 cycles then alert
     if failed port 80 protocol http for 3 cycles then alert
     if failed port 443 protocol https
         #and certificate checksum = "Fingerprint"
     for 3 cycles then alert
 
-check host openwrt with address 222.205.55.11
-    if failed ping with timeout 10 seconds for 2 cycles then alert
-    if failed port 80 protocol http for 3 cycles then alert
-    if failed port 443 protocol https
+#check host openwrt with address 222.205.55.11
+#    if failed ping with timeout 10 seconds for 2 cycles then alert
+#    if failed port 80 protocol http for 3 cycles then alert
+#    if failed port 443 protocol https
         #and certificate checksum = "Fingerprint"
-    for 3 cycles then alert
+#    for 3 cycles then alert
 
-check host ap0 with address 192.168.12.1
-    if failed ping with timeout 2 seconds for 2 cycles then alert
+#check host ap0 with address 192.168.6.1
+#    if failed ping with timeout 2 seconds for 2 cycles then alert

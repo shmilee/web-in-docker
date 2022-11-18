@@ -76,7 +76,7 @@ server {
       fastcgi_param PATH_INFO $fastcgi_path_info;
       fastcgi_param HTTPS on;
       fastcgi_param modHeadersAvailable true; #Avoid sending the security headers twice
-      fastcgi_pass unix:/run/php-fpm/php-fpm7.sock;
+      fastcgi_pass unix:/run/php-fpm/php-fpm8.sock;
       fastcgi_intercept_errors on;
     }
 
